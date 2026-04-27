@@ -10,15 +10,21 @@ import CalendarPanel from "../components/panels/CalendarPanel.jsx";
 import CollectionsPanel from "../components/panels/CollectionsPanel.jsx";
 
 // ── Settings Row ──────────────────────────────────────────────
-function SettingRow({ icon, label, sub, value }) {
+function SettingRow({ icon, label, sub, value, onClick }) {
   return (
-    <div style={{
-      display: "flex", alignItems: "center", gap: SPACE[3],
-      padding: `${SPACE[3]}px 0`,
-      minHeight: LAYOUT.minTouchTarget,
-      borderBottom: `1px solid ${COLORS.paperAged}`,
-      cursor: "pointer",
-    }}>
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={sub ? `${label}（${sub}）` : label}
+      className="duleme-bare"
+      style={{
+        display: "flex", alignItems: "center", gap: SPACE[3],
+        padding: `${SPACE[3]}px 0`,
+        minHeight: LAYOUT.minTouchTarget,
+        borderBottom: `1px solid ${COLORS.paperAged}`,
+        cursor: "pointer",
+      }}
+    >
       <div style={{ fontSize: 16, width: 20, textAlign: "center", flexShrink: 0 }}>{icon}</div>
       <div style={{ flex: 1 }}>
         <div style={{ fontFamily: F.chinese, fontSize: 13, color: COLORS.ink }}>{label}</div>
@@ -27,7 +33,7 @@ function SettingRow({ icon, label, sub, value }) {
       <div style={{ fontFamily: F.ui, fontSize: 10, color: COLORS.muted, letterSpacing: 1 }}>
         {value || "→"}
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -95,12 +101,16 @@ const TABS = [
 
 function TabStrip({ active, onChange }) {
   return (
-    <div style={{ display: "flex", borderBottom: `1px solid rgba(42,31,14,0.12)`, marginBottom: 16 }}>
+    <div role="tablist" aria-label="档案视图" style={{ display: "flex", borderBottom: `1px solid rgba(42,31,14,0.12)`, marginBottom: 16 }}>
       {TABS.map(tab => {
         const isActive = tab.id === active;
         return (
           <button
             key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            tabIndex={isActive ? 0 : -1}
             onClick={() => onChange(tab.id)}
             style={{
               flex: 1, background: "none", border: "none", cursor: "pointer",

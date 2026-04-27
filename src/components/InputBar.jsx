@@ -76,7 +76,10 @@ export default function InputBar({ onSend }) {
           return (
             <button
               key={m.id}
+              type="button"
               onClick={() => setMode(m.id)}
+              aria-pressed={active}
+              aria-label={`${m.label}模式：${m.hint}`}
               style={{
                 fontFamily: F.ui, fontSize: 10, fontWeight: 700,
                 letterSpacing: 2, textTransform: "uppercase",
@@ -115,6 +118,7 @@ export default function InputBar({ onSend }) {
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
             placeholder={currentMode.placeholder}
+            aria-label={`提问输入框 · ${currentMode.label}模式`}
             rows={2}
             style={{
               width: "100%",
@@ -131,7 +135,10 @@ export default function InputBar({ onSend }) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: SPACE[1] }}>
           <button
+            type="button"
             onClick={() => setRecording(!recording)}
+            aria-pressed={recording}
+            aria-label={recording ? "停止录音" : "开始语音输入"}
             style={{
               width: LAYOUT.minTouchTarget, height: LAYOUT.minTouchTarget,
               border: `1.5px solid ${recording ? COLORS.red : (mode !== "normal" ? modeColor : COLORS.rule)}`,
@@ -142,16 +149,21 @@ export default function InputBar({ onSend }) {
               transition: "all 0.2s ease",
             }}
           >
-            {recording ? "⏺" : "🎙"}
+            <span aria-hidden="true">{recording ? "⏺" : "🎙"}</span>
           </button>
 
           <button
+            type="button"
             onClick={handleSend}
+            aria-label="发送提问"
+            disabled={!text.trim()}
             style={{
               width: LAYOUT.minTouchTarget, height: LAYOUT.minTouchTarget,
               background: modeColor, border: "none",
               display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", flexShrink: 0, transition: "background 0.15s",
+              cursor: text.trim() ? "pointer" : "not-allowed",
+              opacity: text.trim() ? 1 : 0.55,
+              flexShrink: 0, transition: "background 0.15s, opacity 0.15s",
               animation: text.trim() ? "duleme-pulse-gold 2s ease-in-out infinite" : "none",
             }}
           >

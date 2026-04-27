@@ -193,4 +193,29 @@ export const GLOBAL_CSS = `
   .duleme-root *::-webkit-scrollbar { display: none; }
   .duleme-root * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
   .duleme-root input, .duleme-root button, .duleme-root textarea { -webkit-appearance: none; }
+
+  /* ── Reset for buttons used as cards/rows: keep the card look ────── */
+  .duleme-root button.duleme-bare {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: inherit;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+  }
+
+  /* ── Focus-visible: keyboard-only ring, never on touch/mouse ─────── */
+  .duleme-root *:focus { outline: none; }
+  .duleme-root *:focus-visible {
+    outline: 2px solid #c9a227;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(201,162,39,0.18);
+  }
+
+  /* ── Body scroll lock when a modal is open ───────────────────────── */
+  body.duleme-no-scroll { overflow: hidden; touch-action: none; }
 `;

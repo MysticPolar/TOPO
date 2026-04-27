@@ -199,8 +199,11 @@ export const QuestionCard = ({ q, index, onClick }) => {
   const mt = isOdd ? 0 : SPACE[3];
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => onClick(q)}
+      aria-label={`提问卡片 · ${q.zh}`}
+      className="duleme-bare"
       style={{
         flexShrink: 0, width: 156, padding: `${SPACE[3]}px ${SPACE[3]}px ${SPACE[2]}px`,
         paddingLeft: SPACE[3] + 3,
@@ -236,6 +239,6 @@ export const QuestionCard = ({ q, index, onClick }) => {
           {q.type}
         </div>
       </div>
-    </div>
+    </button>
   );
 };
