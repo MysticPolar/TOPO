@@ -14,17 +14,14 @@ function ArticleCard({ article, index, onOpen }) {
       type="button"
       onClick={() => onOpen(article)}
       aria-label={`阅读：${article.title}`}
-      className="duleme-bare"
+      className="duleme-bare duleme-press-shadow"
       style={{
         border: `1.5px solid ${COLORS.rule}`,
         ...TEXTURES.paperLight,
         marginBottom: SPACE[4], overflow: "hidden",
         cursor: "pointer", position: "relative",
         animation: `duleme-fade-up 0.4s ease ${0.08 + index * 0.1}s both`,
-        transition: "box-shadow 0.2s ease",
       }}
-      onMouseEnter={e => e.currentTarget.style.boxShadow = `3px 4px 0 ${COLORS.ink}`}
-      onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
     >
       {/* Left 3px accent bar — "book spine" per brand spec */}
       <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 3, background: CARD_COLORS[article.color] }} />

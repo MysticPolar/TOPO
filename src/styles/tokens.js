@@ -218,4 +218,44 @@ export const GLOBAL_CSS = `
 
   /* ── Body scroll lock when a modal is open ───────────────────────── */
   body.duleme-no-scroll { overflow: hidden; touch-action: none; }
+
+  /* ── Press feedback for cards (works on touch via :active) ───────── */
+  /* Cards set --rot inline; hover/active/focus snap to 0deg + lift.    */
+  .duleme-card-lift {
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .duleme-card-lift:hover,
+  .duleme-card-lift:active,
+  .duleme-card-lift:focus-visible {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: 4px 6px 0 #1a1208;
+  }
+  .duleme-press-shadow {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .duleme-press-shadow:hover,
+  .duleme-press-shadow:active,
+  .duleme-press-shadow:focus-visible {
+    box-shadow: 3px 4px 0 #1a1208;
+  }
+  .duleme-press-shadow:active {
+    transform: translateY(1px);
+  }
+  .duleme-press-dim:active { opacity: 0.85; }
+
+  /* ── Reduced motion: neutralize all animations & transitions ─────── */
+  @media (prefers-reduced-motion: reduce) {
+    .duleme-root *,
+    .duleme-root *::before,
+    .duleme-root *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.001ms !important;
+      transition-delay: 0ms !important;
+      scroll-behavior: auto !important;
+    }
+    .duleme-tw-cursor { animation: none !important; opacity: 0.8 !important; }
+  }
 `;
