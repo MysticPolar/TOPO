@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { COLORS, FONTS as F, CARD_COLORS } from "../../styles/tokens.js";
 import { fetchReadingHistory } from "../../utils/db.js";
 
-const DAY_LABELS = ["日", "一", "二", "三", "四", "五", "六"];
+const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function buildCalendarDays(year, month) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -50,7 +50,10 @@ export default function CalendarPanel() {
     setSelectedDate(null);
   };
 
-  const monthStr = `${year}年${month + 1}月`;
+  const monthStr = new Date(year, month, 1).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
 
   const selectedKey = selectedDate
     ? `${year}-${String(month + 1).padStart(2, "0")}-${String(selectedDate).padStart(2, "0")}`
@@ -60,7 +63,7 @@ export default function CalendarPanel() {
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "40px 0", fontFamily: F.body, fontStyle: "italic", fontSize: 12, color: COLORS.muted }}>
-        翻阅记录中…
+        Loading reading history...
       </div>
     );
   }
@@ -69,7 +72,7 @@ export default function CalendarPanel() {
     <div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
         <button onClick={prevMonth} style={{ background: "none", border: "none", cursor: "pointer", padding: "4px 8px", fontFamily: F.ui, fontSize: 16, color: COLORS.muted }}>‹</button>
-        <div style={{ fontFamily: F.chinese, fontWeight: 700, fontSize: 13, color: COLORS.ink, letterSpacing: 2 }}>{monthStr}</div>
+        <div style={{ fontFamily: F.editorial, fontWeight: 700, fontSize: 13, color: COLORS.ink, letterSpacing: 2 }}>{monthStr}</div>
         <button onClick={nextMonth} style={{ background: "none", border: "none", cursor: "pointer", padding: "4px 8px", fontFamily: F.ui, fontSize: 16, color: COLORS.muted }}>›</button>
       </div>
 
@@ -128,12 +131,12 @@ export default function CalendarPanel() {
               borderLeft: `3px solid ${CARD_COLORS[entry.color] || COLORS.gold}`,
             }}>
               {entry.question_text && (
-                <div style={{ fontFamily: F.chinese, fontStyle: "italic", fontSize: 11, color: COLORS.muted, marginBottom: 5, lineHeight: 1.5 }}>
+                <div style={{ fontFamily: F.editorial, fontStyle: "italic", fontSize: 11, color: COLORS.muted, marginBottom: 5, lineHeight: 1.5 }}>
                   "{entry.question_text}"
                 </div>
               )}
               {entry.book_title && (
-                <div style={{ fontFamily: F.chinese, fontWeight: 700, fontSize: 12, color: COLORS.ink, lineHeight: 1.4 }}>
+                <div style={{ fontFamily: F.editorial, fontWeight: 700, fontSize: 12, color: COLORS.ink, lineHeight: 1.4 }}>
                   {entry.book_title}
                 </div>
               )}
@@ -147,7 +150,7 @@ export default function CalendarPanel() {
 
       {Object.keys(entryMap).length === 0 && (
         <div style={{ textAlign: "center", padding: "20px 0 8px", fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, opacity: 0.6, lineHeight: 1.8 }}>
-          点击「开始阅读」，<br />你的阅历将在此留印。
+          Tap "Start Reading" on a dispatch,<br />and your trail will appear here.
         </div>
       )}
     </div>

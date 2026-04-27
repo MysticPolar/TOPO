@@ -1,126 +1,67 @@
-# 读了么 (Dúle Me) — Mobile App V2
+# The Owl's Press
 
-> *"Read Dangerously"* · The Owlery Press · Est. 2025
+> Read Dangerously · The Owl's Press · Est. 2025
 
-A newspaper-aesthetic mobile reading & oracle app built in React.  
-Harry Potter Daily Prophet × literary social network × gamified reading.
+An editorial reading dispatch app for U.S. readers. The app turns a reader's question into a book-centered dispatch with recommendations, reflection prompts, saved items, and reading history.
 
----
-
-## 🚀 Quick Start
-
-### Option A — Zero Setup (Recommended for preview)
-
-Open `duleme-standalone.html` directly in any browser.  
-No installation, no build step required.
+## Quick Start
 
 ```bash
-open duleme-standalone.html
-```
-
----
-
-### Option B — Vite Dev Server (Recommended for development)
-
-```bash
-# 1. Install dependencies
 npm install
-
-# 2. Start dev server (opens at http://localhost:3000)
 npm run dev
-
-# 3. Build for production
 npm run build
 ```
 
----
+The Vite dev server opens at `http://localhost:3000`.
 
-## 📁 Project Structure
+## Project Structure
 
-```
-duleme-app/
-├── duleme-standalone.html    ← ⭐ OPEN THIS for instant preview
-├── index.html                ← Vite HTML entry
+```text
+owls-press-app/
+├── index.html
 ├── package.json
 ├── vite.config.js
-└── src/
-    ├── main.jsx              ← React root mount
-    ├── App.jsx               ← Root component (routing, global state)
-    ├── assets/
-    │   ├── logo-dark.svg
-    │   ├── avatar-scholar.svg
-    │   └── coin-illustration.svg
-    ├── data/
-    │   └── content.js        ← Questions, articles, user data
-    ├── styles/
-    │   └── tokens.js         ← Colors, fonts, textures, keyframes
-    ├── components/
-    │   ├── Masthead.jsx      ← Newspaper header
-    │   ├── NavBar.jsx        ← Bottom tab navigation
-    │   ├── InputBar.jsx      ← Question input (Normal / Air / Max)
-    │   ├── OracleDispatch.jsx ← AI response overlay (newspaper spread)
-    │   └── Primitives.jsx    ← Shared atoms: cards, icons, XP, toast
-    └── screens/
-        ├── HomeScreen.jsx    ← 首页 · Main feed
-        ├── ReadingScreen.jsx ← 阅读 · Article list + reader
-        └── ProfileScreen.jsx ← 我的 · User stats, avatars, ranks
+├── src/
+│   ├── main.jsx
+│   ├── App.jsx
+│   ├── data/content.js
+│   ├── services/gemini.js
+│   ├── services/gemini-mock.js
+│   ├── styles/tokens.js
+│   ├── components/
+│   └── screens/
+├── supabase/
+│   ├── functions/gemini-proxy/
+│   └── migrations/
+└── expo-app/
 ```
 
----
+## Product Identity
 
-## 🎨 Design Identity
+The Owl's Press is a newspaper-inspired reading product. It should feel editorial, useful, and bookish rather than gamified for its own sake.
 
-| Token | Value |
+Primary user promise: ask a real question, get one useful book-led dispatch, and leave with a next step.
+
+## Core Screens
+
+| Screen | Route | Purpose |
+|---|---|---|
+| Dispatch | `home` | Question cards, daily challenge, input modes, reader progress |
+| Reading Room | `reading` | Curated essays and book notes |
+| Profile | `profile` | Reading trail, saved items, rank path, settings |
+| Dispatch Overlay | overlay | AI-generated book recommendation and reading brief |
+
+## Input Modes
+
+| Mode | Purpose |
 |---|---|
-| **Primary** | `#1a1208` Ink |
-| **Surface** | `#f5efe0` Paper |
-| **Accent** | `#c9a227` Gold |
-| **Alert** | `#c0392b` Red |
-| **Display Font** | Playfair Display |
-| **Blackletter** | UnifrakturMaguntia |
-| **Body** | IM Fell English |
-| **UI** | Space Grotesk |
-| **Chinese** | Noto Serif SC |
+| Solve | One best book for a concrete problem |
+| Scout | Five quick book recommendations |
+| Research | Deeper reading brief with tradeoffs and companion books |
 
----
+## Verification
 
-## 📱 Screens
-
-| Screen | Route | Description |
-|---|---|---|
-| **首页** | `home` | Question cards, challenge, trending, XP header |
-| **阅读** | `reading` | Curated articles with filter tabs + in-app reader |
-| **我的** | `profile` | Avatar collection, INK balance, rank progression, settings |
-| **神谕特刊** | overlay | Full-screen Oracle AI response in newspaper spread format |
-
----
-
-## 🛠 Input Modes
-
-| Mode | Color | Style |
-|---|---|---|
-| **Normal** | Ink `#1a1208` | Standard oracle response |
-| **✦ Air** | Teal `#2a7c6f` | Quick, concise reply |
-| **◈ Max** | Purple `#5c2d7a` | Deep editorial with book recommendations |
-
----
-
-## 🪙 Gamification
-
-- **INK** — currency earned for reading, answering, streaks
-- **XP Bar** — progress toward next rank, visible in header
-- **Ranks** — Novice Scribe → Ink Apprentice → Page Turner → Oracle Reader → Archivist → Grand Librarian
-- **Avatars** — collectible scholar characters (Scholar, Night Owl, Scribe, Alchemist…)
-- **Daily Challenge** — streak-based daily reading prompt
-- **Ink Toast** — animated reward notification on dispatch completion
-
----
-
-## 🌐 Browser Support
-
-Chrome 90+, Safari 14+, Firefox 88+, Edge 90+
-
----
-
-*"The owl flies at midnight. Your story continues."*  
-— The Owlery Press
+```bash
+npm run build
+rg -n "[\\p{Han}]" src index.html README.md package.json supabase
+```

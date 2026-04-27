@@ -1,27 +1,27 @@
-const STORAGE_KEY = "duleme-tag-seen-articles";
+const STORAGE_KEY = "owls-press-tag-seen-articles";
 
 export function tagKeyForDispatch(q) {
-  if (!q) return "特刊";
-  if (q.type && q.type !== "你的提问") return q.type;
-  return String(q.tag || "特刊");
+  if (!q) return "Dispatch";
+  if (q.type && q.type !== "Your Question") return q.type;
+  return String(q.tag || "Dispatch");
 }
 
 export function articleTagLabel(q) {
-  if (!q) return "特刊";
-  if (q.type && q.type !== "你的提问") return q.type;
-  return q.tag || "特刊";
+  if (!q) return "Dispatch";
+  if (q.type && q.type !== "Your Question") return q.type;
+  return q.tag || "Dispatch";
 }
 
-/** Stable id for deduping「同一篇」：卡片用 id，输入框用正文。 */
+/** Stable id for deduping the same dispatch across cards and user input. */
 export function articleInstanceKey(q) {
   if (!q) return "unknown";
   if (q.id != null && q.id !== "") return `id:${q.id}`;
-  const zh = (q.zh || "").trim();
-  if (zh) return `zh:${zh}`;
+  const text = (q.text || "").trim();
+  if (text) return `text:${text}`;
   return `t:${Date.now()}`;
 }
 
-/** @returns {Record<string, string[]>} tag -> 已计入卷数的篇目 key */
+/** @returns {Record<string, string[]>} tag -> counted dispatch keys */
 export function loadTagSeenArticles() {
   if (typeof window === "undefined") return {};
   try {

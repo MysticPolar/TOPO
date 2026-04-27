@@ -3,7 +3,7 @@ import { Typewriter } from "./Typewriter.jsx";
 
 function StreamIn({ children, visible }) {
   if (!visible) return null;
-  return <div style={{ animation: "duleme-fade-up 0.4s ease both" }}>{children}</div>;
+  return <div style={{ animation: "owls-press-fade-up 0.4s ease both" }}>{children}</div>;
 }
 
 function SectionTag({ children, dark }) {
@@ -39,7 +39,7 @@ function PullQuote({ text, isStreaming }) {
         lineHeight: 1, fontWeight: 900, pointerEvents: "none",
       }}>{"\u201D"}</span>
       <p style={{
-        fontFamily: F.chinese, fontSize: 16, lineHeight: 1.7,
+        fontFamily: F.editorial, fontSize: 16, lineHeight: 1.7,
         color: COLORS.muted, fontStyle: "italic",
         position: "relative", zIndex: 1, margin: 0,
       }}>
@@ -63,7 +63,7 @@ function ViewpointLabel({ label }) {
 }
 
 const BODY = {
-  fontFamily: "'Noto Serif SC', 'Playfair Display', serif",
+  fontFamily: "'Source Serif 4', 'Playfair Display', serif",
   fontSize: 16, lineHeight: 1.7, color: COLORS.ink,
   textAlign: "justify", margin: 0,
 };
@@ -74,10 +74,10 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
   return (
     <>
       <div style={{ padding: "0 20px" }}>
-        {/* 壹 · 核心思想 */}
+        {/* Lead idea */}
         <StreamIn visible={R.body?.[0]}>
-          <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)", animation: "duleme-fade-up 0.5s 0.15s ease both" }}>
-            <SectionTag>{"\u58F9 \u00B7 \u6838\u5FC3\u601D\u60F3"}</SectionTag>
+          <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)", animation: "owls-press-fade-up 0.5s 0.15s ease both" }}>
+            <SectionTag>1 · Core Idea</SectionTag>
             <p style={BODY}>
               <Typewriter text={R.body?.[0]} active={isStreaming} />
             </p>
@@ -94,13 +94,13 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
           <PullQuote text={R.pullQuote} isStreaming={isStreaming} />
         </StreamIn>
 
-        {/* 观点壹 */}
+        {/* Viewpoint 1 */}
         <StreamIn visible={R.bodyStrong1}>
           {R.bodyStrong1 && (
-            <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)", animation: "duleme-fade-up 0.5s 0.2s ease both" }}>
-              <ViewpointLabel label={"\u89C2\u70B9\u58F9"} />
+            <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)", animation: "owls-press-fade-up 0.5s 0.2s ease both" }}>
+              <ViewpointLabel label="Viewpoint 1" />
               <div style={{
-                fontFamily: F.chinese, fontWeight: 700, fontSize: 18,
+                fontFamily: F.editorial, fontWeight: 700, fontSize: 18,
                 lineHeight: 1.4, letterSpacing: 0.5, color: COLORS.ink,
                 marginBottom: 8,
               }}>
@@ -115,18 +115,18 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
           )}
         </StreamIn>
 
-        {/* Pull Quote 1 between 观点壹 and 观点贰 */}
+        {/* Pull Quote 1 between viewpoints */}
         <StreamIn visible={R.pullQuote2}>
           <PullQuote text={R.pullQuote2} isStreaming={isStreaming} />
         </StreamIn>
 
-        {/* 观点贰 */}
+        {/* Viewpoint 2 */}
         <StreamIn visible={R.bodyStrong2}>
           {R.bodyStrong2 && (
-            <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)", animation: "duleme-fade-up 0.5s 0.25s ease both" }}>
-              <ViewpointLabel label={"\u89C2\u70B9\u8D30"} />
+            <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)", animation: "owls-press-fade-up 0.5s 0.25s ease both" }}>
+              <ViewpointLabel label="Viewpoint 2" />
               <div style={{
-                fontFamily: F.chinese, fontWeight: 700, fontSize: 18,
+                fontFamily: F.editorial, fontWeight: 700, fontSize: 18,
                 lineHeight: 1.4, letterSpacing: 0.5, color: COLORS.ink,
                 marginBottom: 8,
               }}>
@@ -141,13 +141,13 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
           )}
         </StreamIn>
 
-        {/* 观点叁 */}
+        {/* Viewpoint 3 */}
         <StreamIn visible={R.bodyStrong3}>
           {R.bodyStrong3 && (
-            <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)", animation: "duleme-fade-up 0.5s 0.3s ease both" }}>
-              <ViewpointLabel label={"\u89C2\u70B9\u53C1"} />
+            <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)", animation: "owls-press-fade-up 0.5s 0.3s ease both" }}>
+              <ViewpointLabel label="Viewpoint 3" />
               <div style={{
-                fontFamily: F.chinese, fontWeight: 700, fontSize: 18,
+                fontFamily: F.editorial, fontWeight: 700, fontSize: 18,
                 lineHeight: 1.4, letterSpacing: 0.5, color: COLORS.ink,
                 marginBottom: 8,
               }}>
@@ -162,10 +162,10 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
           )}
         </StreamIn>
 
-        {/* 值得思考的问题 */}
+        {/* Reflection questions */}
         <StreamIn visible={R.reflectionQuestions?.length}>
           <div style={{ padding: "24px 0", borderBottom: "1px solid rgba(42,31,14,0.08)" }}>
-            <SectionTag>{"\u8D30 \u00B7 \u503C\u5F97\u601D\u8003"}</SectionTag>
+            <SectionTag>2 · Questions Worth Keeping</SectionTag>
             <ol style={{ listStyle: "none", padding: 0, margin: 0 }}>
               {(R.reflectionQuestions || []).map((q, i) => (
                 <li key={i} style={{
@@ -187,10 +187,10 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
           </div>
         </StreamIn>
 
-        {/* 关键收获 */}
+        {/* Key takeaways */}
         <StreamIn visible={R.takeaways?.length}>
           <div style={{ padding: "24px 0" }}>
-            <SectionTag>{"\u53C1 \u00B7 \u5173\u952E\u6536\u83B7"}</SectionTag>
+            <SectionTag>3 · Key Takeaways</SectionTag>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               {(R.takeaways || []).map((line, i) => (
                 <li key={i} style={{
@@ -222,14 +222,14 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
           <div style={{
             fontFamily: F.ui, fontWeight: 700, fontSize: 9, letterSpacing: 4,
             color: COLORS.muted, marginBottom: 16,
-          }}>{"\u4F60\u8FD8\u53EF\u4EE5\u8BFB\u2026"}</div>
+          }}>You could also read...</div>
           <div style={{ display: "flex", gap: 10 }}>
             {(R.recommendations || []).map((rec, i) => (
               <div key={i} style={{
                 flex: 1, display: "flex", flexDirection: "column",
                 border: `1px solid ${COLORS.rule}`,
                 overflow: "hidden",
-                animation: `duleme-fade-up 0.4s ease ${i * 0.1}s both`,
+                animation: `owls-press-fade-up 0.4s ease ${i * 0.1}s both`,
               }}>
                 <div style={{
                   height: 96, position: "relative",
@@ -245,14 +245,14 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
                     background: `repeating-linear-gradient(to bottom, ${COLORS.paper} 0px, ${COLORS.paper} 1px, ${COLORS.paperDark} 1px, ${COLORS.paperDark} 2px)`,
                   }} />
                   <span style={{
-                    fontFamily: F.chinese, fontWeight: 900, fontSize: 12,
+                    fontFamily: F.editorial, fontWeight: 900, fontSize: 12,
                     color: COLORS.paper, writingMode: "vertical-rl",
                     letterSpacing: 3, lineHeight: 1, position: "relative", zIndex: 1,
                   }}>{rec.spine}</span>
                 </div>
                 <div style={{ padding: "10px 8px 0", flex: 1 }}>
                   <div style={{
-                    fontFamily: F.chinese, fontWeight: 700, fontSize: 12,
+                    fontFamily: F.editorial, fontWeight: 700, fontSize: 12,
                     color: COLORS.ink, lineHeight: 1.3, marginBottom: 3,
                   }}>{rec.title}</div>
                   <div style={{
@@ -260,7 +260,7 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
                     letterSpacing: 0.5, lineHeight: 1.4, marginBottom: 6,
                   }}>{rec.author}</div>
                   <p style={{
-                    fontFamily: F.chinese, fontSize: 11, lineHeight: 1.6,
+                    fontFamily: F.editorial, fontSize: 11, lineHeight: 1.6,
                     color: COLORS.muted, fontStyle: "italic", margin: 0,
                   }}>{rec.why}</p>
                 </div>
@@ -270,7 +270,7 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
                     border: "none", padding: "7px 0",
                     fontFamily: F.ui, fontSize: 9, fontWeight: 700,
                     letterSpacing: 2, cursor: "pointer",
-                  }}>{"\u5F00\u59CB\u9605\u8BFB \u2192"}</button>
+                  }}>Start Reading →</button>
                 </div>
               </div>
             ))}
@@ -285,19 +285,19 @@ export default function ArticleContent({ R, isStreaming, stamped }) {
             display: "inline-block", padding: 4,
             border: `1.5px solid ${COLORS.green}`,
             transform: "rotate(-5deg)",
-            animation: "duleme-stamp 0.5s ease both",
+            animation: "owls-press-stamp 0.5s ease both",
           }}>
             <div style={{ border: `2px solid ${COLORS.green}`, padding: "8px 14px" }}>
               <div style={{
-                fontFamily: F.chinese, fontWeight: 900, fontSize: 22,
+                fontFamily: F.editorial, fontWeight: 900, fontSize: 22,
                 color: COLORS.green, letterSpacing: 6, lineHeight: 1.2,
                 textAlign: "center",
-              }}>{"\u8BFB\u4E86\uFF01"}</div>
+              }}>READ</div>
               <div style={{
                 fontFamily: F.ui, fontSize: 7, letterSpacing: 2,
                 color: COLORS.green, opacity: 0.7, textAlign: "center",
                 marginTop: 2,
-              }}>{"\u732B\u5934\u9E70\u90AE\u5C40"}</div>
+              }}>The Owl's Press</div>
             </div>
           </div>
         </div>

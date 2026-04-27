@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · localStorage Persistence
+// The Owl's Press · localStorage Persistence
 // ═══════════════════════════════════════════════════════════════
 
-const STATS_KEY = "duleme-user-stats";
+const STATS_KEY = "owls-press-user-stats";
 
 export function loadUserStats(defaults) {
   try {

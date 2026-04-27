@@ -1,6 +1,6 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const DEVICE_ID_KEY = "duleme-device-id";
+const DEVICE_ID_KEY = "owls-press-device-id";
 
 function getDeviceId() {
   let id = localStorage.getItem(DEVICE_ID_KEY);

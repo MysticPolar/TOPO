@@ -15,6 +15,6 @@
   <circle cx="32" cy="32" r="24" fill="none" stroke="#7a5c0e" stroke-width="2"/>
   <circle cx="32" cy="32" r="19" fill="none" stroke="rgba(122,92,14,0.4)" stroke-width="1"/>
   <circle cx="32" cy="32" r="22" fill="none" stroke="rgba(122,92,14,0.3)" stroke-width="1.5" stroke-dasharray="2 2.5"/>
-  <text x="32" y="40" text-anchor="middle" font-family="'UnifrakturMaguntia',cursive" font-size="22" fill="#7a5c0e" opacity="0.9">读</text>
+  <text x="32" y="40" text-anchor="middle" font-family="'UnifrakturMaguntia',cursive" font-size="20" fill="#7a5c0e" opacity="0.9">OP</text>
   <circle cx="32" cy="32" r="24" fill="url(#coinShine)"/>
 </svg>

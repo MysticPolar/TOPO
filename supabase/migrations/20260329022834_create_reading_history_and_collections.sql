@@ -2,14 +2,14 @@
   # Create reading_history and collections tables
 
   ## Overview
-  Adds two new tables to support the three-tab 六维图 panel:
+  Adds two new tables to support the three-tab profile panel:
   - `reading_history` — records each (question → book) reading session
   - `collections` — stores user-saved items: dispatches, books, or quotes
 
   ## New Tables
 
   ### reading_history
-  Tracks when a user taps "开始阅读" in the article dispatch view.
+  Tracks when a user taps "Start Reading" in the article dispatch view.
   Each row pairs the question that triggered the dispatch with the
   book recommended in the response.
 
@@ -20,12 +20,12 @@
   - `question_text` (text) — the question the user asked
   - `book_title` (text) — the book title from the dispatch response
   - `book_author` (text) — the book author
-  - `tag` (text) — reading dimension tag (健康, 思辨, etc.)
+  - `tag` (text) — reading dimension tag (Health, Ideas, etc.)
   - `color` (text) — card accent color from the dispatch
   - `created_at` (timestamptz) — server timestamp
 
   ### collections
-  Stores items the user saves via the "收藏" button. Type field
+  Stores items the user saves via the "Save" button. Type field
   distinguishes between dispatch summaries, book recommendations,
   and pull quotes.
 

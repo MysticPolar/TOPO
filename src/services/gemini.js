@@ -1,4 +1,4 @@
-import { askOwleryStreamMock } from "./gemini-mock.js";
+import { askPressStreamMock } from "./gemini-mock.js";
 
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
@@ -6,29 +6,35 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 const PROXY_URL = `${SUPABASE_URL}/functions/v1/gemini-proxy`;
 
 const FALLBACK = {
-  empathyLine1: "\u732B\u5934\u9E70\u90AE\u5C40\u6682\u65F6\u65E0\u6CD5\u8FDE\u7EBF\u3002",
-  empathyLine2: "\u4F46\u4F60\u7684\u95EE\u9898\u5DF2\u88AB",
-  empathyRed: "\u8BB0\u5F55",
-  empathyLine2After: "\u5728\u518C\u3002",
-  bookRec: { title: "\u300A\u5982\u4F55\u9605\u8BFB\u4E00\u672C\u4E66\u300B\u2014 \u83AB\u63D0\u9ED8\u00B7\u963F\u5FB7\u52D2", en: "\u7ECF\u5178\u9605\u8BFB\u65B9\u6CD5\u8BBA\uFF0C\u9002\u5408\u4EFB\u4F55\u60F3\u8981\u6DF1\u5165\u9605\u8BFB\u7684\u4EBA\u3002" },
-  bookSpineShort: "\u9605\u8BFB",
-  chapterTag: "\u63A8\u8350\u7AE0\u8282 \u00B7 \u5206\u6790\u9605\u8BFB",
+  empathyLine1: "The press is offline for a moment",
+  empathyLine2: "Your question has been",
+  empathyRed: "saved",
+  empathyLine2After: " for the next edition.",
+  bookRec: {
+    title: "How to Read a Book - Mortimer J. Adler and Charles Van Doren",
+    description: "A durable guide to asking sharper questions and reading with purpose.",
+  },
+  bookSpineShort: "READ",
+  chapterTag: "Recommended chapter · Analytical reading",
   body: [
-    "\u732B\u5934\u9E70\u90AE\u5C40\u7684\u5370\u5237\u673A\u6682\u65F6\u9700\u8981\u7EF4\u62A4\u3002\u8BF7\u7A0D\u540E\u518D\u8BD5\uFF0C\u6216\u68C0\u67E5\u7F51\u7EDC\u8FDE\u63A5\u3002\u4F60\u7684\u95EE\u9898\u5F88\u597D\u2014\u2014\u597D\u95EE\u9898\u503C\u5F97\u7B49\u5F85\u4E00\u4E2A\u597D\u56DE\u7B54\u3002",
-    "\u5728\u7B49\u5F85\u671F\u95F4\uFF0C\u4E0D\u59A8\u7FFB\u5F00\u624B\u8FB9\u4EFB\u4F55\u4E00\u672C\u4E66\u7684\u4EFB\u610F\u4E00\u9875\u3002\u732B\u5934\u9E70\u90AE\u5C40\u76F8\u4FE1\uFF0C\u5076\u7136\u7FFB\u5230\u7684\u90A3\u4E00\u9875\uFF0C\u5F80\u5F80\u5C31\u662F\u4F60\u6B64\u523B\u9700\u8981\u7684\u90A3\u4E00\u9875\u3002",
-    "\u9605\u8BFB\u4E0D\u662F\u9003\u5165\u53E6\u4E00\u4E2A\u4EBA\u7684\u4E16\u754C\uFF0C\u800C\u662F\u53D1\u73B0\u81EA\u5DF1\u7684\u4E16\u754C\u539F\u6765\u5982\u6B64\u5E7F\u9614\u3002\u6BCF\u4E00\u672C\u4E66\u90FD\u662F\u4E00\u6761\u901A\u9053\uFF0C\u901A\u5411\u4F60\u8FD8\u672A\u8D70\u8FC7\u7684\u90A3\u4E9B\u80CC\u9762\u3002",
-    "\u5F53\u6211\u4EEC\u771F\u6B63\u6DF1\u5165\u9605\u8BFB\uFF0C\u6211\u4EEC\u5B9E\u9645\u4E0A\u662F\u5728\u8FC7\u4E00\u79CD\u66F4\u5E7F\u9614\u7684\u751F\u6D3B\uFF0C\u5728\u5B9E\u9A8C\u8BBE\u8BA1\u5305\u542B\u4E00\u4E2A\u4E16\u7EAA\u7684\u60C5\u611F\u548C\u667A\u6167\u7684\u751F\u547D\u3002",
+    "The Owl's Press could not reach the live desk just now. That does not make your question smaller. Good questions often deserve a slower answer than the network is willing to provide.",
+    "While the press resets, try naming what kind of help you need from a book: comfort, strategy, evidence, language, or a challenge. That one distinction usually improves the recommendation immediately.",
+    "Reading is not a retreat from your life. It is a way to borrow another mind long enough to see your own situation with more structure.",
   ],
-  bodyStrong1: "\u597D\u95EE\u9898\u503C\u5F97\u7B49\u5F85",
-  bodyStrong2: "\u9605\u8BFB\u5F00\u623F\u95F4",
-  bodyStrong3: "\u4ECA\u591C\u7FFB\u5F00\u4E00\u9875",
-  pullQuote: "\u9605\u8BFB\u7684\u76EE\u7684\uFF0C\u662F\u8BA9\u81EA\u5DF1\u6210\u4E3A\u4E00\u4E2A\u66F4\u597D\u7684\u63D0\u95EE\u8005\u3002",
+  bodyStrong1: "Name the job",
+  bodyStrong2: "Ask for leverage",
+  bodyStrong3: "Return with a sharper question",
+  pullQuote: "The best book is the one that changes what you can notice.",
   pullQuote2: "",
-  reflectionQuestions: ["\u4F60\u624B\u8FB9\u6700\u8FD1\u7684\u4E00\u672C\u4E66\u662F\u4EC0\u4E48\uFF1F\u7FFB\u5F00\u7B2C42\u9875\uFF0C\u770B\u770B\u5199\u4E86\u4EC0\u4E48\u3002"],
+  reflectionQuestions: [
+    "What would a useful answer help you do tomorrow?",
+    "Do you need comfort, strategy, evidence, language, or a challenge?",
+    "Which part of the question are you avoiding because it is too specific?",
+  ],
   takeaways: [
-    "\u597D\u95EE\u9898\u6BD4\u597D\u7B54\u6848\u66F4\u73CD\u8D35\u3002",
-    "\u5076\u7136\u7684\u9605\u8BFB\u4E5F\u662F\u4E00\u79CD\u547D\u8FD0\u3002",
-    "\u732B\u5934\u9E70\u90AE\u5C40\u6C38\u8FDC\u5728\u8FD9\u91CC\u7B49\u4F60\u56DE\u6765\u3002",
+    "The live desk is unavailable, but the reading path remains open.",
+    "A useful recommendation starts with the job you need the book to do.",
+    "Clearer questions produce better books.",
   ],
   recommendations: [],
   inkReward: 10,
@@ -46,16 +52,16 @@ function softParse(partial) {
   let inString = false;
   for (let i = 0; i < text.length; i++) {
     const ch = text[i];
-    if (ch === '"' && (i === 0 || text[i - 1] !== '\\')) { inString = !inString; continue; }
+    if (ch === '"' && (i === 0 || text[i - 1] !== "\\")) { inString = !inString; continue; }
     if (inString) continue;
-    if (ch === '{' || ch === '[') stack.push(ch);
-    if (ch === '}' && stack.length && stack[stack.length - 1] === '{') stack.pop();
-    if (ch === ']' && stack.length && stack[stack.length - 1] === '[') stack.pop();
+    if (ch === "{" || ch === "[") stack.push(ch);
+    if (ch === "}" && stack.length && stack[stack.length - 1] === "{") stack.pop();
+    if (ch === "]" && stack.length && stack[stack.length - 1] === "[") stack.pop();
   }
 
   while (stack.length) {
     const last = stack.pop();
-    text += last === '{' ? '}' : ']';
+    text += last === "{" ? "}" : "]";
   }
 
   try { return JSON.parse(text); } catch { return null; }
@@ -74,13 +80,13 @@ function normalizeResponse(parsed) {
   };
 }
 
-export async function askOwleryStream(questionText, mode = "normal", onPartial) {
+export async function askPressStream(questionText, mode = "normal", onPartial) {
   if (USE_MOCK) {
-    return askOwleryStreamMock(questionText, mode, onPartial);
+    return askPressStreamMock(questionText, mode, onPartial);
   }
 
   if (!SUPABASE_URL) {
-    console.warn("[duleme] No VITE_SUPABASE_URL set, using fallback response");
+    console.warn("[owls-press] No VITE_SUPABASE_URL set, using fallback response");
     onPartial(FALLBACK);
     return FALLBACK;
   }
@@ -103,7 +109,7 @@ export async function askOwleryStream(questionText, mode = "normal", onPartial) 
   } catch (err) {
     clearTimeout(timeoutId);
     if (err.name === "AbortError") {
-      throw new Error("请求超时，请稍后再试。");
+      throw new Error("The press timed out. Please try again in a moment.");
     }
     throw err;
   }

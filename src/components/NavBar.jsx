@@ -1,14 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Navigation Bar
+// The Owl's Press · Navigation Bar
 // ═══════════════════════════════════════════════════════════════
 
 import { COLORS, FONTS as F, SPACE, LAYOUT } from "../styles/tokens.js";
 import { NavIconHome, NavIconReading, NavIconProfile } from "./Primitives.jsx";
 
 const NAV_ITEMS = [
-  { id: "home",    label: "特刊", Icon: NavIconHome },
-  { id: "reading", label: "阅读室", Icon: NavIconReading },
-  { id: "profile", label: "我的", Icon: NavIconProfile },
+  { id: "home",    label: "Dispatch", Icon: NavIconHome },
+  { id: "reading", label: "Reading", Icon: NavIconReading },
+  { id: "profile", label: "Profile", Icon: NavIconProfile },
 ];
 
 export default function NavBar({ activePage, onNavigate }) {

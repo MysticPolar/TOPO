@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-app",
-    "slug": "expo-app",
+    "name": "The Owl's Press",
+    "slug": "owls-press",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

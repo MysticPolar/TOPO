@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Shared UI Primitives
+// The Owl's Press · Shared UI Primitives
 // ═══════════════════════════════════════════════════════════════
 
 import { COLORS, FONTS as F, TEXTURES, CARD_COLORS, SPACE, LAYOUT } from "../styles/tokens.js";
@@ -123,7 +123,7 @@ export const SendIcon = () => (
 );
 
 // ── XP Bar ────────────────────────────────────────────────────
-export const XPBar = ({ current = 2340, total = 3500, rank = "神谕读者" }) => {
+export const XPBar = ({ current = 2340, total = 3500, rank = "Reader" }) => {
   const pct = Math.round((current / total) * 100);
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
@@ -132,21 +132,21 @@ export const XPBar = ({ current = 2340, total = 3500, rank = "神谕读者" }) =
           {rank}
         </div>
         <div style={{ fontFamily: F.ui, fontSize: 10, fontWeight: 600, color: COLORS.muted, letterSpacing: 1 }}>
-          {current.toLocaleString()} 墨水
+          {current.toLocaleString()} ink
         </div>
       </div>
       <div style={{ height: 6, background: COLORS.paperAged, border: `1px solid ${COLORS.rule}`, position: "relative", overflow: "hidden" }}>
         <div style={{
           position: "absolute", top: 0, left: 0, bottom: 0,
           background: COLORS.ink, width: `${pct}%`,
-          animation: "duleme-xp-fill 1.2s cubic-bezier(.23,1,.32,1) 0.3s both",
+          animation: "owls-press-xp-fill 1.2s cubic-bezier(.23,1,.32,1) 0.3s both",
           "--xp-pct": `${pct}%`,
         }}>
           <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(245,239,224,0.15) 8px, rgba(245,239,224,0.15) 9px)" }} />
         </div>
       </div>
       <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 10, color: COLORS.muted, marginTop: SPACE[1] }}>
-        "猫头鹰邮局正在记录你的进度。"
+        "The Owl's Press is tracking your reading trail."
       </div>
     </div>
   );
@@ -178,12 +178,12 @@ export const InkToast = ({ amount, message, visible }) => (
     transform: visible ? "translateY(0)" : "translateY(24px)",
     transition: "all 0.35s cubic-bezier(.23,1,.32,1)",
     pointerEvents: visible ? "auto" : "none",
-    animation: visible ? "duleme-toast-in 0.35s ease both" : "none",
+    animation: visible ? "owls-press-toast-in 0.35s ease both" : "none",
   }}>
     <CoinIcon size={28} />
     <div>
       <div style={{ fontFamily: F.display, fontWeight: 900, fontSize: 18, color: COLORS.gold }}>
-        +{amount} 墨水
+        +{amount} ink
       </div>
       <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 9, color: COLORS.muted }}>
         {message}
@@ -209,7 +209,7 @@ export const QuestionCard = ({ q, index, onClick }) => {
         ...TEXTURES.paperLight,
         transform: `rotate(${rot}deg)`,
         marginTop: mt,
-        animation: `${isOdd ? "duleme-float-in" : "duleme-float-in-2"} 0.5s ease ${0.1 + index * 0.15}s both`,
+        animation: `${isOdd ? "owls-press-float-in" : "owls-press-float-in-2"} 0.5s ease ${0.1 + index * 0.15}s both`,
         transition: "transform 0.2s ease, box-shadow 0.2s ease",
         "--rot": `${rot}deg`,
       }}
@@ -224,11 +224,8 @@ export const QuestionCard = ({ q, index, onClick }) => {
     >
       {/* Left 3px accent bar — "book spine" per brand spec */}
       <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 3, background: CARD_COLORS[q.color] || COLORS.coral }} />
-      <div style={{ fontFamily: F.chinese, fontWeight: 700, fontSize: 13, lineHeight: 1.4, color: COLORS.ink, marginBottom: SPACE[2] }}>
-        {q.zh}
-      </div>
-      <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, lineHeight: 1.4, marginBottom: SPACE[2] }}>
-        {q.en}
+      <div style={{ fontFamily: F.editorial, fontWeight: 700, fontSize: 13, lineHeight: 1.4, color: COLORS.ink, marginBottom: SPACE[2] }}>
+        {q.text}
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ fontFamily: F.ui, fontSize: 10, color: COLORS.muted, letterSpacing: 1 }}>▲ {q.votes}</div>

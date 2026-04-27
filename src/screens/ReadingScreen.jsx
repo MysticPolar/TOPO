@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Reading Screen (阅读)
+// The Owl's Press · Reading Screen
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
@@ -17,7 +17,7 @@ function ArticleCard({ article, index, onOpen }) {
         ...TEXTURES.paperLight,
         marginBottom: SPACE[4], overflow: "hidden",
         cursor: "pointer", position: "relative",
-        animation: `duleme-fade-up 0.4s ease ${0.08 + index * 0.1}s both`,
+        animation: `owls-press-fade-up 0.4s ease ${0.08 + index * 0.1}s both`,
         transition: "box-shadow 0.2s ease",
       }}
       onMouseEnter={e => e.currentTarget.style.boxShadow = `3px 4px 0 ${COLORS.ink}`}
@@ -41,7 +41,7 @@ function ArticleCard({ article, index, onOpen }) {
         </div>
 
         <div style={{
-          fontFamily: F.chinese, fontWeight: 700, fontSize: 16,
+          fontFamily: F.editorial, fontWeight: 700, fontSize: 16,
           lineHeight: 1.4, color: COLORS.ink, marginBottom: SPACE[2],
         }}>
           {article.title}
@@ -51,11 +51,11 @@ function ArticleCard({ article, index, onOpen }) {
           fontFamily: F.body, fontStyle: "italic", fontSize: 11,
           color: COLORS.muted, lineHeight: 1.5, marginBottom: SPACE[3],
         }}>
-          {article.en}
+          {article.subtitle}
         </div>
 
         <div style={{
-          fontFamily: F.chinese, fontSize: 12,
+          fontFamily: F.editorial, fontSize: 12,
           lineHeight: 1.8, color: COLORS.muted, marginBottom: SPACE[3],
           borderLeft: `2px solid ${COLORS.paperAged}`,
           paddingLeft: SPACE[3],
@@ -71,7 +71,7 @@ function ArticleCard({ article, index, onOpen }) {
             fontFamily: F.ui, fontSize: 10, fontWeight: 700,
             color: COLORS.ink, letterSpacing: 1,
           }}>
-            阅读 →
+            Read →
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ function ArticleCard({ article, index, onOpen }) {
 }
 
 // ── Filter Tabs ───────────────────────────────────────────────
-const FILTERS = ["全部", "健康", "财富", "人际", "文学", "思辨", "职场"];
+const FILTERS = ["All", "Health", "Money", "Relationships", "Literature", "Ideas", "Work"];
 
 function FilterTabs({ active, onSelect }) {
   return (
@@ -110,10 +110,10 @@ function FilterTabs({ active, onSelect }) {
 
 // ── Full Reading Screen ───────────────────────────────────────
 export default function ReadingScreen() {
-  const [filter, setFilter] = useState("全部");
+  const [filter, setFilter] = useState("All");
   const [openArticle, setOpenArticle] = useState(null);
 
-  const filtered = filter === "全部"
+  const filtered = filter === "All"
     ? READING_ARTICLES
     : READING_ARTICLES.filter(a => a.tag === filter);
 
@@ -131,10 +131,10 @@ export default function ReadingScreen() {
             padding: `${SPACE[2]}px 0`,
           }}
         >
-          ← 返回
+          ← Back
         </button>
 
-        <div style={{ animation: "duleme-fade-up 0.4s ease both" }}>
+        <div style={{ animation: "owls-press-fade-up 0.4s ease both" }}>
           <div style={{
             fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 2,
             color: CARD_COLORS[openArticle.color],
@@ -143,7 +143,7 @@ export default function ReadingScreen() {
             {openArticle.tag} · {openArticle.date}
           </div>
           <div style={{
-            fontFamily: F.chinese, fontWeight: 900, fontSize: 22,
+            fontFamily: F.editorial, fontWeight: 900, fontSize: 22,
             lineHeight: 1.35, color: COLORS.ink, marginBottom: SPACE[2],
           }}>
             {openArticle.title}
@@ -152,7 +152,7 @@ export default function ReadingScreen() {
             fontFamily: F.body, fontStyle: "italic", fontSize: 12,
             color: COLORS.muted, lineHeight: 1.6, marginBottom: SPACE[4],
           }}>
-            {openArticle.en}
+            {openArticle.subtitle}
           </div>
           <OrnateRule />
           <div style={{
@@ -176,14 +176,14 @@ export default function ReadingScreen() {
                 fontFamily: F.display, fontStyle: "italic", fontSize: 15,
                 lineHeight: 1.7, color: COLORS.ink, letterSpacing: 0.3,
               }}>
-                「{openArticle.pullQuote}」
+                "{openArticle.pullQuote}"
               </div>
             </div>
           )}
 
           {(openArticle.body || [openArticle.preview]).map((para, i) => (
             <div key={i} style={{
-              fontFamily: F.chinese, fontSize: 14, lineHeight: 2,
+              fontFamily: F.editorial, fontSize: 14, lineHeight: 2,
               color: COLORS.ink, marginBottom: SPACE[4],
             }}>
               {para}
@@ -198,19 +198,19 @@ export default function ReadingScreen() {
               marginTop: SPACE[5],
             }}>
               <div style={{ fontFamily: F.ui, fontSize: 9, fontWeight: 700, letterSpacing: 2, color: COLORS.muted, marginBottom: SPACE[1] }}>
-                猫头鹰邮局推荐阅读
+                Recommended by The Owl's Press
               </div>
-              <div style={{ fontFamily: F.chinese, fontWeight: 700, fontSize: 13, color: COLORS.ink, marginBottom: 4 }}>
+              <div style={{ fontFamily: F.editorial, fontWeight: 700, fontSize: 13, color: COLORS.ink, marginBottom: 4 }}>
                 {openArticle.bookRec.title}
               </div>
               <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, lineHeight: 1.5 }}>
-                {openArticle.bookRec.en}
+                {openArticle.bookRec.description}
               </div>
             </div>
           )}
-          <OrnateRule my={SPACE[6]} symbol="— 全文完 —" />
+          <OrnateRule my={SPACE[6]} symbol="- End of Dispatch -" />
           <div style={{ textAlign: "center", fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, opacity: 0.5 }}>
-            "好书会有终章，好问题永不落幕。"<br />— 猫头鹰邮局
+            "Good books end. Better questions keep working."<br />— The Owl's Press
           </div>
         </div>
       </div>
@@ -220,12 +220,12 @@ export default function ReadingScreen() {
   return (
     <div style={{ padding: `${SPACE[3]}px ${SPACE[4]}px ${SPACE[4]}px` }}>
 
-      <div style={{ textAlign: "center", marginBottom: SPACE[4], animation: "duleme-fade-up 0.4s ease both" }}>
-        <div style={{ fontFamily: F.chinese, fontWeight: 900, fontSize: 20, color: COLORS.ink, marginBottom: SPACE[1] }}>
-          阅读专栏
+      <div style={{ textAlign: "center", marginBottom: SPACE[4], animation: "owls-press-fade-up 0.4s ease both" }}>
+        <div style={{ fontFamily: F.editorial, fontWeight: 900, fontSize: 20, color: COLORS.ink, marginBottom: SPACE[1] }}>
+          Reading Room
         </div>
         <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, letterSpacing: 1 }}>
-          阅读室 · 猫头鹰邮局精选文集
+          Essays and book notes from The Owl's Press
         </div>
       </div>
 
@@ -239,15 +239,15 @@ export default function ReadingScreen() {
 
       {filtered.length === 0 && (
         <div style={{ textAlign: "center", padding: `${SPACE[8]}px 0`, fontFamily: F.body, fontStyle: "italic", fontSize: 13, color: COLORS.muted, opacity: 0.5 }}>
-          该分类暂无文章
+          No essays in this section yet.
         </div>
       )}
 
-      <OrnateRule symbol="— 更多即将推出 —" />
+      <OrnateRule symbol="- More soon -" />
       <div style={{ textAlign: "center", padding: `${SPACE[4]}px 0` }}>
         <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, opacity: 0.4, lineHeight: 1.8 }}>
-          "每一个问题，都会让阅读室再长出一页。"<br />
-          — 猫头鹰邮局
+          "Every question adds another page to the room."<br />
+          — The Owl's Press
         </div>
       </div>
     </div>
