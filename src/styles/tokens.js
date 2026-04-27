@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Design Tokens
-// The Owlery Press · Brand Identity System
+// The Owl's Press · Design Tokens
+// The Owl's Press · Brand Identity System
 // ═══════════════════════════════════════════════════════════════
 
 export const COLORS = {
@@ -70,18 +70,17 @@ export const LAYOUT = {
   circularRadius: "50%",
 };
 
-// ── Bilingual Font System ────────────────────────────────────
-// Blackletter: UnifrakturMaguntia — decorative masthead moments
-// Display:     Playfair Display + Noto Serif SC — editorial headlines
-// Body:        IM Fell English + Noto Serif SC — reading prose, AI answers
-// UI:          Space Grotesk + Noto Sans SC — labels, nav, system chrome
-// Chinese:     Noto Serif SC primary — CJK-heavy titles, questions
+// ── Editorial Font System ─────────────────────────────────────
+// Blackletter: UnifrakturMaguntia - masthead moments
+// Display:     Playfair Display - headlines
+// Body:        Source Serif 4 - reading prose
+// UI:          Space Grotesk - labels, nav, system chrome
 export const FONTS = {
   blackletter: "'UnifrakturMaguntia', cursive",
-  display:     "'Playfair Display', 'Noto Serif SC', serif",
-  body:        "'IM Fell English', 'Noto Serif SC', serif",
-  ui:          "'Space Grotesk', 'Noto Sans SC', sans-serif",
-  chinese:     "'Noto Serif SC', 'Playfair Display', serif",
+  display:     "'Playfair Display', serif",
+  body:        "'Source Serif 4', 'Playfair Display', serif",
+  ui:          "'Space Grotesk', sans-serif",
+  editorial:     "'Playfair Display', 'Source Serif 4', serif",
 };
 
 // ── Dark Mode Palette ("aged paper under lamplight") ─────────
@@ -124,50 +123,50 @@ export const TEXTURES = {
 
 // ── Global CSS injected once ──────────────────────────────────
 export const GLOBAL_CSS = `
-  @import url('https://fonts.loli.net/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=UnifrakturMaguntia&family=IM+Fell+English:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=UnifrakturMaguntia&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400;1,8..60,700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-  @keyframes duleme-float-in {
+  @keyframes owls-press-float-in {
     from { opacity: 0; transform: rotate(-2deg) translateY(12px); }
     to   { opacity: 1; transform: rotate(var(--rot, -1.5deg)) translateY(0); }
   }
-  @keyframes duleme-float-in-2 {
+  @keyframes owls-press-float-in-2 {
     from { opacity: 0; transform: rotate(1deg) translateY(12px); }
     to   { opacity: 1; transform: rotate(var(--rot, 1deg)) translateY(0); }
   }
-  @keyframes duleme-xp-fill {
+  @keyframes owls-press-xp-fill {
     from { width: 0; }
     to   { width: var(--xp-pct, 67%); }
   }
-  @keyframes duleme-shimmer {
+  @keyframes owls-press-shimmer {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0.65; }
   }
-  @keyframes duleme-fade-up {
+  @keyframes owls-press-fade-up {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  @keyframes duleme-slide-up {
+  @keyframes owls-press-slide-up {
     from { opacity: 0; transform: translateY(100%); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  @keyframes duleme-pulse-gold {
+  @keyframes owls-press-pulse-gold {
     0%, 100% { box-shadow: 0 0 0 0 rgba(201,162,39,0.4); }
     50%       { box-shadow: 0 0 0 8px rgba(201,162,39,0); }
   }
-  @keyframes duleme-ink-drip {
+  @keyframes owls-press-ink-drip {
     0%   { transform: scaleY(0); transform-origin: top; }
     100% { transform: scaleY(1); transform-origin: top; }
   }
-  @keyframes duleme-toast-in {
+  @keyframes owls-press-toast-in {
     from { opacity: 0; transform: translateY(24px) scale(0.95); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
-  @keyframes duleme-stamp {
+  @keyframes owls-press-stamp {
     0%   { transform: scale(1.4) rotate(-8deg); opacity: 0; }
     60%  { transform: scale(0.95) rotate(-2deg); opacity: 1; }
     100% { transform: scale(1) rotate(-3deg); opacity: 1; }
   }
-  @keyframes duleme-erase {
+  @keyframes owls-press-erase {
     0%   { clip-path: inset(0 0 0 0%);      opacity: 1;   transform: none;                          filter: blur(0); }
     20%  { clip-path: inset(-4px 0 -4px 18%); opacity: 0.9; transform: skewX(-7deg) scaleY(1.06);   filter: blur(0.5px); }
     55%  { clip-path: inset(-4px 0 -4px 55%); opacity: 0.6; transform: skewX(5deg) scaleY(0.94);    filter: blur(1.5px); }
@@ -175,11 +174,11 @@ export const GLOBAL_CSS = `
     100% { clip-path: inset(0 0 0 100%);    opacity: 0;   transform: none;                          filter: blur(3px); }
   }
 
-  @keyframes duleme-blink {
+  @keyframes owls-press-blink {
     0%, 100% { opacity: 0.8; }
     50% { opacity: 0; }
   }
-  .duleme-tw-cursor {
+  .owls-press-tw-cursor {
     display: inline-block;
     width: 2px;
     height: 1.1em;
@@ -187,10 +186,10 @@ export const GLOBAL_CSS = `
     margin-left: 1px;
     vertical-align: text-bottom;
     opacity: 0.8;
-    animation: duleme-blink 0.7s step-end infinite;
+    animation: owls-press-blink 0.7s step-end infinite;
   }
 
-  .duleme-root *::-webkit-scrollbar { display: none; }
-  .duleme-root * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
-  .duleme-root input, .duleme-root button, .duleme-root textarea { -webkit-appearance: none; }
+  .owls-press-root *::-webkit-scrollbar { display: none; }
+  .owls-press-root * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
+  .owls-press-root input, .owls-press-root button, .owls-press-root textarea { -webkit-appearance: none; }
 `;

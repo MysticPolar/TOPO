@@ -1,8 +1,8 @@
 {
-  "name": "duleme-app",
+  "name": "owls-press-app",
   "version": "2.0.0",
   "private": true,
-  "description": "读了么 (Dúle Me) — Read Dangerously · The Owlery Press",
+  "description": "The Owl's Press - an editorial reading dispatch app for U.S. readers",
   "type": "module",
   "scripts": {
     "dev": "vite --host --port 3000",

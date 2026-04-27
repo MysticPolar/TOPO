@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · React Entry Point
+// The Owl's Press · React Entry Point
 // ═══════════════════════════════════════════════════════════════
 
 import React from "react";
@@ -10,7 +10,7 @@ class ErrorBoundary extends React.Component {
   constructor(props) { super(props); this.state = { error: null }; }
   static getDerivedStateFromError(error) { return { error }; }
   componentDidCatch(err, info) {
-    console.error("[duleme] React crash:", err, info);
+    console.error("[owls-press] React crash:", err, info);
     this.setState({ stack: (err?.stack || "") + "\n\nComponent stack:" + (info?.componentStack || "") });
   }
   render() {
@@ -22,7 +22,7 @@ class ErrorBoundary extends React.Component {
           height: "100vh", overflow: "auto",
         },
       },
-        React.createElement("h2", { style: { color: "#c0392b", marginBottom: 12 } }, "印刷机故障"),
+        React.createElement("h2", { style: { color: "#c0392b", marginBottom: 12 } }, "The press jammed"),
         React.createElement("pre", { style: { whiteSpace: "pre-wrap", color: "#d4c9a8", fontSize: 10 } },
           String(this.state.error?.message || this.state.error)
           + "\n\n" + (this.state.stack || "")),
@@ -32,7 +32,7 @@ class ErrorBoundary extends React.Component {
             marginTop: 20, padding: "10px 20px", background: "#c9a227",
             color: "#1a1208", border: "none", cursor: "pointer", fontSize: 13,
           },
-        }, "清除数据并重新加载"),
+        }, "Clear data and reload"),
       );
     }
     return this.props.children;
@@ -46,4 +46,4 @@ root.render(
   )
 );
 
-if (window.__dulemeReady) window.__dulemeReady();
+if (window.__owlsPressReady) window.__owlsPressReady();

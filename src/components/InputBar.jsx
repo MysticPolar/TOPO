@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · InputBar Component
-// Three modes: Normal · Air · Max
+// The Owl's Press · InputBar Component
+// Three modes: Solve · Scout · Research
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect } from "react";
@@ -10,24 +10,24 @@ import { SendIcon } from "./Primitives.jsx";
 const MODES = [
   {
     id: "normal",
-    label: "解决问题",
+    label: "Solve",
     color: COLORS.ink,
-    placeholder: "专属特刊 - 选择你的1本书...",
-    hint: "解决问题模式 · 以书为引，生成专属特刊，回应你的现实困扰。",
+    placeholder: "Ask for the one book that can help...",
+    hint: "Solve mode: one book, one focused dispatch, one practical next step.",
   },
   {
     id: "air",
-    label: "✦ 发现书籍",
+    label: "Scout",
     color: COLORS.teal,
-    placeholder: "快问快答 - 简短回复书5本...",
-    hint: "发现书籍模式 · 推荐5本书，简洁。迅速。无署名。",
+    placeholder: "Find five books for this mood or problem...",
+    hint: "Scout mode: five fast recommendations with a clear reason for each.",
   },
   {
     id: "max",
-    label: "◈ 深度调研",
+    label: "Research",
     color: COLORS.purple,
-    placeholder: "深度提问 — 完整特刊…",
-    hint: "深度调研模式 · 全网搜集书籍信息，含正负面评论，助你判断是否值得一读。",
+    placeholder: "Ask for a deeper reading brief...",
+    hint: "Research mode: broader context, tradeoffs, and companion reads.",
   },
 ];
 
@@ -59,8 +59,8 @@ export default function InputBar({ onSend }) {
       }, 80);
     };
 
-    window.addEventListener("duleme-prefill-send", handlePrefillSend);
-    return () => window.removeEventListener("duleme-prefill-send", handlePrefillSend);
+    window.addEventListener("owls-press-prefill-send", handlePrefillSend);
+    return () => window.removeEventListener("owls-press-prefill-send", handlePrefillSend);
   }, [onSend]);
 
   return (
@@ -98,7 +98,7 @@ export default function InputBar({ onSend }) {
           letterSpacing: 1, display: "flex", alignItems: "center",
           opacity: 0.5,
         }}>
-          {mode === "air" ? "约30秒" : mode === "max" ? "约2分钟" : "约1分钟"}
+          {mode === "air" ? "30 sec" : mode === "max" ? "2 min" : "1 min"}
         </div>
       </div>
 
@@ -138,7 +138,7 @@ export default function InputBar({ onSend }) {
               background: recording ? COLORS.red : COLORS.paperDark,
               display: "flex", alignItems: "center", justifyContent: "center",
               cursor: "pointer", fontSize: 15,
-              animation: recording ? "duleme-shimmer 1s ease-in-out infinite" : "none",
+              animation: recording ? "owls-press-shimmer 1s ease-in-out infinite" : "none",
               transition: "all 0.2s ease",
             }}
           >
@@ -152,7 +152,7 @@ export default function InputBar({ onSend }) {
               background: modeColor, border: "none",
               display: "flex", alignItems: "center", justifyContent: "center",
               cursor: "pointer", flexShrink: 0, transition: "background 0.15s",
-              animation: text.trim() ? "duleme-pulse-gold 2s ease-in-out infinite" : "none",
+              animation: text.trim() ? "owls-press-pulse-gold 2s ease-in-out infinite" : "none",
             }}
           >
             <SendIcon />

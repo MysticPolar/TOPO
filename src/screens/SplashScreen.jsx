@@ -23,13 +23,14 @@ export default function SplashScreen({ onEnter }) {
       <div style={{ width: 80, height: 1, background: "rgba(245,239,224,0.12)" }} />
 
       <div style={{
-        fontFamily: F.chinese,
-        fontSize: 52,
+        fontFamily: F.blackletter,
+        fontSize: 44,
         color: "#f5efe0",
-        letterSpacing: 6,
+        letterSpacing: 1,
         lineHeight: 1,
+        textAlign: "center",
       }}>
-        读<span style={{ color: COLORS.red }}>了</span>么
+        The Owl's Press
       </div>
 
       <div style={{
@@ -67,7 +68,7 @@ export default function SplashScreen({ onEnter }) {
           transform: pressing ? "scale(0.97)" : "scale(1)",
         }}
       >
-        测试入口
+        Enter
       </button>
     </div>
   );

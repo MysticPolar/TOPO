@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Profile Screen (我的)
+// The Owl's Press · Profile Screen
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
@@ -21,7 +21,7 @@ function SettingRow({ icon, label, sub, value }) {
     }}>
       <div style={{ fontSize: 16, width: 20, textAlign: "center", flexShrink: 0 }}>{icon}</div>
       <div style={{ flex: 1 }}>
-        <div style={{ fontFamily: F.chinese, fontSize: 13, color: COLORS.ink }}>{label}</div>
+        <div style={{ fontFamily: F.editorial, fontSize: 13, color: COLORS.ink }}>{label}</div>
         {sub && <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 10, color: COLORS.muted, marginTop: 1 }}>{sub}</div>}
       </div>
       <div style={{ fontFamily: F.ui, fontSize: 10, color: COLORS.muted, letterSpacing: 1 }}>
@@ -31,7 +31,7 @@ function SettingRow({ icon, label, sub, value }) {
   );
 }
 
-// ── Hex Radar Chart (六维图) ─────────────────────────────────
+// ── Hex Radar Chart ─────────────────────────────────
 function HexRadar({ data, size = 220 }) {
   const cx = size / 2;
   const cy = size / 2;
@@ -73,12 +73,12 @@ function HexRadar({ data, size = 220 }) {
         return (
           <g key={i}>
             <text x={px} y={py - 5} textAnchor="middle" dominantBaseline="central"
-              style={{ fontFamily: F.chinese, fontSize: 10, fontWeight: 700, fill: COLORS.ink }}>
+              style={{ fontFamily: F.editorial, fontSize: 10, fontWeight: 700, fill: COLORS.ink }}>
               {label}
             </text>
             <text x={px} y={py + 7} textAnchor="middle" dominantBaseline="central"
               style={{ fontFamily: F.ui, fontSize: 10, fill: COLORS.muted }}>
-              {values[i]} 卷
+              {values[i]} reads
             </text>
           </g>
         );
@@ -88,9 +88,9 @@ function HexRadar({ data, size = 220 }) {
 }
 
 const TABS = [
-  { id: "radar", label: "六维度" },
-  { id: "calendar", label: "日历" },
-  { id: "collections", label: "收藏" },
+  { id: "radar", label: "Map" },
+  { id: "calendar", label: "Calendar" },
+  { id: "collections", label: "Saved" },
 ];
 
 function TabStrip({ active, onChange }) {
@@ -105,7 +105,7 @@ function TabStrip({ active, onChange }) {
             style={{
               flex: 1, background: "none", border: "none", cursor: "pointer",
               padding: "9px 0",
-              fontFamily: F.chinese, fontWeight: isActive ? 700 : 400,
+              fontFamily: F.editorial, fontWeight: isActive ? 700 : 400,
               fontSize: 12, letterSpacing: 1.5,
               color: isActive ? COLORS.ink : COLORS.muted,
               borderBottom: isActive ? `2px solid ${COLORS.gold}` : "2px solid transparent",
@@ -131,7 +131,7 @@ function DimensionPanel() {
   };
 
   return (
-    <div style={{ marginBottom: 18, animation: "duleme-fade-up 0.4s ease 0.2s both" }}>
+    <div style={{ marginBottom: 18, animation: "owls-press-fade-up 0.4s ease 0.2s both" }}>
       <TabStrip active={activeTab} onChange={handleTabChange} />
 
       {activeTab === "radar" && (
@@ -159,7 +159,7 @@ export default function ProfileScreen({ userStats = {} }) {
     <div style={{ padding: "10px 16px 80px" }}>
 
       {/* Profile header */}
-      <div style={{ textAlign: "center", marginBottom: 18, animation: "duleme-fade-up 0.4s ease both" }}>
+      <div style={{ textAlign: "center", marginBottom: 18, animation: "owls-press-fade-up 0.4s ease both" }}>
         <div style={{ display: "inline-block", position: "relative", marginBottom: 10 }}>
           <div style={{
             width: 76, height: 76, borderRadius: "50%",
@@ -182,21 +182,21 @@ export default function ProfileScreen({ userStats = {} }) {
         background: COLORS.ink, padding: 16,
         border: `1.5px solid rgba(245,239,224,0.08)`,
         marginBottom: 14,
-        animation: "duleme-fade-up 0.4s ease 0.1s both",
+        animation: "owls-press-fade-up 0.4s ease 0.1s both",
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
           <div style={{ fontFamily: F.display, fontWeight: 700, fontStyle: "italic", fontSize: 15, color: COLORS.paper }}>
             {progress.currentRank}
           </div>
           <div style={{ fontFamily: F.ui, fontSize: 10, fontWeight: 600, color: COLORS.muted, letterSpacing: 1 }}>
-            {(userStats.xpCurrent ?? 0).toLocaleString()} 墨水
+            {(userStats.xpCurrent ?? 0).toLocaleString()} ink
           </div>
         </div>
         <div style={{ height: 10, background: "rgba(245,239,224,0.08)", border: "1px solid rgba(245,239,224,0.12)", position: "relative", overflow: "hidden" }}>
           <div style={{
             position: "absolute", top: 0, left: 0, bottom: 0,
             width: `${pct}%`, background: COLORS.gold,
-            animation: "duleme-xp-fill 1.2s cubic-bezier(.23,1,.32,1) 0.3s both",
+            animation: "owls-press-xp-fill 1.2s cubic-bezier(.23,1,.32,1) 0.3s both",
             "--xp-pct": `${pct}%`,
           }}>
             <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(26,18,8,0.2) 14px, rgba(26,18,8,0.2) 15px)" }} />
@@ -205,8 +205,8 @@ export default function ProfileScreen({ userStats = {} }) {
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 5 }}>
           <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 10, color: COLORS.muted }}>
             {progress.nextRank
-              ? `下一阶：${progress.nextRank} · 还需 ${progress.remainingToNext.toLocaleString()} 墨水`
-              : "已达最高阶：传说局长"}
+              ? `Next: ${progress.nextRank} · ${progress.remainingToNext.toLocaleString()} ink to go`
+              : "Top rank reached"}
           </div>
           <div style={{ fontFamily: F.ui, fontSize: 10, fontWeight: 700, color: COLORS.gold }}>{pct}%</div>
         </div>
@@ -218,7 +218,7 @@ export default function ProfileScreen({ userStats = {} }) {
         background: COLORS.ink, padding: "10px 16px",
         border: `1.5px solid rgba(201,162,39,0.35)`,
         marginBottom: 16,
-        animation: "duleme-fade-up 0.4s ease 0.15s both",
+        animation: "owls-press-fade-up 0.4s ease 0.15s both",
       }}>
         <div style={{
           width: 28, height: 28, borderRadius: "50%",
@@ -231,12 +231,12 @@ export default function ProfileScreen({ userStats = {} }) {
         <div>
           <div style={{
             fontFamily: F.display, fontWeight: 900, fontSize: 26, color: COLORS.gold,
-            animation: "duleme-shimmer 3s ease-in-out infinite",
+            animation: "owls-press-shimmer 3s ease-in-out infinite",
           }}>
             {(userStats.inkBalance ?? 0).toLocaleString()}
           </div>
           <div style={{ fontFamily: F.ui, fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: "rgba(245,239,224,0.35)" }}>
-            金币余额
+            Ink Balance
           </div>
         </div>
         <div style={{ flex: 1 }} />
@@ -244,18 +244,18 @@ export default function ProfileScreen({ userStats = {} }) {
           fontFamily: F.body, fontStyle: "italic", fontSize: 10, color: COLORS.muted,
           textAlign: "right",
         }}>
-          "猫头鹰邮局<br />金币储备"
+          "The Owl's Press<br />reserve"
         </div>
       </div>
 
-      <OrnateRule symbol="✦ 我的阅历 ✦" />
+      <OrnateRule symbol="* Reading Trail *" />
 
       <DimensionPanel />
 
-      <OrnateRule symbol="— ✦ 等级之路 ✦ —" />
+      <OrnateRule symbol="- Rank Path -" />
 
       {/* Rank progression */}
-      <SectionLabel>等级之路 · 晋级路线</SectionLabel>
+      <SectionLabel>Rank Path</SectionLabel>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 18 }}>
         {RANKS.map((rank, i) => {
           const unlocked = (userStats.xpCurrent ?? 0) >= rank.ink;
@@ -280,19 +280,19 @@ export default function ProfileScreen({ userStats = {} }) {
       <OrnateRule />
       <div style={{ display: "flex", gap: 10, marginBottom: 18 }}>
         {[
-          { label: "已提问", value: userStats.questionsAsked ?? 0, sub: "提问数" },
-          { label: "已阅读", value: userStats.articlesRead ?? 0, sub: "阅读数" },
-          { label: "连续天数", value: userStats.streakDays ?? 0, sub: "连续打卡" },
+          { label: "Asked", value: userStats.questionsAsked ?? 0, sub: "Questions" },
+          { label: "Read", value: userStats.articlesRead ?? 0, sub: "Dispatches" },
+          { label: "Streak", value: userStats.streakDays ?? 0, sub: "Days" },
         ].map((stat, i) => (
           <div key={i} style={{
             flex: 1, background: COLORS.ink, padding: "12px 8px",
             textAlign: "center",
-            animation: `duleme-fade-up 0.4s ease ${0.3 + i * 0.08}s both`,
+            animation: `owls-press-fade-up 0.4s ease ${0.3 + i * 0.08}s both`,
           }}>
             <div style={{ fontFamily: F.display, fontWeight: 900, fontSize: 24, color: COLORS.paper }}>
               {stat.value}
             </div>
-            <div style={{ fontFamily: F.chinese, fontSize: 10, color: COLORS.muted, marginTop: 2 }}>
+            <div style={{ fontFamily: F.editorial, fontSize: 10, color: COLORS.muted, marginTop: 2 }}>
               {stat.label}
             </div>
             <div style={{ fontFamily: F.ui, fontSize: 10, color: "rgba(245,239,224,0.25)", letterSpacing: 1 }}>
@@ -304,18 +304,18 @@ export default function ProfileScreen({ userStats = {} }) {
 
       {/* Settings */}
       <OrnateRule symbol="— ⚙ —" />
-      <SectionLabel>设置 · 系统设置</SectionLabel>
-      <SettingRow icon="🔔" label="通知设置" sub="通知偏好" />
-      <SettingRow icon="🌙" label="深色模式" sub="夜间主题" value="关闭" />
-      <SettingRow icon="📧" label="每日快讯" sub="每日特刊邮件" value="开启" />
-      <SettingRow icon="🔒" label="隐私设置" sub="隐私与数据" />
-      <SettingRow icon="🦉" label="关于猫头鹰邮局" sub="关于我们" />
+      <SectionLabel>Settings</SectionLabel>
+      <SettingRow icon="!" label="Notifications" sub="Reading reminders" />
+      <SettingRow icon="M" label="Dark Mode" sub="Night reading theme" value="Off" />
+      <SettingRow icon="@" label="Daily Dispatch" sub="Email edition" value="On" />
+      <SettingRow icon="#" label="Privacy" sub="Data and reading history" />
+      <SettingRow icon="O" label="About The Owl's Press" sub="Publication notes" />
 
       {/* Footer */}
       <div style={{ textAlign: "center", padding: `${SPACE[7]}px 0 ${SPACE[2]}px` }}>
         <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, opacity: 0.35, lineHeight: 1.8 }}>
-          "猫头鹰在午夜起飞，你的故事继续书写。"<br />
-          — 猫头鹰邮局 · 创刊于 2025
+          "The page stays warm after midnight."<br />
+          — The Owl's Press · Est. 2025
         </div>
       </div>
     </div>

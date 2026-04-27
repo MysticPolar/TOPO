@@ -27,7 +27,7 @@ export function Typewriter({ text, speed = 22, active = true }) {
   return (
     <>
       {(text || "").slice(0, len)}
-      {isTyping && <span className="duleme-tw-cursor" />}
+      {isTyping && <span className="owls-press-tw-cursor" />}
     </>
   );
 }
@@ -66,7 +66,7 @@ export function TypewriterEmpathy({ line2, red, after, speed = 22, active = true
       {part1}
       {partRed && <span style={{ color: COLORS.red }}>{partRed}</span>}
       {part3}
-      {isTyping && <span className="duleme-tw-cursor" />}
+      {isTyping && <span className="owls-press-tw-cursor" />}
     </>
   );
 }

@@ -1,14 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 (Dule Me) · Main App Root
-// "Read Dangerously" · The Owlery Press · V2
-// ═══════════════════════════════════════════════════════════════
+// The Owl's Press · Main App Root
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { GLOBAL_CSS, COLORS, TEXTURES } from "./styles/tokens.js";
 import Masthead from "./components/Masthead.jsx";
 import NavBar from "./components/NavBar.jsx";
 import InputBar from "./components/InputBar.jsx";
-import OracleDispatch from "./components/OracleDispatch.jsx";
+import PressDispatch from "./components/PressDispatch.jsx";
 import { InkToast } from "./components/Primitives.jsx";
 import HomeScreen from "./screens/HomeScreen.jsx";
 import ReadingScreen from "./screens/ReadingScreen.jsx";
@@ -17,7 +15,7 @@ import SplashScreen from "./screens/SplashScreen.jsx";
 import { USER_STATS } from "./data/content.js";
 import { readSoftwareCreatedAt } from "./utils/softwareCreatedAt.js";
 import { loadUserStats, saveUserStats } from "./utils/storage.js";
-import { askOwleryStream, FALLBACK } from "./services/gemini.js";
+import { askPressStream, FALLBACK } from "./services/gemini.js";
 import {
   articleInstanceKey,
   loadTagSeenArticles,
@@ -25,9 +23,9 @@ import {
   tagKeyForDispatch,
 } from "./utils/dispatchMeta.js";
 
-if (typeof document !== "undefined" && !document.querySelector("[data-duleme-v2]")) {
+if (typeof document !== "undefined" && !document.querySelector("[data-owls-press]")) {
   const style = document.createElement("style");
-  style.setAttribute("data-duleme-v2", "");
+  style.setAttribute("data-owls-press", "");
   style.textContent = GLOBAL_CSS;
   document.head.appendChild(style);
 }
@@ -39,7 +37,7 @@ const STAT_DEFAULTS = {
   ),
 };
 
-export default function DulemeApp() {
+export default function OwlsPressApp() {
   const [userStats, setUserStats] = useState(() => loadUserStats(STAT_DEFAULTS));
   const [page, setPage] = useState("splash");
   const [dispatch, setDispatch] = useState(null);
@@ -52,15 +50,15 @@ export default function DulemeApp() {
       setPage("home");
       setDispatch(null);
       if (scrollRef.current) scrollRef.current.scrollTop = 0;
-      sessionStorage.removeItem("duleme-force-home");
+      sessionStorage.removeItem("owls-press-force-home");
     };
 
-    if (sessionStorage.getItem("duleme-force-home") === "1") {
+    if (sessionStorage.getItem("owls-press-force-home") === "1") {
       forceHome();
     }
 
-    window.addEventListener("duleme-force-home", forceHome);
-    return () => window.removeEventListener("duleme-force-home", forceHome);
+    window.addEventListener("owls-press-force-home", forceHome);
+    return () => window.removeEventListener("owls-press-force-home", forceHome);
   }, []);
 
   const updateStats = useCallback((updater) => {
@@ -87,7 +85,7 @@ export default function DulemeApp() {
   const handleCloseDispatch = useCallback(() => {
     const reward = dispatch?.response?.inkReward ?? 40;
     setDispatch(null);
-    setToast({ amount: reward, message: "\u300C\u5DF2\u9605\u8BFB\u4E13\u5C5E\u7279\u520A\uFF0C\u58A8\u6C34\u5956\u52B1\u5DF2\u53D1\u653E\u3002\u300D" });
+    setToast({ amount: reward, message: "Dispatch read. Ink has been added to your account." });
     updateStats((prev) => ({
       ...prev,
       xpCurrent: prev.xpCurrent + reward,
@@ -98,12 +96,11 @@ export default function DulemeApp() {
 
   const handleSend = useCallback(async (text, mode) => {
     const q = {
-      zh: text,
-      en: text,
-      tag: mode === "air" ? "\u2726 \u7075\u98CE\u5FEB\u7B54" : mode === "max" ? "\u25C8 \u6DF1\u6F5C\u7279\u520A" : "\uD83D\uDD2E \u795E\u8C15\u56DE\u5E94",
+      text,
+      tag: mode === "air" ? "Book Scout" : mode === "max" ? "Deep Research" : "Reader's Question",
       color: mode === "air" ? "teal" : mode === "max" ? "purple" : "gold",
-      votes: "\u65B0\u53D1",
-      type: "\u4F60\u7684\u63D0\u95EE",
+      votes: "New",
+      type: "Your Question",
       streaming: true,
       response: null,
       error: null,
@@ -112,7 +109,7 @@ export default function DulemeApp() {
     handleOpenDispatch(q);
 
     try {
-      await askOwleryStream(text, mode, (partial) => {
+      await askPressStream(text, mode, (partial) => {
         setDispatch((prev) => prev ? { ...prev, response: partial } : null);
       });
       setDispatch((prev) => prev ? { ...prev, streaming: false } : null);
@@ -128,8 +125,8 @@ export default function DulemeApp() {
 
   const handleRetry = useCallback(() => {
     if (!dispatch) return;
-    const text = dispatch.zh;
-    const mode = dispatch.tag?.includes("\u7075\u98CE") ? "air" : dispatch.tag?.includes("\u6DF1\u6F5C") ? "max" : "normal";
+    const text = dispatch.text;
+    const mode = dispatch.tag?.includes("Book Scout") ? "air" : dispatch.tag?.includes("Deep Research") ? "max" : "normal";
     setDispatch(null);
     setTimeout(() => handleSend(text, mode), 100);
   }, [dispatch, handleSend]);
@@ -151,7 +148,7 @@ export default function DulemeApp() {
 
   return (
     <div
-      className="duleme-root"
+      className="owls-press-root"
       style={{
         width: "100%",
         maxWidth: 390,
@@ -207,7 +204,7 @@ export default function DulemeApp() {
         </div>
 
         {dispatch && (
-          <OracleDispatch
+          <PressDispatch
             question={dispatch}
             onClose={handleCloseDispatch}
             onRetry={handleRetry}

@@ -1,4 +1,4 @@
-const KEY = "duleme-software-created-at";
+const KEY = "owls-press-software-created-at";
 
 export function readSoftwareCreatedAt(fallback = "2025-01-01") {
   if (typeof window === "undefined") return fallback;
