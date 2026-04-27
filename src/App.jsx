@@ -150,24 +150,7 @@ export default function DulemeApp() {
   }, []);
 
   return (
-    <div
-      className="duleme-root"
-      style={{
-        width: "100%",
-        maxWidth: 390,
-        margin: "0 auto",
-        height: "100vh",
-        maxHeight: 844,
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        overflow: "hidden",
-        border: typeof window !== "undefined" && window.innerWidth > 400
-          ? "1px solid rgba(42,31,14,0.15)" : "none",
-        boxShadow: typeof window !== "undefined" && window.innerWidth > 400
-          ? "0 0 60px rgba(42,31,14,0.2)" : "none",
-      }}
-    >
+    <div className="duleme-root">
       {page !== "splash" && !(page === "home" && dispatch) && (
         <Masthead
           loginDays={userStats.loginDays ?? userStats.streakDays}
