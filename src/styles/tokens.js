@@ -49,6 +49,10 @@ export const CARD_COLORS = {
 };
 
 // ── Type Scale (major-third ~1.25 ratio, 12px base) ──────────
+// TODO(theming): not yet wired — components currently inline fontSize /
+// letterSpacing values. Adopting this scale is a separate refactor; the
+// numbers here will need to be reconciled with actual on-screen usage
+// (e.g. SectionLabel uses letterSpacing: 3, caption tier specifies 1.5).
 export const TYPE_SCALE = {
   caption:  { size: 10, lineHeight: 1.4, letterSpacing: 1.5 },
   footnote: { size: 11, lineHeight: 1.5, letterSpacing: 1 },
@@ -85,6 +89,10 @@ export const FONTS = {
 };
 
 // ── Dark Mode Palette ("aged paper under lamplight") ─────────
+// TODO(theming): not yet wired — full theme switching requires migrating
+// ~260 inline `COLORS.x` references to either CSS variables or a
+// useTheme() hook. The dead "深色模式" SettingRow has been removed until
+// this lands. Track as: theming/dark-mode-wireup.
 export const COLORS_DARK = {
   ink:        "#e8dfc8",
   paper:      "#1e1a12",

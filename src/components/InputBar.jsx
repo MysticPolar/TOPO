@@ -138,7 +138,8 @@ export default function InputBar({ onSend }) {
             type="button"
             onClick={() => setRecording(!recording)}
             aria-pressed={recording}
-            aria-label={recording ? "停止录音" : "开始语音输入"}
+            aria-label={recording ? "停止录音（占位 · 暂未实现）" : "语音输入（占位 · 暂未实现）"}
+            title="语音输入暂未实现"
             style={{
               width: LAYOUT.minTouchTarget, height: LAYOUT.minTouchTarget,
               border: `1.5px solid ${recording ? COLORS.red : (mode !== "normal" ? modeColor : COLORS.rule)}`,
