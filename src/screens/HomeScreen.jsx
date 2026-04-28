@@ -77,17 +77,15 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
           aria-disabled={done}
           aria-haspopup="dialog"
           aria-expanded={showPopup}
-          className="duleme-bare"
+          className={`duleme-bare ${done ? "" : "duleme-press-dim"}`}
           style={{
             background: done ? COLORS.paper : COLORS.ink,
             border: `1.5px solid ${done ? COLORS.green : COLORS.rule}`,
             padding: "5px 8px",
             cursor: done ? "default" : "pointer",
             textAlign: "center",
-            transition: "all 0.25s ease",
+            transition: "opacity 0.15s ease",
           }}
-          onMouseEnter={e => { if (!done) e.currentTarget.style.opacity = "0.88"; }}
-          onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
         >
           {done ? (
             <div style={{
