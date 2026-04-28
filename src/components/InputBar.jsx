@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · InputBar Component
+// The Owl's Postoffice · InputBar Component
 // Three modes: Normal · Air · Max
 // ═══════════════════════════════════════════════════════════════
 
@@ -10,24 +10,24 @@ import { SendIcon } from "./Primitives.jsx";
 const MODES = [
   {
     id: "normal",
-    label: "解决问题",
+    label: "Solve a Problem",
     color: COLORS.ink,
-    placeholder: "专属特刊 - 选择你的1本书...",
-    hint: "解决问题模式 · 以书为引，生成专属特刊，回应你的现实困扰。",
+    placeholder: "Personal dispatch — bring us a question…",
+    hint: "Solve a Problem · One book chosen for you, a full dispatch written around it.",
   },
   {
     id: "air",
-    label: "✦ 发现书籍",
+    label: "✦ Find a Book",
     color: COLORS.teal,
-    placeholder: "快问快答 - 简短回复书5本...",
-    hint: "发现书籍模式 · 推荐5本书，简洁。迅速。无署名。",
+    placeholder: "Quick read — five books, set aside fast…",
+    hint: "Find a Book · Five recommendations, fast. No long argument. No byline.",
   },
   {
     id: "max",
-    label: "◈ 深度调研",
+    label: "◈ Deep Dive",
     color: COLORS.purple,
-    placeholder: "深度提问 — 完整特刊…",
-    hint: "深度调研模式 · 全网搜集书籍信息，含正负面评论，助你判断是否值得一读。",
+    placeholder: "Research-grade question — full survey…",
+    hint: "Deep Dive · A full survey across views, with positives and counterpoints.",
   },
 ];
 
@@ -79,7 +79,7 @@ export default function InputBar({ onSend }) {
               type="button"
               onClick={() => setMode(m.id)}
               aria-pressed={active}
-              aria-label={`${m.label}模式：${m.hint}`}
+              aria-label={`${m.label} mode: ${m.hint}`}
               style={{
                 fontFamily: F.ui, fontSize: 10, fontWeight: 700,
                 letterSpacing: 2, textTransform: "uppercase",
@@ -101,7 +101,7 @@ export default function InputBar({ onSend }) {
           letterSpacing: 1, display: "flex", alignItems: "center",
           opacity: 0.5,
         }}>
-          {mode === "air" ? "约30秒" : mode === "max" ? "约2分钟" : "约1分钟"}
+          {mode === "air" ? "~30 sec" : mode === "max" ? "~2 min" : "~1 min"}
         </div>
       </div>
 
@@ -118,7 +118,7 @@ export default function InputBar({ onSend }) {
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
             placeholder={currentMode.placeholder}
-            aria-label={`提问输入框 · ${currentMode.label}模式`}
+            aria-label={`Question input · ${currentMode.label} mode`}
             rows={2}
             style={{
               width: "100%",
@@ -138,8 +138,8 @@ export default function InputBar({ onSend }) {
             type="button"
             onClick={() => setRecording(!recording)}
             aria-pressed={recording}
-            aria-label={recording ? "停止录音（占位 · 暂未实现）" : "语音输入（占位 · 暂未实现）"}
-            title="语音输入暂未实现"
+            aria-label={recording ? "Stop recording (placeholder — not yet implemented)" : "Voice input (placeholder — not yet implemented)"}
+            title="Voice input not yet implemented"
             style={{
               width: LAYOUT.minTouchTarget, height: LAYOUT.minTouchTarget,
               border: `1.5px solid ${recording ? COLORS.red : (mode !== "normal" ? modeColor : COLORS.rule)}`,
@@ -156,7 +156,7 @@ export default function InputBar({ onSend }) {
           <button
             type="button"
             onClick={handleSend}
-            aria-label="发送提问"
+            aria-label="Send question"
             disabled={!text.trim()}
             style={{
               width: LAYOUT.minTouchTarget, height: LAYOUT.minTouchTarget,

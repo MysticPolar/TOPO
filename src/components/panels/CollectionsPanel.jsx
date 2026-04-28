@@ -3,9 +3,9 @@ import { COLORS, FONTS as F, CARD_COLORS } from "../../styles/tokens.js";
 import { fetchCollections, deleteCollection } from "../../utils/db.js";
 
 const TYPE_META = {
-  dispatch: { label: "特刊", labelColor: COLORS.red },
-  book:     { label: "书籍", labelColor: COLORS.cobalt },
-  quote:    { label: "摘录", labelColor: COLORS.teal },
+  dispatch: { label: "DISPATCH", labelColor: COLORS.red },
+  book:     { label: "BOOK",     labelColor: COLORS.cobalt },
+  quote:    { label: "QUOTE",    labelColor: COLORS.teal },
 };
 
 function TypeBadge({ type }) {
@@ -25,7 +25,7 @@ function CollectionItem({ item, onDelete }) {
   const [deleting, setDeleting] = useState(false);
   const accentColor = CARD_COLORS[item.color] || COLORS.gold;
   const dateStr = item.created_at
-    ? new Date(item.created_at).toLocaleDateString("zh-CN", { month: "numeric", day: "numeric" })
+    ? new Date(item.created_at).toLocaleDateString("en-US", { month: "numeric", day: "numeric" })
     : "";
 
   const handleDelete = async () => {
@@ -55,7 +55,7 @@ function CollectionItem({ item, onDelete }) {
           )}
         </div>
         <div style={{ fontFamily: F.chinese, fontWeight: 700, fontSize: 13, color: COLORS.ink, lineHeight: 1.4, marginBottom: 2 }}>
-          {item.title || "（无标题）"}
+          {item.title || "(untitled)"}
         </div>
         {item.subtitle && (
           <div style={{ fontFamily: F.ui, fontSize: 10, color: COLORS.muted, letterSpacing: 0.5, lineHeight: 1.4 }}>
@@ -101,7 +101,7 @@ export default function CollectionsPanel({ refresh }) {
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "40px 0", fontFamily: F.body, fontStyle: "italic", fontSize: 12, color: COLORS.muted }}>
-        翻阅收藏中…
+        Loading saved items…
       </div>
     );
   }
@@ -111,7 +111,7 @@ export default function CollectionsPanel({ refresh }) {
       <div style={{ textAlign: "center", padding: "32px 0 8px" }}>
         <div style={{ fontFamily: F.ui, fontSize: 28, marginBottom: 10, opacity: 0.18 }}>♡</div>
         <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, opacity: 0.6, lineHeight: 1.8 }}>
-          还没有收藏，<br />去探索吧。
+          Nothing saved yet —<br />explore something today.
         </div>
       </div>
     );

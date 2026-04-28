@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Design Tokens
+// The Owl's Postoffice · Design Tokens
 // The Owlery Press · Brand Identity System
 // ═══════════════════════════════════════════════════════════════
 
@@ -74,25 +74,27 @@ export const LAYOUT = {
   circularRadius: "50%",
 };
 
-// ── Bilingual Font System ────────────────────────────────────
-// Blackletter: UnifrakturMaguntia — decorative masthead moments
-// Display:     Playfair Display + Noto Serif SC — editorial headlines
-// Body:        IM Fell English + Noto Serif SC — reading prose, AI answers
-// UI:          Space Grotesk + Noto Sans SC — labels, nav, system chrome
-// Chinese:     Noto Serif SC primary — CJK-heavy titles, questions
+// ── English-only Font System (NA build) ──────────────────────
+// Blackletter: UnifrakturMaguntia — Victorian masthead wordmark
+// Display:     Playfair Display — editorial headlines
+// Body:        IM Fell English — period reading prose, AI answers
+// UI:          Space Grotesk — labels, nav, system chrome
+// `chinese` key kept as a legacy alias (full rename deferred); points
+// to the same serif body stack so existing usages render correctly.
 export const FONTS = {
-  blackletter: "'UnifrakturMaguntia', cursive",
-  display:     "'Playfair Display', 'Noto Serif SC', serif",
-  body:        "'IM Fell English', 'Noto Serif SC', serif",
-  ui:          "'Space Grotesk', 'Noto Sans SC', sans-serif",
-  chinese:     "'Noto Serif SC', 'Playfair Display', serif",
+  blackletter: "'UnifrakturMaguntia', 'IM Fell English', serif",
+  display:     "'Playfair Display', 'IM Fell English', serif",
+  body:        "'IM Fell English', 'Playfair Display', serif",
+  ui:          "'Space Grotesk', system-ui, -apple-system, sans-serif",
+  chinese:     "'Playfair Display', 'IM Fell English', serif",
 };
 
 // ── Dark Mode Palette ("aged paper under lamplight") ─────────
 // TODO(theming): not yet wired — full theme switching requires migrating
 // ~260 inline `COLORS.x` references to either CSS variables or a
-// useTheme() hook. The dead "深色模式" SettingRow has been removed until
+// useTheme() hook. The dead dark-mode SettingRow has been removed until
 // this lands. Track as: theming/dark-mode-wireup.
+// (NB: the dead dark-mode row was removed in PR4 of the UI cleanup series.)
 export const COLORS_DARK = {
   ink:        "#e8dfc8",
   paper:      "#1e1a12",
@@ -132,7 +134,7 @@ export const TEXTURES = {
 
 // ── Global CSS injected once ──────────────────────────────────
 export const GLOBAL_CSS = `
-  @import url('https://fonts.loli.net/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=UnifrakturMaguntia&family=IM+Fell+English:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=UnifrakturMaguntia&family=IM+Fell+English:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
   @keyframes duleme-float-in {
     from { opacity: 0; transform: rotate(-2deg) translateY(12px); }

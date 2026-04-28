@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Reading Screen (阅读)
+// The Owl's Postoffice · Reading Screen (Library)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
@@ -13,7 +13,7 @@ function ArticleCard({ article, index, onOpen }) {
     <button
       type="button"
       onClick={() => onOpen(article)}
-      aria-label={`阅读：${article.title}`}
+      aria-label={`Read: ${article.title}`}
       className="duleme-bare duleme-press-shadow"
       style={{
         border: `1.5px solid ${COLORS.rule}`,
@@ -71,7 +71,7 @@ function ArticleCard({ article, index, onOpen }) {
             fontFamily: F.ui, fontSize: 10, fontWeight: 700,
             color: COLORS.ink, letterSpacing: 1,
           }}>
-            阅读 →
+            Read →
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ function ArticleCard({ article, index, onOpen }) {
 }
 
 // ── Filter Tabs ───────────────────────────────────────────────
-const FILTERS = ["全部", "健康", "财富", "人际", "文学", "思辨", "职场"];
+const FILTERS = ["All", "Health", "Wealth", "Relationships", "Literature", "Philosophy", "Career"];
 
 function FilterTabs({ active, onSelect }) {
   return (
@@ -112,10 +112,10 @@ function FilterTabs({ active, onSelect }) {
 
 // ── Full Reading Screen ───────────────────────────────────────
 export default function ReadingScreen() {
-  const [filter, setFilter] = useState("全部");
+  const [filter, setFilter] = useState("All");
   const [openArticle, setOpenArticle] = useState(null);
 
-  const filtered = filter === "全部"
+  const filtered = filter === "All"
     ? READING_ARTICLES
     : READING_ARTICLES.filter(a => a.tag === filter);
 
@@ -125,7 +125,7 @@ export default function ReadingScreen() {
         <button
           type="button"
           onClick={() => setOpenArticle(null)}
-          aria-label="返回阅读列表"
+          aria-label="Back to library"
           style={{
             fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 2,
             textTransform: "uppercase", color: COLORS.muted,
@@ -135,7 +135,7 @@ export default function ReadingScreen() {
             padding: `${SPACE[2]}px 0`,
           }}
         >
-          ← 返回
+          ← Back
         </button>
 
         <div style={{ animation: "duleme-fade-up 0.4s ease both" }}>
@@ -202,7 +202,7 @@ export default function ReadingScreen() {
               marginTop: SPACE[5],
             }}>
               <div style={{ fontFamily: F.ui, fontSize: 9, fontWeight: 700, letterSpacing: 2, color: COLORS.muted, marginBottom: SPACE[1] }}>
-                猫头鹰邮局推荐阅读
+                Recommended by The Owl
               </div>
               <div style={{ fontFamily: F.chinese, fontWeight: 700, fontSize: 13, color: COLORS.ink, marginBottom: 4 }}>
                 {openArticle.bookRec.title}
@@ -212,9 +212,9 @@ export default function ReadingScreen() {
               </div>
             </div>
           )}
-          <OrnateRule my={SPACE[6]} symbol="— 全文完 —" />
+          <OrnateRule my={SPACE[6]} symbol="— end —" />
           <div style={{ textAlign: "center", fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, opacity: 0.5 }}>
-            "好书会有终章，好问题永不落幕。"<br />— 猫头鹰邮局
+            “A good book ends. A good question never does.”<br />— The Owl
           </div>
         </div>
       </div>
@@ -226,10 +226,10 @@ export default function ReadingScreen() {
 
       <div style={{ textAlign: "center", marginBottom: SPACE[4], animation: "duleme-fade-up 0.4s ease both" }}>
         <div style={{ fontFamily: F.chinese, fontWeight: 900, fontSize: 20, color: COLORS.ink, marginBottom: SPACE[1] }}>
-          阅读专栏
+          Library
         </div>
         <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, letterSpacing: 1 }}>
-          阅读室 · 猫头鹰邮局精选文集
+          Selected dispatches from The Owl
         </div>
       </div>
 
@@ -243,15 +243,15 @@ export default function ReadingScreen() {
 
       {filtered.length === 0 && (
         <div style={{ textAlign: "center", padding: `${SPACE[8]}px 0`, fontFamily: F.body, fontStyle: "italic", fontSize: 13, color: COLORS.muted, opacity: 0.5 }}>
-          该分类暂无文章
+          No dispatches in this category yet.
         </div>
       )}
 
-      <OrnateRule symbol="— 更多即将推出 —" />
+      <OrnateRule symbol="— more issues to come —" />
       <div style={{ textAlign: "center", padding: `${SPACE[4]}px 0` }}>
         <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, opacity: 0.4, lineHeight: 1.8 }}>
-          "每一个问题，都会让阅读室再长出一页。"<br />
-          — 猫头鹰邮局
+          “Every question grows the library by one more page.”<br />
+          — The Owl
         </div>
       </div>
     </div>

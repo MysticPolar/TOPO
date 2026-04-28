@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Home Screen (首页)
+// The Owl's Postoffice · Home Screen (Today)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useRef } from "react";
@@ -43,14 +43,14 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
   }, [showPopup]);
   const todayQuest = userStats.streakDays % 2 === 0
     ? {
-        category: "发现书籍",
+        category: "Find a Book",
         mode: "air",
-        question: "你现在最需要的一本书是什么？它要帮你解决什么困扰？",
+        question: "Which book do you most need right now — and what worry should it ease?",
       }
     : {
-        category: "解决问题",
+        category: "Solve a Problem",
         mode: "normal",
-        question: "你最近最想优先解决的一件现实问题是什么？",
+        question: "What is the one real problem you most want to move forward this week?",
       };
 
   return (
@@ -73,7 +73,7 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
         <button
           type="button"
           onClick={() => !done && setShowPopup(true)}
-          aria-label={done ? "今日挑战已完成" : "打开今日挑战"}
+          aria-label={done ? "Today's challenge complete" : "Open today's challenge"}
           aria-disabled={done}
           aria-haspopup="dialog"
           aria-expanded={showPopup}
@@ -89,24 +89,26 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
         >
           {done ? (
             <div style={{
-              fontFamily: F.chinese, fontWeight: 900, fontSize: 13,
+              fontFamily: F.ui, fontWeight: 800, fontSize: 11,
               color: COLORS.green, lineHeight: 1.15, letterSpacing: 2,
+              textTransform: "uppercase",
             }}>
-              读了
+              READ
             </div>
           ) : (
             <>
               <div style={{
-                fontFamily: F.chinese, fontWeight: 900, fontSize: 12,
-                color: COLORS.paper, lineHeight: 1.15, letterSpacing: 1,
+                fontFamily: F.blackletter, fontWeight: 400, fontSize: 14,
+                color: COLORS.paper, lineHeight: 1.05, letterSpacing: 0.4,
               }}>
-                读了么
+                The Owl
               </div>
               <div style={{
-                fontFamily: F.ui, fontSize: 10, fontWeight: 700,
-                color: COLORS.gold, letterSpacing: 1.5, lineHeight: 1.3,
+                fontFamily: F.ui, fontSize: 8, fontWeight: 700,
+                color: COLORS.gold, letterSpacing: 2, lineHeight: 1.3,
+                textTransform: "uppercase",
               }}>
-                今日挑战
+                Today's Challenge
               </div>
             </>
           )}
@@ -162,13 +164,13 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                 textAlign: "center",
                 cursor: "pointer",
               }}
-              aria-label="关闭挑战弹窗"
+              aria-label="Close challenge dialog"
             >
               ×
             </button>
 
             <div id="duleme-challenge-title" style={{ fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: COLORS.red, marginBottom: SPACE[2], paddingRight: LAYOUT.minTouchTarget }}>
-              今日挑战 · 第 {userStats.streakDays} 天
+              Today's Challenge · Day {userStats.streakDays}
             </div>
 
             <div style={{ display: "flex", alignItems: "stretch", gap: 12, marginBottom: 14 }}>
@@ -195,13 +197,13 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                 }}
               >
                 <div style={{ marginBottom: SPACE[2] }}>
-                  <div style={{ fontFamily: F.ui, fontSize: 10, color: COLORS.muted, letterSpacing: 2, marginBottom: SPACE[1] }}>任务一</div>
+                  <div style={{ fontFamily: F.ui, fontSize: 9, color: COLORS.muted, letterSpacing: 2, marginBottom: SPACE[1], textTransform: "uppercase" }}>Task I</div>
                   <span style={{
-                    fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 1.5,
-                    padding: "2px 6px",
-                    border: `1px solid ${todayQuest.category === "解决问题" ? COLORS.ink : COLORS.teal}`,
-                    background: todayQuest.category === "解决问题" ? COLORS.ink : "transparent",
-                    color: todayQuest.category === "解决问题" ? COLORS.paper : COLORS.teal,
+                    fontFamily: F.ui, fontSize: 9, fontWeight: 700, letterSpacing: 1.5,
+                    padding: "2px 6px", textTransform: "uppercase",
+                    border: `1px solid ${todayQuest.category === "Solve a Problem" ? COLORS.ink : COLORS.teal}`,
+                    background: todayQuest.category === "Solve a Problem" ? COLORS.ink : "transparent",
+                    color: todayQuest.category === "Solve a Problem" ? COLORS.paper : COLORS.teal,
                   }}>
                     {todayQuest.category}
                   </span>
@@ -222,19 +224,19 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                 </div>
               </button>
 
-              <div style={{ alignSelf: "center", fontFamily: F.display, fontSize: 17, color: COLORS.gold, opacity: 0.9, padding: "0 3px" }}>或</div>
+              <div style={{ alignSelf: "center", fontFamily: F.display, fontStyle: "italic", fontSize: 14, color: COLORS.gold, opacity: 0.9, padding: "0 3px" }}>or</div>
 
               <button
                 type="button"
                 onClick={() => {
                   onOpenDispatch?.({
                     id: "challenge-book-kinofuku",
-                    zh: `《被讨厌的勇气》摘要特刊：本书核心观点是\u201C课题分离\u201D，建议将注意力从\u201C他人评价\u201D转向\u201C可行动选择\u201D，并以\u201C今天能做的一小步\u201D建立改变回路。`,
-                    en: "《被讨厌的勇气》摘要特刊",
-                    tag: "📚 读书摘要特刊",
+                    zh: `Dispatch · The Courage to Be Disliked: the central idea is "separation of tasks" — turn your attention from "how others judge" to "what you can actually choose," and build a feedback loop on the smallest step you can take today.`,
+                    en: "Dispatch · The Courage to Be Disliked",
+                    tag: "Book Summary",
                     color: "cobalt",
-                    votes: "任务发布",
-                    type: "挑战任务",
+                    votes: "Issued",
+                    type: "Challenge",
                   });
                   onApplyChallengeReward?.({ inkGain: 80, coinGain: 30, challengeDate: todayISO() });
                   setReward(80);
@@ -253,13 +255,14 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                 }}
               >
                 <div style={{ marginBottom: SPACE[2] }}>
-                  <div style={{ fontFamily: F.ui, fontSize: 10, color: COLORS.muted, letterSpacing: 2, marginBottom: SPACE[1] }}>任务二</div>
+                  <div style={{ fontFamily: F.ui, fontSize: 9, color: COLORS.muted, letterSpacing: 2, marginBottom: SPACE[1], textTransform: "uppercase" }}>Task II</div>
                   <span style={{
-                    fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 1.5,
+                    fontFamily: F.ui, fontSize: 9, fontWeight: 700, letterSpacing: 1.5,
                     padding: "2px 6px", border: `1px solid ${COLORS.purple}`,
                     color: COLORS.purple, background: "transparent",
+                    textTransform: "uppercase",
                   }}>
-                    生成摘要
+                    Book Summary
                   </span>
                 </div>
                 <div style={{
@@ -278,7 +281,7 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                     lineHeight: 1.25,
                     marginBottom: 4,
                   }}>
-                    《被讨厌的勇气》
+                    The Courage to Be Disliked
                   </div>
                   <div style={{
                     fontFamily: F.ui,
@@ -287,7 +290,7 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                     color: COLORS.muted,
                     marginBottom: SPACE[2],
                   }}>
-                    岸见一郎 / 古贺史健
+                    Ichiro Kishimi · Fumitake Koga
                   </div>
                   <div style={{
                     fontFamily: F.body,
@@ -297,7 +300,7 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                     color: COLORS.ink,
                     opacity: 0.88,
                   }}>
-                    推荐理由：帮你把注意力从{"\u201C"}他人评价{"\u201D"}转回{"\u201C"}可行动的一步{"\u201D"}。
+                    Why: pulls your attention from “how others judge” back to “the one small step you can take.”
                   </div>
                 </div>
               </button>
@@ -319,7 +322,7 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                 cursor: "pointer",
               }}
             >
-              挑战二选一
+              Choose One
             </button>
           </div>
         </div>,
@@ -388,7 +391,7 @@ export default function HomeScreen({ onOpenDispatch, onSend, userStats, onApplyC
             letterSpacing: 3, textTransform: "uppercase",
             background: COLORS.ink, color: COLORS.paper, padding: `${SPACE[1]}px ${SPACE[2]}px`,
           }}>
-            更多探索
+            More to Explore
           </div>
         </div>
         <div style={{
@@ -405,8 +408,8 @@ export default function HomeScreen({ onOpenDispatch, onSend, userStats, onApplyC
             fontFamily: F.body, fontStyle: "italic", fontSize: 11,
             color: COLORS.muted, opacity: 0.48, lineHeight: 1.6,
           }}>
-            "总有一只猫头鹰，在读你不敢读的那一页。"<br />
-            — 猫头鹰邮局
+            “Somewhere, an owl is reading the page you wouldn't dare.”<br />
+            — The Owl
           </div>
         </div>
       </div>
