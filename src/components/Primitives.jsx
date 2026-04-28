@@ -199,27 +199,20 @@ export const QuestionCard = ({ q, index, onClick }) => {
   const mt = isOdd ? 0 : SPACE[3];
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => onClick(q)}
+      aria-label={`提问卡片 · ${q.zh}`}
+      className="duleme-bare duleme-card-lift"
       style={{
         flexShrink: 0, width: 156, padding: `${SPACE[3]}px ${SPACE[3]}px ${SPACE[2]}px`,
         paddingLeft: SPACE[3] + 3,
         border: `1.5px solid ${COLORS.rule}`,
         position: "relative", overflow: "hidden", cursor: "pointer",
         ...TEXTURES.paperLight,
-        transform: `rotate(${rot}deg)`,
         marginTop: mt,
         animation: `${isOdd ? "duleme-float-in" : "duleme-float-in-2"} 0.5s ease ${0.1 + index * 0.15}s both`,
-        transition: "transform 0.2s ease, box-shadow 0.2s ease",
         "--rot": `${rot}deg`,
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.transform = "rotate(0deg) translateY(-4px)";
-        e.currentTarget.style.boxShadow = `4px 6px 0 ${COLORS.ink}`;
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.transform = `rotate(${rot}deg)`;
-        e.currentTarget.style.boxShadow = "none";
       }}
     >
       {/* Left 3px accent bar — "book spine" per brand spec */}
@@ -236,6 +229,6 @@ export const QuestionCard = ({ q, index, onClick }) => {
           {q.type}
         </div>
       </div>
-    </div>
+    </button>
   );
 };

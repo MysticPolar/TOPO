@@ -2,7 +2,7 @@
 // 读了么 · Home Screen (首页)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { QUESTIONS, getRankProgress } from "../data/content.js";
 import { COLORS, FONTS as F, SPACE, LAYOUT } from "../styles/tokens.js";
@@ -20,6 +20,27 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
   const [done, setDone] = useState(() => userStats.challengeCompletedDate === todayISO());
   const [showPopup, setShowPopup] = useState(false);
   const [reward, setReward] = useState(80);
+  const triggerRef = useRef(null);
+  const closeBtnRef = useRef(null);
+  const lastFocusedRef = useRef(null);
+
+  // Modal: scroll lock, Escape, focus management
+  useEffect(() => {
+    if (!showPopup) return;
+    lastFocusedRef.current = document.activeElement;
+    document.body.classList.add("duleme-no-scroll");
+    const onKey = (e) => { if (e.key === "Escape") setShowPopup(false); };
+    window.addEventListener("keydown", onKey);
+    // Focus the close button so keyboard users land inside the dialog
+    requestAnimationFrame(() => closeBtnRef.current?.focus());
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.classList.remove("duleme-no-scroll");
+      // Restore focus to whatever opened the modal
+      const el = lastFocusedRef.current;
+      if (el && typeof el.focus === "function") el.focus();
+    };
+  }, [showPopup]);
   const todayQuest = userStats.streakDays % 2 === 0
     ? {
         category: "发现书籍",
@@ -49,18 +70,22 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
         </div>
 
         {/* Challenge trigger */}
-        <div
+        <button
+          type="button"
           onClick={() => !done && setShowPopup(true)}
+          aria-label={done ? "今日挑战已完成" : "打开今日挑战"}
+          aria-disabled={done}
+          aria-haspopup="dialog"
+          aria-expanded={showPopup}
+          className={`duleme-bare ${done ? "" : "duleme-press-dim"}`}
           style={{
             background: done ? COLORS.paper : COLORS.ink,
             border: `1.5px solid ${done ? COLORS.green : COLORS.rule}`,
             padding: "5px 8px",
             cursor: done ? "default" : "pointer",
             textAlign: "center",
-            transition: "all 0.25s ease",
+            transition: "opacity 0.15s ease",
           }}
-          onMouseEnter={e => { if (!done) e.currentTarget.style.opacity = "0.88"; }}
-          onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
         >
           {done ? (
             <div style={{
@@ -85,7 +110,7 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
               </div>
             </>
           )}
-        </div>
+        </button>
       </div>
 
       {showPopup && createPortal(
@@ -104,6 +129,9 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
           }}
         >
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="duleme-challenge-title"
             onClick={(e) => e.stopPropagation()}
             style={{
               width: "100%",
@@ -116,6 +144,8 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
             }}
           >
             <button
+              ref={closeBtnRef}
+              type="button"
               onClick={() => setShowPopup(false)}
               style={{
                 position: "absolute",
@@ -123,12 +153,12 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
                 right: SPACE[2],
                 width: LAYOUT.minTouchTarget,
                 height: LAYOUT.minTouchTarget,
-                border: `1px solid ${COLORS.rule}`,
-                background: "rgba(245,239,224,0.75)",
-                color: COLORS.muted,
+                border: `1px solid ${COLORS.ink}`,
+                background: COLORS.ink,
+                color: COLORS.paper,
                 fontFamily: F.ui,
-                fontSize: 16,
-                lineHeight: `${LAYOUT.minTouchTarget}px`,
+                fontSize: 20,
+                lineHeight: `${LAYOUT.minTouchTarget - 2}px`,
                 textAlign: "center",
                 cursor: "pointer",
               }}
@@ -137,12 +167,13 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
               ×
             </button>
 
-            <div style={{ fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: COLORS.red, marginBottom: SPACE[2] }}>
+            <div id="duleme-challenge-title" style={{ fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: COLORS.red, marginBottom: SPACE[2], paddingRight: LAYOUT.minTouchTarget }}>
               今日挑战 · 第 {userStats.streakDays} 天
             </div>
 
             <div style={{ display: "flex", alignItems: "stretch", gap: 12, marginBottom: 14 }}>
               <button
+                type="button"
                 onClick={() => {
                   window.dispatchEvent(new CustomEvent("duleme-prefill-send", {
                     detail: { text: todayQuest.question, mode: todayQuest.mode },
@@ -194,6 +225,7 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
               <div style={{ alignSelf: "center", fontFamily: F.display, fontSize: 17, color: COLORS.gold, opacity: 0.9, padding: "0 3px" }}>或</div>
 
               <button
+                type="button"
                 onClick={() => {
                   onOpenDispatch?.({
                     id: "challenge-book-kinofuku",
@@ -272,6 +304,7 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
             </div>
 
             <button
+              type="button"
               onClick={() => setShowPopup(false)}
               style={{
                 width: "100%",

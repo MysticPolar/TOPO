@@ -27,6 +27,12 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
   }, []);
 
   useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  useEffect(() => {
     if (!isDone) return;
     const t = setTimeout(() => setStamped(true), 600);
     return () => clearTimeout(t);
@@ -152,7 +158,7 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
             <div style={{ fontFamily: F.chinese, fontSize: 13, color: COLORS.muted, marginBottom: 20, lineHeight: 2 }}>
               {question.error}
             </div>
-            <button onClick={onRetry} style={{
+            <button type="button" onClick={onRetry} style={{
               fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 2,
               padding: "12px 20px", minHeight: LAYOUT.minTouchTarget,
               background: COLORS.ink, color: COLORS.goldLight,

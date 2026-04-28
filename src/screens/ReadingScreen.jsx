@@ -10,18 +10,18 @@ import { OrnateRule, SectionLabel } from "../components/Primitives.jsx";
 // ── Article Card ──────────────────────────────────────────────
 function ArticleCard({ article, index, onOpen }) {
   return (
-    <div
+    <button
+      type="button"
       onClick={() => onOpen(article)}
+      aria-label={`阅读：${article.title}`}
+      className="duleme-bare duleme-press-shadow"
       style={{
         border: `1.5px solid ${COLORS.rule}`,
         ...TEXTURES.paperLight,
         marginBottom: SPACE[4], overflow: "hidden",
         cursor: "pointer", position: "relative",
         animation: `duleme-fade-up 0.4s ease ${0.08 + index * 0.1}s both`,
-        transition: "box-shadow 0.2s ease",
       }}
-      onMouseEnter={e => e.currentTarget.style.boxShadow = `3px 4px 0 ${COLORS.ink}`}
-      onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
     >
       {/* Left 3px accent bar — "book spine" per brand spec */}
       <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 3, background: CARD_COLORS[article.color] }} />
@@ -75,7 +75,7 @@ function ArticleCard({ article, index, onOpen }) {
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -88,7 +88,9 @@ function FilterTabs({ active, onSelect }) {
       {FILTERS.map((f) => (
         <button
           key={f}
+          type="button"
           onClick={() => onSelect(f)}
+          aria-pressed={active === f}
           style={{
             flexShrink: 0,
             fontFamily: F.ui, fontSize: 10, fontWeight: 700,
@@ -121,7 +123,9 @@ export default function ReadingScreen() {
     return (
       <div style={{ padding: `${SPACE[3]}px ${SPACE[4]}px ${SPACE[9]}px` }}>
         <button
+          type="button"
           onClick={() => setOpenArticle(null)}
+          aria-label="返回阅读列表"
           style={{
             fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 2,
             textTransform: "uppercase", color: COLORS.muted,

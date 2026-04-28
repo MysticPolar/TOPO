@@ -49,6 +49,10 @@ export const CARD_COLORS = {
 };
 
 // ── Type Scale (major-third ~1.25 ratio, 12px base) ──────────
+// TODO(theming): not yet wired — components currently inline fontSize /
+// letterSpacing values. Adopting this scale is a separate refactor; the
+// numbers here will need to be reconciled with actual on-screen usage
+// (e.g. SectionLabel uses letterSpacing: 3, caption tier specifies 1.5).
 export const TYPE_SCALE = {
   caption:  { size: 10, lineHeight: 1.4, letterSpacing: 1.5 },
   footnote: { size: 11, lineHeight: 1.5, letterSpacing: 1 },
@@ -85,6 +89,10 @@ export const FONTS = {
 };
 
 // ── Dark Mode Palette ("aged paper under lamplight") ─────────
+// TODO(theming): not yet wired — full theme switching requires migrating
+// ~260 inline `COLORS.x` references to either CSS variables or a
+// useTheme() hook. The dead "深色模式" SettingRow has been removed until
+// this lands. Track as: theming/dark-mode-wireup.
 export const COLORS_DARK = {
   ink:        "#e8dfc8",
   paper:      "#1e1a12",
@@ -225,5 +233,70 @@ export const GLOBAL_CSS = `
   }
   .duleme-safe-top {
     padding-top: max(var(--duleme-safe-top-min, 8px), env(safe-area-inset-top));
+  }
+
+  /* ── Reset for buttons used as cards/rows: keep the card look ────── */
+  .duleme-root button.duleme-bare {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: inherit;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+  }
+
+  /* ── Focus-visible: keyboard-only ring, never on touch/mouse ─────── */
+  .duleme-root *:focus { outline: none; }
+  .duleme-root *:focus-visible {
+    outline: 2px solid #c9a227;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(201,162,39,0.18);
+  }
+
+  /* ── Body scroll lock when a modal is open ───────────────────────── */
+  body.duleme-no-scroll { overflow: hidden; touch-action: none; }
+
+  /* ── Press feedback for cards (works on touch via :active) ───────── */
+  /* Cards set --rot inline; hover/active/focus snap to 0deg + lift.    */
+  .duleme-card-lift {
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .duleme-card-lift:hover,
+  .duleme-card-lift:active,
+  .duleme-card-lift:focus-visible {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: 4px 6px 0 #1a1208;
+  }
+  .duleme-press-shadow {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .duleme-press-shadow:hover,
+  .duleme-press-shadow:active,
+  .duleme-press-shadow:focus-visible {
+    box-shadow: 3px 4px 0 #1a1208;
+  }
+  .duleme-press-shadow:active {
+    transform: translateY(1px);
+  }
+  .duleme-press-dim:active { opacity: 0.85; }
+
+  /* ── Reduced motion: neutralize all animations & transitions ─────── */
+  @media (prefers-reduced-motion: reduce) {
+    .duleme-root *,
+    .duleme-root *::before,
+    .duleme-root *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.001ms !important;
+      transition-delay: 0ms !important;
+      scroll-behavior: auto !important;
+    }
+    .duleme-tw-cursor { animation: none !important; opacity: 0.8 !important; }
   }
 `;

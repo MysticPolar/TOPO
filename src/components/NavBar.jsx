@@ -30,9 +30,13 @@ export default function NavBar({ activePage, onNavigate }) {
       {NAV_ITEMS.map(({ id, label, Icon }) => {
         const active = activePage === id;
         return (
-          <div
+          <button
             key={id}
+            type="button"
             onClick={() => onNavigate(id)}
+            aria-current={active ? "page" : undefined}
+            aria-label={label}
+            className="duleme-bare"
             style={{
               display: "flex", flexDirection: "column",
               alignItems: "center", gap: 2,
@@ -40,6 +44,7 @@ export default function NavBar({ activePage, onNavigate }) {
               padding: `${SPACE[1]}px ${SPACE[4]}px`,
               minHeight: LAYOUT.minTouchTarget,
               position: "relative", userSelect: "none",
+              width: "auto",
             }}
           >
             {active && (
@@ -62,7 +67,7 @@ export default function NavBar({ activePage, onNavigate }) {
             }}>
               {label}
             </div>
-          </div>
+          </button>
         );
       })}
     </div>
