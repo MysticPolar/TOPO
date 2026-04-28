@@ -316,7 +316,6 @@ export default function ProfileScreen({ userStats = {} }) {
       <OrnateRule symbol="— ⚙ —" />
       <SectionLabel>设置 · 系统设置</SectionLabel>
       <SettingRow icon="🔔" label="通知设置" sub="通知偏好" />
-      <SettingRow icon="🌙" label="深色模式" sub="夜间主题" value="关闭" />
       <SettingRow icon="📧" label="每日快讯" sub="每日特刊邮件" value="开启" />
       <SettingRow icon="🔒" label="隐私设置" sub="隐私与数据" />
       <SettingRow icon="🦉" label="关于猫头鹰邮局" sub="关于我们" />

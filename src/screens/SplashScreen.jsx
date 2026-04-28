@@ -45,11 +45,12 @@ export default function SplashScreen({ onEnter }) {
       <div style={{ width: 80, height: 1, background: "rgba(245,239,224,0.12)" }} />
 
       <button
+        type="button"
         onMouseDown={() => setPressing(true)}
         onMouseUp={() => setPressing(false)}
         onMouseLeave={() => setPressing(false)}
         onTouchStart={() => setPressing(true)}
-        onTouchEnd={() => { setPressing(false); onEnter(); }}
+        onTouchEnd={() => setPressing(false)}
         onClick={onEnter}
         style={{
           marginTop: 32,
