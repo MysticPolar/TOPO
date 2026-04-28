@@ -193,4 +193,37 @@ export const GLOBAL_CSS = `
   .duleme-root *::-webkit-scrollbar { display: none; }
   .duleme-root * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
   .duleme-root input, .duleme-root button, .duleme-root textarea { -webkit-appearance: none; }
+
+  /* ── Container sizing: track the dynamic viewport, not the static one ─── */
+  .duleme-root {
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+    height: 100dvh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Fallback for browsers without dvh — keep behavior, just less accurate. */
+  @supports not (height: 100dvh) {
+    .duleme-root { height: 100vh; min-height: 100vh; }
+  }
+
+  /* ── Desktop frame: only show the bezel + shadow on wider viewports ──── */
+  @media (min-width: 401px) {
+    .duleme-root {
+      border: 1px solid rgba(42,31,14,0.15);
+      box-shadow: 0 0 60px rgba(42,31,14,0.2);
+    }
+  }
+
+  /* ── Safe-area helpers (notched iPhones, gesture bar) ─────────────────── */
+  .duleme-safe-bottom {
+    padding-bottom: max(var(--duleme-safe-bottom-min, 8px), env(safe-area-inset-bottom));
+  }
+  .duleme-safe-top {
+    padding-top: max(var(--duleme-safe-top-min, 8px), env(safe-area-inset-top));
+  }
 `;

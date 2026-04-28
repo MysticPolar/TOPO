@@ -15,15 +15,19 @@ export default function Masthead({
   const safeMonth = Number.isFinite(foundedMonth) && foundedMonth > 0 ? foundedMonth : 1;
 
   return (
-    <div style={{
-      ...TEXTURES.paperLight,
-      borderBottom: `1px solid ${COLORS.rule}`,
-      padding: `${SPACE[2]}px ${SPACE[3]}px`,
-      textAlign: "center",
-      flexShrink: 0,
-      zIndex: 50,
-      position: "relative",
-    }}>
+    <div
+      className="duleme-safe-top"
+      style={{
+        ...TEXTURES.paperLight,
+        borderBottom: `1px solid ${COLORS.rule}`,
+        padding: `0 ${SPACE[3]}px ${SPACE[2]}px`,
+        textAlign: "center",
+        flexShrink: 0,
+        zIndex: 50,
+        position: "relative",
+        ["--duleme-safe-top-min"]: `${SPACE[2]}px`,
+      }}
+    >
       <div style={{ display: "flex", alignItems: "center", gap: SPACE[2] }}>
         <hr style={{ flex: 1, border: "none", borderTop: `1px solid ${COLORS.rule}`, opacity: 0.4 }} />
         <span style={{

@@ -13,16 +13,20 @@ const NAV_ITEMS = [
 
 export default function NavBar({ activePage, onNavigate }) {
   return (
-    <div style={{
-      flexShrink: 0,
-      background: COLORS.ink,
-      borderTop: `2px solid ${COLORS.gold}`,
-      padding: `${SPACE[1]}px 0 ${SPACE[2]}px`,
-      display: "flex",
-      justifyContent: "space-around",
-      alignItems: "flex-start",
-      zIndex: 60,
-    }}>
+    <div
+      className="duleme-safe-bottom"
+      style={{
+        flexShrink: 0,
+        background: COLORS.ink,
+        borderTop: `2px solid ${COLORS.gold}`,
+        padding: `${SPACE[1]}px 0 0`,
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "flex-start",
+        zIndex: 60,
+        ["--duleme-safe-bottom-min"]: `${SPACE[2]}px`,
+      }}
+    >
       {NAV_ITEMS.map(({ id, label, Icon }) => {
         const active = activePage === id;
         return (
