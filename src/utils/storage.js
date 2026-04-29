@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · localStorage Persistence
+// The Owl's Postoffice · localStorage Persistence
 // ═══════════════════════════════════════════════════════════════
 
 const STATS_KEY = "duleme-user-stats";

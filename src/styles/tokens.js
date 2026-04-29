@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Design Tokens
+// The Owl's Postoffice · Design Tokens
 // The Owlery Press · Brand Identity System
 // ═══════════════════════════════════════════════════════════════
 
@@ -49,6 +49,10 @@ export const CARD_COLORS = {
 };
 
 // ── Type Scale (major-third ~1.25 ratio, 12px base) ──────────
+// TODO(theming): not yet wired — components currently inline fontSize /
+// letterSpacing values. Adopting this scale is a separate refactor; the
+// numbers here will need to be reconciled with actual on-screen usage
+// (e.g. SectionLabel uses letterSpacing: 3, caption tier specifies 1.5).
 export const TYPE_SCALE = {
   caption:  { size: 10, lineHeight: 1.4, letterSpacing: 1.5 },
   footnote: { size: 11, lineHeight: 1.5, letterSpacing: 1 },
@@ -70,21 +74,27 @@ export const LAYOUT = {
   circularRadius: "50%",
 };
 
-// ── Bilingual Font System ────────────────────────────────────
-// Blackletter: UnifrakturMaguntia — decorative masthead moments
-// Display:     Playfair Display + Noto Serif SC — editorial headlines
-// Body:        IM Fell English + Noto Serif SC — reading prose, AI answers
-// UI:          Space Grotesk + Noto Sans SC — labels, nav, system chrome
-// Chinese:     Noto Serif SC primary — CJK-heavy titles, questions
+// ── English-only Font System (NA build) ──────────────────────
+// Blackletter: UnifrakturMaguntia — Victorian masthead wordmark
+// Display:     Playfair Display — editorial headlines
+// Body:        IM Fell English — period reading prose, AI answers
+// UI:          Space Grotesk — labels, nav, system chrome
+// `chinese` key kept as a legacy alias (full rename deferred); points
+// to the same serif body stack so existing usages render correctly.
 export const FONTS = {
-  blackletter: "'UnifrakturMaguntia', cursive",
-  display:     "'Playfair Display', 'Noto Serif SC', serif",
-  body:        "'IM Fell English', 'Noto Serif SC', serif",
-  ui:          "'Space Grotesk', 'Noto Sans SC', sans-serif",
-  chinese:     "'Noto Serif SC', 'Playfair Display', serif",
+  blackletter: "'UnifrakturMaguntia', 'IM Fell English', serif",
+  display:     "'Playfair Display', 'IM Fell English', serif",
+  body:        "'IM Fell English', 'Playfair Display', serif",
+  ui:          "'Space Grotesk', system-ui, -apple-system, sans-serif",
+  chinese:     "'Playfair Display', 'IM Fell English', serif",
 };
 
 // ── Dark Mode Palette ("aged paper under lamplight") ─────────
+// TODO(theming): not yet wired — full theme switching requires migrating
+// ~260 inline `COLORS.x` references to either CSS variables or a
+// useTheme() hook. The dead dark-mode SettingRow has been removed until
+// this lands. Track as: theming/dark-mode-wireup.
+// (NB: the dead dark-mode row was removed in PR4 of the UI cleanup series.)
 export const COLORS_DARK = {
   ink:        "#e8dfc8",
   paper:      "#1e1a12",
@@ -124,7 +134,7 @@ export const TEXTURES = {
 
 // ── Global CSS injected once ──────────────────────────────────
 export const GLOBAL_CSS = `
-  @import url('https://fonts.loli.net/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=UnifrakturMaguntia&family=IM+Fell+English:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=UnifrakturMaguntia&family=IM+Fell+English:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
   @keyframes duleme-float-in {
     from { opacity: 0; transform: rotate(-2deg) translateY(12px); }
@@ -193,4 +203,102 @@ export const GLOBAL_CSS = `
   .duleme-root *::-webkit-scrollbar { display: none; }
   .duleme-root * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
   .duleme-root input, .duleme-root button, .duleme-root textarea { -webkit-appearance: none; }
+
+  /* ── Container sizing: track the dynamic viewport, not the static one ─── */
+  .duleme-root {
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+    height: 100dvh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Fallback for browsers without dvh — keep behavior, just less accurate. */
+  @supports not (height: 100dvh) {
+    .duleme-root { height: 100vh; min-height: 100vh; }
+  }
+
+  /* ── Desktop frame: only show the bezel + shadow on wider viewports ──── */
+  @media (min-width: 401px) {
+    .duleme-root {
+      border: 1px solid rgba(42,31,14,0.15);
+      box-shadow: 0 0 60px rgba(42,31,14,0.2);
+    }
+  }
+
+  /* ── Safe-area helpers (notched iPhones, gesture bar) ─────────────────── */
+  .duleme-safe-bottom {
+    padding-bottom: max(var(--duleme-safe-bottom-min, 8px), env(safe-area-inset-bottom));
+  }
+  .duleme-safe-top {
+    padding-top: max(var(--duleme-safe-top-min, 8px), env(safe-area-inset-top));
+  }
+
+  /* ── Reset for buttons used as cards/rows: keep the card look ────── */
+  .duleme-root button.duleme-bare {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: inherit;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+  }
+
+  /* ── Focus-visible: keyboard-only ring, never on touch/mouse ─────── */
+  .duleme-root *:focus { outline: none; }
+  .duleme-root *:focus-visible {
+    outline: 2px solid #c9a227;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(201,162,39,0.18);
+  }
+
+  /* ── Body scroll lock when a modal is open ───────────────────────── */
+  body.duleme-no-scroll { overflow: hidden; touch-action: none; }
+
+  /* ── Press feedback for cards (works on touch via :active) ───────── */
+  /* Cards set --rot inline; hover/active/focus snap to 0deg + lift.    */
+  .duleme-card-lift {
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .duleme-card-lift:hover,
+  .duleme-card-lift:active,
+  .duleme-card-lift:focus-visible {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: 4px 6px 0 #1a1208;
+  }
+  .duleme-press-shadow {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .duleme-press-shadow:hover,
+  .duleme-press-shadow:active,
+  .duleme-press-shadow:focus-visible {
+    box-shadow: 3px 4px 0 #1a1208;
+  }
+  .duleme-press-shadow:active {
+    transform: translateY(1px);
+  }
+  .duleme-press-dim:active { opacity: 0.85; }
+
+  /* ── Reduced motion: neutralize all animations & transitions ─────── */
+  @media (prefers-reduced-motion: reduce) {
+    .duleme-root *,
+    .duleme-root *::before,
+    .duleme-root *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.001ms !important;
+      transition-delay: 0ms !important;
+      scroll-behavior: auto !important;
+    }
+    .duleme-tw-cursor { animation: none !important; opacity: 0.8 !important; }
+  }
 `;

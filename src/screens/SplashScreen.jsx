@@ -17,23 +17,35 @@ export default function SplashScreen({ onEnter }) {
       alignItems: "center", justifyContent: "center",
       background: COLORS.ink,
       gap: 14,
+      padding: "0 24px",
       opacity: visible ? 1 : 0,
       transition: "opacity 0.5s ease",
     }}>
       <div style={{ width: 80, height: 1, background: "rgba(245,239,224,0.12)" }} />
 
       <div style={{
-        fontFamily: F.chinese,
-        fontSize: 52,
-        color: "#f5efe0",
+        fontFamily: "'Space Grotesk', sans-serif",
+        fontSize: 9,
         letterSpacing: 6,
-        lineHeight: 1,
+        color: "rgba(245,239,224,0.55)",
+        textTransform: "uppercase",
       }}>
-        读<span style={{ color: COLORS.red }}>了</span>么
+        The
       </div>
 
       <div style={{
-        fontFamily: "sans-serif",
+        fontFamily: F.blackletter,
+        fontSize: 56,
+        color: "#f5efe0",
+        letterSpacing: 1,
+        lineHeight: 1,
+        textAlign: "center",
+      }}>
+        Owl's <span style={{ color: COLORS.red }}>Post</span>office
+      </div>
+
+      <div style={{
+        fontFamily: "'Space Grotesk', sans-serif",
         fontSize: 9,
         letterSpacing: 5,
         color: COLORS.muted,
@@ -45,15 +57,16 @@ export default function SplashScreen({ onEnter }) {
       <div style={{ width: 80, height: 1, background: "rgba(245,239,224,0.12)" }} />
 
       <button
+        type="button"
         onMouseDown={() => setPressing(true)}
         onMouseUp={() => setPressing(false)}
         onMouseLeave={() => setPressing(false)}
         onTouchStart={() => setPressing(true)}
-        onTouchEnd={() => { setPressing(false); onEnter(); }}
+        onTouchEnd={() => setPressing(false)}
         onClick={onEnter}
         style={{
           marginTop: 32,
-          fontFamily: "sans-serif",
+          fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 700,
           fontSize: 10,
           letterSpacing: 4,
@@ -67,7 +80,7 @@ export default function SplashScreen({ onEnter }) {
           transform: pressing ? "scale(0.97)" : "scale(1)",
         }}
       >
-        测试入口
+        Enter Preview
       </button>
     </div>
   );

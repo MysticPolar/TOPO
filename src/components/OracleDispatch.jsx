@@ -27,6 +27,12 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
   }, []);
 
   useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  useEffect(() => {
     if (!isDone) return;
     const t = setTimeout(() => setStamped(true), 600);
     return () => clearTimeout(t);
@@ -100,26 +106,26 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
               lineHeight: 1, letterSpacing: 4, color: COLORS.ink,
               display: "flex", alignItems: "baseline",
             }}>
-              <span>{"\u8BFB\u4E86"}</span>
+              <span>READ</span>
               <span style={{
                 color: COLORS.red, display: "inline-block", overflow: "hidden",
                 maxWidth: stamped ? "0px" : "2.5em",
                 transition: "max-width 0s ease 0.58s",
                 animation: stamped ? "duleme-erase 0.55s ease forwards" : "none",
-              }}>{"\u4E48"}</span>
+              }}>?</span>
             </div>
             <div style={{ textAlign: "right", paddingBottom: 4 }}>
               <div style={{
                 fontFamily: F.ui, fontSize: 9, letterSpacing: 2,
                 color: COLORS.muted, lineHeight: 1.8,
               }}>
-                <strong style={{ fontWeight: 700, color: COLORS.ink }}>{"\u732B\u5934\u9E70\u90AE\u5C40"}</strong> {"\u00B7 \u72EC\u5BB6\u4E13\u520A"}
+                <strong style={{ fontWeight: 700, color: COLORS.ink }}>The Owl</strong> {"\u00B7 Exclusive Dispatch"}
               </div>
               <div style={{
                 fontFamily: F.ui, fontSize: 9, letterSpacing: 2,
                 color: COLORS.muted, lineHeight: 1.8,
               }}>
-                {"\u7B2C"}{issueKan}{"\u520A \u00B7 "}{tagLabel}{" \u00B7 \u7B2C"}{issueJuan}{"\u5377"}
+                Issue №{issueKan}{" \u00B7 "}{tagLabel}{" \u00B7 Vol. "}{issueJuan}
               </div>
             </div>
           </div>
@@ -128,7 +134,7 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
             <span style={{
               fontFamily: F.ui, fontSize: 8, letterSpacing: 3,
               color: COLORS.muted, opacity: 0.55, whiteSpace: "nowrap",
-            }}>{"\u4E3A\u4F60\u5370\u5237 \u00B7 \u5373\u65F6\u51FA\u7248"}</span>
+            }}>Printed for you · Off the press</span>
             <hr style={{ flex: 1, border: "none", borderTop: "1px solid rgba(42,31,14,0.25)" }} />
           </div>
         </div>
@@ -140,24 +146,24 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
             fontFamily: F.chinese, fontSize: 14, color: COLORS.muted,
             letterSpacing: 1, lineHeight: 2,
             animation: "duleme-shimmer 2s ease-in-out infinite",
-          }}>{"\u732B\u5934\u9E70\u90AE\u5C40\u6B63\u5728\u6392\u7248\u2026"}</div>
+          }}>The Owl is setting type…</div>
         )}
 
         {/* ═══ ERROR ═══ */}
         {hasError && (
           <div style={{ padding: "48px 20px", textAlign: "center" }}>
             <div style={{ fontFamily: F.chinese, fontWeight: 900, fontSize: 18, color: COLORS.ink, marginBottom: 12 }}>
-              {"\u5370\u5237\u673A\u6682\u65F6\u6545\u969C"}
+              The press is briefly jammed
             </div>
             <div style={{ fontFamily: F.chinese, fontSize: 13, color: COLORS.muted, marginBottom: 20, lineHeight: 2 }}>
               {question.error}
             </div>
-            <button onClick={onRetry} style={{
+            <button type="button" onClick={onRetry} style={{
               fontFamily: F.ui, fontSize: 10, fontWeight: 700, letterSpacing: 2,
               padding: "12px 20px", minHeight: LAYOUT.minTouchTarget,
               background: COLORS.ink, color: COLORS.goldLight,
               border: "none", cursor: "pointer",
-            }}>{"\u91CD\u65B0\u53D1\u62A5 \u2192"}</button>
+            }}>Resend →</button>
           </div>
         )}
 
@@ -174,7 +180,7 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
                   fontFamily: F.ui, fontSize: 9, fontWeight: 700,
                   letterSpacing: 5, color: COLORS.red,
                   marginBottom: 8, display: "block",
-                }}>{"\u732B\u5934\u9E70\u90AE\u5C40 \u00B7 "}{tagLabel || "\u4ECA\u65E5\u8350\u4E66"}</span>
+                }}>{"The Owl \u00B7 "}{tagLabel || "Today's Pick"}</span>
                 <h1 style={{
                   fontFamily: F.chinese, fontWeight: 900, fontSize: 26,
                   lineHeight: 1.25, letterSpacing: 1, color: COLORS.ink, margin: 0,
@@ -261,12 +267,12 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
                   fontFamily: F.ui, fontSize: 8, letterSpacing: 3,
                   color: COLORS.muted, opacity: 0.6,
                   marginBottom: 10, display: "block",
-                }}>{"\u5927\u80C6\u53D1\u95EE \u00B7 \u4F60\u7684\u95EE\u9898\u5C06\u6210\u4E3A\u4ECA\u65E5\u5934\u7248"}</span>
+                }}>Ask boldly · Your question may become tomorrow's headline</span>
                 <div style={{ display: "flex", border: `1.5px solid ${COLORS.rule}`, overflow: "hidden" }}>
                   <textarea
                     value={followUp}
                     onChange={(e) => setFollowUp(e.target.value)}
-                    placeholder={"\u4F60\u6B64\u523B\u6700\u56F0\u6270\u7684\u95EE\u9898\u662F\u4EC0\u4E48\u2026\u2026"}
+                    placeholder={"What is the question most weighing on you right now…"}
                     rows={3}
                     style={{
                       flex: 1, border: "none", background: COLORS.paper,
@@ -282,7 +288,7 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
                     writingMode: "vertical-rl",
                     borderLeft: "1px solid rgba(42,31,14,0.15)",
                     minWidth: 44, fontWeight: 500,
-                  }}>{"\u53D1\u62A5 \u2192"}</button>
+                  }}>Send →</button>
                 </div>
               </div>
             )}
@@ -296,12 +302,12 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
               <div style={{
                 fontFamily: F.chinese, fontWeight: 900, fontSize: 20,
                 color: COLORS.paper, letterSpacing: 4, opacity: 0.35,
-              }}>{"\u8BFB\u4E86"}<span style={{ color: COLORS.red }}>{"\u4E48"}</span></div>
+              }}>READ<span style={{ color: COLORS.red }}>?</span></div>
               <div style={{
                 fontFamily: F.ui, fontSize: 8, letterSpacing: 2,
                 color: COLORS.paperAged, opacity: 0.2,
                 textAlign: "right", lineHeight: 2,
-              }}>{"\u732B\u5934\u9E70\u90AE\u5C40\u51FA\u54C1"}<br />{"\u5927\u80C6\u53D1\u95EE\u5427"}</div>
+              }}>From The Owl<br />Ask boldly</div>
             </div>
           </>
         )}
@@ -320,7 +326,7 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
             <div style={{
               fontFamily: F.body, fontStyle: "italic", fontSize: 10,
               color: COLORS.paperAged, opacity: 0.75,
-            }}>{"\u732B\u5934\u9E70\u90AE\u5C40\u6DF1\u611F\u6B23\u6170\u3002\u706F\u8FD8\u4EAE\u7740\u3002"}</div>
+            }}>The Owl is glad to hear from you. The lamp is still on.</div>
           </div>
           <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
             <button type="button" onClick={handleCollect} style={{
@@ -330,14 +336,14 @@ export default function OracleDispatch({ question, onClose, onRetry, issueKan = 
               color: collected ? COLORS.gold : COLORS.paperAged,
               border: `1px solid ${collected ? "rgba(201,162,39,0.6)" : "rgba(232,197,71,0.25)"}`,
               transition: "color 0.3s ease, border-color 0.3s ease",
-            }}>{collected ? "\u2665 \u5DF2\u6536\u85CF" : "\u6536\u85CF"}</button>
+            }}>{collected ? "\u2665 Saved" : "Save"}</button>
             <button type="button" onClick={handleStartReading} style={{
               fontFamily: F.ui, fontSize: 9, fontWeight: 700,
               letterSpacing: 2.5, padding: "0 14px",
               minHeight: LAYOUT.minTouchTarget,
               cursor: "pointer", border: "none",
               background: COLORS.goldLight, color: COLORS.ink,
-            }}>{"\u5F00\u59CB\u9605\u8BFB"}</button>
+            }}>Start Reading</button>
           </div>
         </div>
       )}

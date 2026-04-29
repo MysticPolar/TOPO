@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 (Dule Me) · Main App Root
+// The Owl's Postoffice · Main App Root
 // "Read Dangerously" · The Owlery Press · V2
 // ═══════════════════════════════════════════════════════════════
 
@@ -87,7 +87,7 @@ export default function DulemeApp() {
   const handleCloseDispatch = useCallback(() => {
     const reward = dispatch?.response?.inkReward ?? 40;
     setDispatch(null);
-    setToast({ amount: reward, message: "\u300C\u5DF2\u9605\u8BFB\u4E13\u5C5E\u7279\u520A\uFF0C\u58A8\u6C34\u5956\u52B1\u5DF2\u53D1\u653E\u3002\u300D" });
+    setToast({ amount: reward, message: "Dispatch read. Ink reward delivered." });
     updateStats((prev) => ({
       ...prev,
       xpCurrent: prev.xpCurrent + reward,
@@ -100,10 +100,10 @@ export default function DulemeApp() {
     const q = {
       zh: text,
       en: text,
-      tag: mode === "air" ? "\u2726 \u7075\u98CE\u5FEB\u7B54" : mode === "max" ? "\u25C8 \u6DF1\u6F5C\u7279\u520A" : "\uD83D\uDD2E \u795E\u8C15\u56DE\u5E94",
+      tag: mode === "air" ? "\u2726 Quick Air" : mode === "max" ? "\u25C8 Deep Dive" : "\uD83D\uDD2E Personal Dispatch",
       color: mode === "air" ? "teal" : mode === "max" ? "purple" : "gold",
-      votes: "\u65B0\u53D1",
-      type: "\u4F60\u7684\u63D0\u95EE",
+      votes: "New",
+      type: "Your Question",
       streaming: true,
       response: null,
       error: null,
@@ -129,7 +129,7 @@ export default function DulemeApp() {
   const handleRetry = useCallback(() => {
     if (!dispatch) return;
     const text = dispatch.zh;
-    const mode = dispatch.tag?.includes("\u7075\u98CE") ? "air" : dispatch.tag?.includes("\u6DF1\u6F5C") ? "max" : "normal";
+    const mode = dispatch.tag?.includes("Quick Air") ? "air" : dispatch.tag?.includes("Deep Dive") ? "max" : "normal";
     setDispatch(null);
     setTimeout(() => handleSend(text, mode), 100);
   }, [dispatch, handleSend]);
@@ -150,24 +150,7 @@ export default function DulemeApp() {
   }, []);
 
   return (
-    <div
-      className="duleme-root"
-      style={{
-        width: "100%",
-        maxWidth: 390,
-        margin: "0 auto",
-        height: "100vh",
-        maxHeight: 844,
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        overflow: "hidden",
-        border: typeof window !== "undefined" && window.innerWidth > 400
-          ? "1px solid rgba(42,31,14,0.15)" : "none",
-        boxShadow: typeof window !== "undefined" && window.innerWidth > 400
-          ? "0 0 60px rgba(42,31,14,0.2)" : "none",
-      }}
-    >
+    <div className="duleme-root">
       {page !== "splash" && !(page === "home" && dispatch) && (
         <Masthead
           loginDays={userStats.loginDays ?? userStats.streakDays}

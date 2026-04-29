@@ -1,34 +1,42 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Navigation Bar
+// The Owl's Postoffice · Navigation Bar
 // ═══════════════════════════════════════════════════════════════
 
 import { COLORS, FONTS as F, SPACE, LAYOUT } from "../styles/tokens.js";
 import { NavIconHome, NavIconReading, NavIconProfile } from "./Primitives.jsx";
 
 const NAV_ITEMS = [
-  { id: "home",    label: "特刊", Icon: NavIconHome },
-  { id: "reading", label: "阅读室", Icon: NavIconReading },
-  { id: "profile", label: "我的", Icon: NavIconProfile },
+  { id: "home",    label: "Today",   Icon: NavIconHome },
+  { id: "reading", label: "Library", Icon: NavIconReading },
+  { id: "profile", label: "Profile", Icon: NavIconProfile },
 ];
 
 export default function NavBar({ activePage, onNavigate }) {
   return (
-    <div style={{
-      flexShrink: 0,
-      background: COLORS.ink,
-      borderTop: `2px solid ${COLORS.gold}`,
-      padding: `${SPACE[1]}px 0 ${SPACE[2]}px`,
-      display: "flex",
-      justifyContent: "space-around",
-      alignItems: "flex-start",
-      zIndex: 60,
-    }}>
+    <div
+      className="duleme-safe-bottom"
+      style={{
+        flexShrink: 0,
+        background: COLORS.ink,
+        borderTop: `2px solid ${COLORS.gold}`,
+        padding: `${SPACE[1]}px 0 0`,
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "flex-start",
+        zIndex: 60,
+        ["--duleme-safe-bottom-min"]: `${SPACE[2]}px`,
+      }}
+    >
       {NAV_ITEMS.map(({ id, label, Icon }) => {
         const active = activePage === id;
         return (
-          <div
+          <button
             key={id}
+            type="button"
             onClick={() => onNavigate(id)}
+            aria-current={active ? "page" : undefined}
+            aria-label={label}
+            className="duleme-bare"
             style={{
               display: "flex", flexDirection: "column",
               alignItems: "center", gap: 2,
@@ -36,6 +44,7 @@ export default function NavBar({ activePage, onNavigate }) {
               padding: `${SPACE[1]}px ${SPACE[4]}px`,
               minHeight: LAYOUT.minTouchTarget,
               position: "relative", userSelect: "none",
+              width: "auto",
             }}
           >
             {active && (
@@ -58,7 +67,7 @@ export default function NavBar({ activePage, onNavigate }) {
             }}>
               {label}
             </div>
-          </div>
+          </button>
         );
       })}
     </div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { COLORS, FONTS as F, CARD_COLORS } from "../../styles/tokens.js";
 import { fetchReadingHistory } from "../../utils/db.js";
 
-const DAY_LABELS = ["日", "一", "二", "三", "四", "五", "六"];
+const DAY_LABELS = ["S", "M", "T", "W", "T", "F", "S"];
 
 function buildCalendarDays(year, month) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -50,7 +50,8 @@ export default function CalendarPanel() {
     setSelectedDate(null);
   };
 
-  const monthStr = `${year}年${month + 1}月`;
+  const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const monthStr = `${MONTH_NAMES[month]} ${year}`;
 
   const selectedKey = selectedDate
     ? `${year}-${String(month + 1).padStart(2, "0")}-${String(selectedDate).padStart(2, "0")}`
@@ -60,7 +61,7 @@ export default function CalendarPanel() {
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "40px 0", fontFamily: F.body, fontStyle: "italic", fontSize: 12, color: COLORS.muted }}>
-        翻阅记录中…
+        Loading reading log…
       </div>
     );
   }
@@ -147,7 +148,7 @@ export default function CalendarPanel() {
 
       {Object.keys(entryMap).length === 0 && (
         <div style={{ textAlign: "center", padding: "20px 0 8px", fontFamily: F.body, fontStyle: "italic", fontSize: 11, color: COLORS.muted, opacity: 0.6, lineHeight: 1.8 }}>
-          点击「开始阅读」，<br />你的阅历将在此留印。
+          Tap "Start Reading" and<br />your reading life will be logged here.
         </div>
       )}
     </div>

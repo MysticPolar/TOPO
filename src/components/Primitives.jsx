@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// 读了么 · Shared UI Primitives
+// The Owl's Postoffice · Shared UI Primitives
 // ═══════════════════════════════════════════════════════════════
 
 import { COLORS, FONTS as F, TEXTURES, CARD_COLORS, SPACE, LAYOUT } from "../styles/tokens.js";
@@ -123,7 +123,7 @@ export const SendIcon = () => (
 );
 
 // ── XP Bar ────────────────────────────────────────────────────
-export const XPBar = ({ current = 2340, total = 3500, rank = "神谕读者" }) => {
+export const XPBar = ({ current = 2340, total = 3500, rank = "Oracle Reader" }) => {
   const pct = Math.round((current / total) * 100);
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
@@ -132,7 +132,7 @@ export const XPBar = ({ current = 2340, total = 3500, rank = "神谕读者" }) =
           {rank}
         </div>
         <div style={{ fontFamily: F.ui, fontSize: 10, fontWeight: 600, color: COLORS.muted, letterSpacing: 1 }}>
-          {current.toLocaleString()} 墨水
+          {current.toLocaleString()} ink
         </div>
       </div>
       <div style={{ height: 6, background: COLORS.paperAged, border: `1px solid ${COLORS.rule}`, position: "relative", overflow: "hidden" }}>
@@ -146,7 +146,7 @@ export const XPBar = ({ current = 2340, total = 3500, rank = "神谕读者" }) =
         </div>
       </div>
       <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 10, color: COLORS.muted, marginTop: SPACE[1] }}>
-        "猫头鹰邮局正在记录你的进度。"
+        “The Owl is logging your progress.”
       </div>
     </div>
   );
@@ -183,7 +183,7 @@ export const InkToast = ({ amount, message, visible }) => (
     <CoinIcon size={28} />
     <div>
       <div style={{ fontFamily: F.display, fontWeight: 900, fontSize: 18, color: COLORS.gold }}>
-        +{amount} 墨水
+        +{amount} ink
       </div>
       <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 9, color: COLORS.muted }}>
         {message}
@@ -199,27 +199,20 @@ export const QuestionCard = ({ q, index, onClick }) => {
   const mt = isOdd ? 0 : SPACE[3];
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => onClick(q)}
+      aria-label={`Question card · ${q.zh}`}
+      className="duleme-bare duleme-card-lift"
       style={{
         flexShrink: 0, width: 156, padding: `${SPACE[3]}px ${SPACE[3]}px ${SPACE[2]}px`,
         paddingLeft: SPACE[3] + 3,
         border: `1.5px solid ${COLORS.rule}`,
         position: "relative", overflow: "hidden", cursor: "pointer",
         ...TEXTURES.paperLight,
-        transform: `rotate(${rot}deg)`,
         marginTop: mt,
         animation: `${isOdd ? "duleme-float-in" : "duleme-float-in-2"} 0.5s ease ${0.1 + index * 0.15}s both`,
-        transition: "transform 0.2s ease, box-shadow 0.2s ease",
         "--rot": `${rot}deg`,
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.transform = "rotate(0deg) translateY(-4px)";
-        e.currentTarget.style.boxShadow = `4px 6px 0 ${COLORS.ink}`;
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.transform = `rotate(${rot}deg)`;
-        e.currentTarget.style.boxShadow = "none";
       }}
     >
       {/* Left 3px accent bar — "book spine" per brand spec */}
@@ -236,6 +229,6 @@ export const QuestionCard = ({ q, index, onClick }) => {
           {q.type}
         </div>
       </div>
-    </div>
+    </button>
   );
 };
