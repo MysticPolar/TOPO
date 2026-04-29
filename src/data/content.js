@@ -3,51 +3,81 @@
 export const QUESTIONS = [
   {
     id: 1,
-    text: "How do I build a fitness habit that actually sticks?",
+    text: "How do you build a fitness habit that actually sticks?",
     tag: "Health",
     color: "green",
     votes: "9.4k",
     type: "Health",
+    readTime: "6 min",
+    deck: "Discipline is overrated. Design beats willpower.",
+    author: "By The Owl · Editorial",
+    excerpt:
+      "Most resolutions die in week three, not from lack of effort, but from a system that asks willpower to do the work an environment should be doing.",
   },
   {
     id: 2,
-    text: "Why do conversations with my parents always turn into conflict?",
+    text: "Why do conversations with parents always end in conflict?",
     tag: "Relationships",
     color: "coral",
     votes: "15.3k",
     type: "Relationships",
+    readTime: "8 min",
+    deck: "The script you inherited may not be yours to keep.",
+    author: "By The Owl · Field Notes",
+    excerpt:
+      "Family arguments love an old costume. One person asks about dinner, another hears a verdict, and suddenly everyone is twelve years old again.",
   },
   {
     id: 3,
-    text: "Do we really have free will, or is that just the oldest comfort story?",
+    text: "Is free will real, or just the oldest comfort story?",
     tag: "Ideas",
     color: "teal",
     votes: "7.8k",
     type: "Ideas",
+    readTime: "7 min",
+    deck: "Your brain may be improvising the alibi after the choice.",
+    author: "By The Owl · Philosophy Desk",
+    excerpt:
+      "The uncomfortable possibility is not that you are a puppet. It is that the narrator in your head may be less CEO and more press secretary.",
   },
   {
     id: 4,
-    text: "How can a normal person build lasting financial security?",
+    text: "How do normal people build wealth without becoming weird about money?",
     tag: "Money",
     color: "gold",
     votes: "12.1k",
     type: "Money",
+    readTime: "9 min",
+    deck: "Rich is loud. Secure is boring on purpose.",
+    author: "By The Owl · Ledger Room",
+    excerpt:
+      "Financial security is less yacht montage, more calendar reminder. The trick is building a money life that still lets you be a person.",
   },
   {
     id: 5,
-    text: "How do I work with a difficult boss without losing myself?",
+    text: "How do you survive a difficult boss without becoming your inbox?",
     tag: "Work",
     color: "cobalt",
     votes: "11.2k",
     type: "Work",
+    readTime: "7 min",
+    deck: "Some authority problems require a spine, not another Slack thread.",
+    author: "By The Owl · Office Weather",
+    excerpt:
+      "A bad boss can make every notification feel like a tiny subpoena. The answer is not becoming unbothered. It is getting precise.",
   },
   {
     id: 6,
-    text: "I just went through a breakup. What book will sit with me for a while?",
+    text: "What should you read after a breakup when advice sounds insulting?",
     tag: "Literature",
     color: "green",
     votes: "8.6k",
     type: "Literature",
+    readTime: "6 min",
+    deck: "When comfort is too soft, choose language with bones.",
+    author: "By The Owl · Night Desk",
+    excerpt:
+      "Some heartbreak needs tea. Some needs a sentence sharp enough to prove you are still awake inside the wreckage.",
   },
 ];
 
@@ -193,8 +223,8 @@ export const READING_ARTICLES = [
 ];
 
 export const RANKS = [
-  { name: "Junior Reader", ink: 0 },
-  { name: "Margin Marker", ink: 400 },
+  { name: "Apprentice Editor", ink: 0 },
+  { name: "Margin Critic", ink: 400 },
   { name: "Column Keeper", ink: 1200 },
   { name: "Desk Editor", ink: 3000 },
   { name: "Research Fellow", ink: 7000 },
@@ -284,14 +314,14 @@ export const TAG_VOLUMES = {
 };
 
 export const USER_STATS = {
-  accountCreatedAt: "2025-01-01",
+  accountCreatedAt: "2026-03-01",
   loginDays: 14,
-  softwareCreatedAt: "2025-01-01",
+  softwareCreatedAt: "2026-03-01",
   questionsAsked: 47,
   articlesRead: 128,
   streakDays: 14,
-  inkBalance: 500,
-  xpCurrent: 0,
+  inkBalance: 530,
+  xpCurrent: 80,
   xpTotal: 3500,
   rank: "Column Keeper",
   level: 3,

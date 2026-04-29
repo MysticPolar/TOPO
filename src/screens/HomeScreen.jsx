@@ -16,7 +16,7 @@ import {
 } from "../components/Primitives.jsx";
 
 // ── Compact Challenge Chip (coin + challenge in top stats bar) ─
-function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coinAmount }) {
+function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward }) {
   const [done, setDone] = useState(() => userStats.challengeCompletedDate === todayISO());
   const [showPopup, setShowPopup] = useState(false);
   const [reward, setReward] = useState(80);
@@ -34,59 +34,33 @@ function ChallengeChip({ onOpenDispatch, userStats, onApplyChallengeReward, coin
 
   return (
     <>
-      <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", gap: 0 }}>
-        {/* Coin row — compact */}
+      <button
+        onClick={() => !done && setShowPopup(true)}
+        style={{
+          alignSelf: "flex-end",
+          background: done ? "rgba(245,239,224,0.8)" : COLORS.ink,
+          border: `2.5px solid ${done ? COLORS.green : COLORS.rule}`,
+          padding: "15px 18px",
+          cursor: done ? "default" : "pointer",
+          textAlign: "center",
+          transition: "all 0.25s ease",
+          minHeight: 64,
+          minWidth: 232,
+        }}
+        onMouseEnter={e => { if (!done) e.currentTarget.style.opacity = "0.88"; }}
+        onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
+      >
         <div style={{
-          display: "flex", alignItems: "center", gap: 4,
-          background: COLORS.ink, padding: "4px 8px",
-          border: `1.5px solid ${COLORS.rule}`,
-          borderBottom: "none",
+          fontFamily: F.ui,
+          fontWeight: 700,
+          fontSize: 18,
+          color: done ? COLORS.green : COLORS.paper,
+          letterSpacing: 4,
+          lineHeight: 1,
         }}>
-          <CoinIcon size={10} />
-          <div style={{ fontFamily: F.display, fontWeight: 700, fontSize: 11, color: COLORS.gold, letterSpacing: 0.4, lineHeight: 1 }}>
-            {coinAmount}
-          </div>
+          DAY {userStats.streakDays} | {done ? "READ ✓" : "TAKE ONE"}
         </div>
-
-        {/* Challenge trigger */}
-        <div
-          onClick={() => !done && setShowPopup(true)}
-          style={{
-            background: done ? COLORS.paper : COLORS.ink,
-            border: `1.5px solid ${done ? COLORS.green : COLORS.rule}`,
-            padding: "5px 8px",
-            cursor: done ? "default" : "pointer",
-            textAlign: "center",
-            transition: "all 0.25s ease",
-          }}
-          onMouseEnter={e => { if (!done) e.currentTarget.style.opacity = "0.88"; }}
-          onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
-        >
-          {done ? (
-            <div style={{
-              fontFamily: F.editorial, fontWeight: 900, fontSize: 13,
-              color: COLORS.green, lineHeight: 1.15, letterSpacing: 2,
-            }}>
-              Read
-            </div>
-          ) : (
-            <>
-              <div style={{
-                fontFamily: F.editorial, fontWeight: 900, fontSize: 12,
-                color: COLORS.paper, lineHeight: 1.15, letterSpacing: 1,
-              }}>
-                Press
-              </div>
-              <div style={{
-                fontFamily: F.ui, fontSize: 10, fontWeight: 700,
-                color: COLORS.gold, letterSpacing: 1.5, lineHeight: 1.3,
-              }}>
-                Daily
-              </div>
-            </>
-          )}
-        </div>
-      </div>
+      </button>
 
       {showPopup && createPortal(
         <div
@@ -303,83 +277,110 @@ export default function HomeScreen({ onOpenDispatch, onSend, userStats, onApplyC
     <div style={{
       height: "100%",
       boxSizing: "border-box",
-      padding: "10px 14px 8px",
+      padding: "20px 16px 0",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "space-between",
+      minHeight: 0,
     }}>
 
-      {/* ── Top: User stats + Challenge chip ── */}
-      <div style={{ animation: "owls-press-fade-up 0.4s ease both" }}>
+      {/* ── Top: editor stats + daily stamp ── */}
+      <div style={{ animation: "owls-press-fade-up 0.4s ease both", flexShrink: 0 }}>
         <div style={{
-          display: "flex", alignItems: "center", gap: 10, marginBottom: 10,
+          display: "flex", alignItems: "center", gap: 12, marginBottom: 14,
         }}>
           <div style={{ position: "relative", flexShrink: 0 }}>
             <div style={{
-              width: 46, height: 46, borderRadius: "50%",
-              border: `2px solid ${COLORS.ink}`,
+              width: 72, height: 72, borderRadius: "50%",
+              border: `3px solid ${COLORS.ink}`,
               overflow: "hidden", background: COLORS.paperDark,
             }}>
-              <ScholarAvatar size={46} />
+              <ScholarAvatar size={72} />
             </div>
             <div style={{
-              position: "absolute", bottom: -2, right: -2,
-              width: 16, height: 16, background: COLORS.gold,
-              borderRadius: "50%", border: `2px solid ${COLORS.paper}`,
+              position: "absolute", bottom: -3, right: -3,
+              width: 20, height: 20, background: COLORS.gold,
+              borderRadius: "50%", border: `3px solid ${COLORS.paper}`,
               display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 8,
-            }}>🔮</div>
+              fontFamily: F.ui, fontSize: 10, fontWeight: 700, color: COLORS.ink,
+            }}>O</div>
           </div>
           <XPBar
             current={userStats.xpCurrent}
             total={progress.xpTotal}
             rank={progress.currentRank}
           />
+          <div style={{
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            background: COLORS.ink,
+            border: `3px solid ${COLORS.rule}`,
+            padding: "12px 13px",
+            boxShadow: "inset 0 0 0 1px rgba(245,239,224,0.12)",
+          }}>
+            <CoinIcon size={17} />
+            <span style={{ fontFamily: F.display, fontWeight: 900, fontSize: 20, color: COLORS.gold, lineHeight: 1 }}>
+              {userStats.inkBalance}
+            </span>
+            <span style={{ fontFamily: F.ui, fontSize: 12, fontWeight: 700, color: COLORS.gold, letterSpacing: 3 }}>
+              INK
+            </span>
+          </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 18 }}>
           <ChallengeChip
             onOpenDispatch={onOpenDispatch}
             userStats={userStats}
             onApplyChallengeReward={onApplyChallengeReward}
-            coinAmount={userStats.inkBalance}
           />
         </div>
-        <OrnateRule my={0} />
+        <OrnateRule my={0} symbol="" />
       </div>
 
       {/* ── Middle: Question cards ── */}
-      <div>
-        <div style={{ marginBottom: SPACE[2] }}>
+      <div style={{ flex: 1, minHeight: 0, overflowY: "auto", paddingTop: 16, paddingBottom: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
           <div style={{
-            display: "inline-block",
-            fontFamily: F.ui, fontSize: 10, fontWeight: 700,
-            letterSpacing: 3, textTransform: "uppercase",
-            background: COLORS.ink, color: COLORS.paper, padding: `${SPACE[1]}px ${SPACE[2]}px`,
+            fontFamily: F.ui,
+            fontSize: 15,
+            fontWeight: 700,
+            color: COLORS.muted,
+            letterSpacing: 4,
+            textTransform: "uppercase",
+            whiteSpace: "nowrap",
           }}>
-            More to Explore
+            Today's Questions
+          </div>
+          <div style={{ flex: 1, borderTop: `1.5px solid rgba(42,31,14,0.35)` }} />
+          <div style={{
+            fontFamily: F.ui,
+            fontSize: 15,
+            fontWeight: 700,
+            color: COLORS.muted,
+            letterSpacing: 3,
+            textTransform: "uppercase",
+            whiteSpace: "nowrap",
+            opacity: 0.72,
+          }}>
+            {QUESTIONS.length} Dispatches
           </div>
         </div>
-        <div style={{
-          display: "flex", gap: 8, overflowX: "auto",
-          padding: "0 max(0px, calc((100% - 320px) / 2)) 2px",
-          scrollSnapType: "x proximity",
-        }}>
+        <div>
           {QUESTIONS.map((q, i) => (
             <QuestionCard key={q.id} q={q} index={i} onClick={(card) => onSend(card.text, "normal")} />
           ))}
         </div>
-        <div style={{ textAlign: "center", marginTop: SPACE[3] }}>
+        <div style={{ textAlign: "center", margin: `${SPACE[3]}px 0 ${SPACE[2]}px` }}>
           <div style={{
             fontFamily: F.body, fontStyle: "italic", fontSize: 11,
             color: COLORS.muted, opacity: 0.48, lineHeight: 1.6,
           }}>
-            "Somewhere, a page is waiting for the question you have not asked yet."<br />
+            "The owl accepts no vague panic. Please file a sharper question."<br />
             — The Owl's Press
           </div>
         </div>
       </div>
-
-      {/* ── Bottom: just the ornate rule (challenge moved to top) ── */}
-      <OrnateRule my={0} />
-
     </div>
   );
 }

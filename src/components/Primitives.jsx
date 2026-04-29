@@ -127,26 +127,23 @@ export const XPBar = ({ current = 2340, total = 3500, rank = "Reader" }) => {
   const pct = Math.round((current / total) * 100);
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: SPACE[1] }}>
-        <div style={{ fontFamily: F.display, fontWeight: 700, fontStyle: "italic", fontSize: 11, color: COLORS.ink }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, marginBottom: 7 }}>
+        <div style={{ fontFamily: F.display, fontWeight: 900, fontStyle: "italic", fontSize: 18, color: COLORS.ink, lineHeight: 1, minWidth: 0 }}>
           {rank}
         </div>
-        <div style={{ fontFamily: F.ui, fontSize: 10, fontWeight: 600, color: COLORS.muted, letterSpacing: 1 }}>
-          {current.toLocaleString()} ink
+        <div style={{ fontFamily: F.ui, fontSize: 14, fontWeight: 700, color: COLORS.muted, letterSpacing: 1.6, whiteSpace: "nowrap" }}>
+          {current.toLocaleString()} / {total.toLocaleString()} XP
         </div>
       </div>
-      <div style={{ height: 6, background: COLORS.paperAged, border: `1px solid ${COLORS.rule}`, position: "relative", overflow: "hidden" }}>
+      <div style={{ height: 12, background: COLORS.paperAged, border: `2px solid ${COLORS.rule}`, position: "relative", overflow: "hidden" }}>
         <div style={{
           position: "absolute", top: 0, left: 0, bottom: 0,
           background: COLORS.ink, width: `${pct}%`,
           animation: "owls-press-xp-fill 1.2s cubic-bezier(.23,1,.32,1) 0.3s both",
           "--xp-pct": `${pct}%`,
         }}>
-          <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(245,239,224,0.15) 8px, rgba(245,239,224,0.15) 9px)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(245,239,224,0.22) 14px, rgba(245,239,224,0.22) 15px)" }} />
         </div>
-      </div>
-      <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 10, color: COLORS.muted, marginTop: SPACE[1] }}>
-        "The Owl's Press is tracking your reading trail."
       </div>
     </div>
   );
@@ -195,20 +192,22 @@ export const InkToast = ({ amount, message, visible }) => (
 // ── Question Card ─────────────────────────────────────────────
 export const QuestionCard = ({ q, index, onClick }) => {
   const isOdd = index % 2 === 0;
-  const rot = isOdd ? -1.5 : 1;
-  const mt = isOdd ? 0 : SPACE[3];
+  const rot = isOdd ? -0.7 : 0.7;
 
   return (
     <div
       onClick={() => onClick(q)}
       style={{
-        flexShrink: 0, width: 156, padding: `${SPACE[3]}px ${SPACE[3]}px ${SPACE[2]}px`,
-        paddingLeft: SPACE[3] + 3,
-        border: `1.5px solid ${COLORS.rule}`,
-        position: "relative", overflow: "hidden", cursor: "pointer",
+        width: "calc(100% - 12px)",
+        minHeight: 208,
+        margin: `0 6px ${SPACE[3]}px`,
+        padding: `24px 26px 22px 28px`,
+        border: `2.5px solid ${COLORS.rule}`,
+        position: "relative",
+        overflow: "hidden",
+        cursor: "pointer",
         ...TEXTURES.paperLight,
         transform: `rotate(${rot}deg)`,
-        marginTop: mt,
         animation: `${isOdd ? "owls-press-float-in" : "owls-press-float-in-2"} 0.5s ease ${0.1 + index * 0.15}s both`,
         transition: "transform 0.2s ease, box-shadow 0.2s ease",
         "--rot": `${rot}deg`,
@@ -223,15 +222,29 @@ export const QuestionCard = ({ q, index, onClick }) => {
       }}
     >
       {/* Left 3px accent bar — "book spine" per brand spec */}
-      <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 3, background: CARD_COLORS[q.color] || COLORS.coral }} />
-      <div style={{ fontFamily: F.editorial, fontWeight: 700, fontSize: 13, lineHeight: 1.4, color: COLORS.ink, marginBottom: SPACE[2] }}>
+      <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 6, background: CARD_COLORS[q.color] || COLORS.coral }} />
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: SPACE[3], borderBottom: `1.5px solid rgba(42,31,14,0.55)`, paddingBottom: SPACE[3], marginBottom: SPACE[4] }}>
+        <div style={{ fontFamily: F.ui, fontSize: 15, fontWeight: 700, color: CARD_COLORS[q.color] || COLORS.coral, letterSpacing: 4, textTransform: "uppercase" }}>
+          {q.tag} · {q.readTime || "6 min"}
+        </div>
+        <div style={{ fontFamily: F.ui, fontSize: 15, fontWeight: 700, color: COLORS.muted, letterSpacing: 1.2, whiteSpace: "nowrap" }}>
+          ▲ {q.votes}
+        </div>
+      </div>
+      <div style={{ fontFamily: F.display, fontWeight: 900, fontSize: 28, lineHeight: 1.05, color: COLORS.ink, marginBottom: SPACE[3], letterSpacing: -0.8 }}>
         {q.text}
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontFamily: F.ui, fontSize: 10, color: COLORS.muted, letterSpacing: 1 }}>▲ {q.votes}</div>
-        <div style={{ background: COLORS.ink, color: COLORS.paper, fontFamily: F.ui, fontSize: 10, fontWeight: 700, padding: `${SPACE[1]}px ${SPACE[2]}px` }}>
-          {q.type}
-        </div>
+      <div style={{ fontFamily: F.body, fontStyle: "italic", fontWeight: 700, fontSize: 17, color: COLORS.muted, lineHeight: 1.35, marginBottom: SPACE[4] }}>
+        {q.deck}
+      </div>
+      <div style={{ fontFamily: F.ui, fontSize: 12, fontWeight: 700, color: COLORS.muted, letterSpacing: 4, textTransform: "uppercase", marginBottom: SPACE[3] }}>
+        {q.author || "By The Owl · Editorial"}
+      </div>
+      <div style={{ fontFamily: F.body, fontSize: 18, color: COLORS.ink, lineHeight: 1.55, maxWidth: 310 }}>
+        {q.excerpt}
+      </div>
+      <div style={{ textAlign: "right", marginTop: SPACE[5], fontFamily: F.ui, fontSize: 13, fontWeight: 700, color: COLORS.ink, letterSpacing: 5, textTransform: "uppercase" }}>
+        Read on &gt;
       </div>
     </div>
   );
