@@ -3,39 +3,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { AVATARS, RANKS, TAG_VOLUMES, getRankProgress } from "../data/content.js";
-import { COLORS, FONTS as F, SPACE, LAYOUT } from "../styles/tokens.js";
-import { OrnateRule, SectionLabel, ScholarAvatar, CoinIcon } from "../components/Primitives.jsx";
+import { RANKS, TAG_VOLUMES, getRankProgress } from "../data/content.js";
+import { COLORS, FONTS as F, SPACE } from "../styles/tokens.js";
+import { OrnateRule, SectionLabel, ScholarAvatar } from "../components/Primitives.jsx";
+import UserStatusStrip from "../components/UserStatusStrip.jsx";
 import CalendarPanel from "../components/panels/CalendarPanel.jsx";
 import CollectionsPanel from "../components/panels/CollectionsPanel.jsx";
-
-// ── Settings Row ──────────────────────────────────────────────
-function SettingRow({ icon, label, sub, value, onClick }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={sub ? `${label} (${sub})` : label}
-      className="duleme-bare"
-      style={{
-        display: "flex", alignItems: "center", gap: SPACE[3],
-        padding: `${SPACE[3]}px 0`,
-        minHeight: LAYOUT.minTouchTarget,
-        borderBottom: `1px solid ${COLORS.paperAged}`,
-        cursor: "pointer",
-      }}
-    >
-      <div style={{ fontSize: 16, width: 20, textAlign: "center", flexShrink: 0 }}>{icon}</div>
-      <div style={{ flex: 1 }}>
-        <div style={{ fontFamily: F.chinese, fontSize: 13, color: COLORS.ink }}>{label}</div>
-        {sub && <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 10, color: COLORS.muted, marginTop: 1 }}>{sub}</div>}
-      </div>
-      <div style={{ fontFamily: F.ui, fontSize: 10, color: COLORS.muted, letterSpacing: 1 }}>
-        {value || "→"}
-      </div>
-    </button>
-  );
-}
 
 // ── Hex Radar Chart ────────────────────────────────────────────
 function HexRadar({ data, size = 220 }) {
@@ -56,7 +29,7 @@ function HexRadar({ data, size = 220 }) {
   const dataPoints = labels.map((_, i) => pt(i, values[i] / maxVal));
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+    <svg width="100%" height="auto" style={{ maxWidth: "100%", display: "block" }} viewBox={`0 0 ${size} ${size}`}>
       {gridLevels.map((lv, li) => (
         <polygon key={li}
           points={labels.map((_, i) => pt(i, lv).join(",")).join(" ")}
@@ -145,8 +118,10 @@ function DimensionPanel() {
       <TabStrip active={activeTab} onChange={handleTabChange} />
 
       {activeTab === "radar" && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <HexRadar data={TAG_VOLUMES} size={240} />
+        <div style={{ display: "flex", justifyContent: "center", width: "100%", overflow: "hidden" }}>
+          <div style={{ width: "min(240px, 100%)" }}>
+            <HexRadar data={TAG_VOLUMES} size={240} />
+          </div>
         </div>
       )}
 
@@ -161,12 +136,18 @@ function DimensionPanel() {
   );
 }
 
-export default function ProfileScreen({ userStats = {} }) {
+export default function ProfileScreen({ userStats = {}, onOpenDispatch, onApplyChallengeReward }) {
   const progress = getRankProgress(userStats.xpCurrent ?? 0);
   const pct = progress.pctToNext;
 
   return (
-    <div style={{ padding: "10px 16px 80px" }}>
+    <div style={{ padding: "10px 16px max(80px, calc(env(safe-area-inset-bottom, 0px) + 56px))" }}>
+
+      <UserStatusStrip
+        userStats={userStats}
+        onOpenDispatch={onOpenDispatch}
+        onApplyChallengeReward={onApplyChallengeReward}
+      />
 
       {/* Profile header */}
       <div style={{ textAlign: "center", marginBottom: 18, animation: "duleme-fade-up 0.4s ease both" }}>
@@ -311,14 +292,6 @@ export default function ProfileScreen({ userStats = {} }) {
           </div>
         ))}
       </div>
-
-      {/* Settings */}
-      <OrnateRule symbol="— ⚙ —" />
-      <SectionLabel>Settings</SectionLabel>
-      <SettingRow icon="🔔" label="Notifications" sub="Push & email preferences" />
-      <SettingRow icon="📧" label="Daily Bulletin" sub="A short morning email" value="On" />
-      <SettingRow icon="🔒" label="Privacy" sub="Privacy & your data" />
-      <SettingRow icon="🦉" label="About The Owl" sub="About us" />
 
       {/* Footer */}
       <div style={{ textAlign: "center", padding: `${SPACE[7]}px 0 ${SPACE[2]}px` }}>

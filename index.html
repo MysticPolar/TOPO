@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#1a1208" />
+  <meta name="theme-color" content="#F4EAD3" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="The Owl's Postoffice — a daily literary dispatch from The Owl. Read dangerously." />
@@ -25,7 +25,7 @@
       width: 100%;
       height: 100%;
       min-height: 100dvh;
-      background: #1a1208;
+      background: #E0D9CD;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -150,6 +150,7 @@
     if (testEntry) {
       testEntry.addEventListener("click", () => {
         testEntryRequested = true;
+        sessionStorage.setItem("duleme-entered-preview", "1");
         sessionStorage.setItem("duleme-force-home", "1");
         window.dispatchEvent(new CustomEvent("duleme-force-home"));
         testEntry.disabled = true;

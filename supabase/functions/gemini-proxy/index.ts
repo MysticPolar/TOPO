@@ -207,6 +207,29 @@ You MUST return only the following JSON (no prose outside the JSON):
 }
 
 The color field must be one of: cobalt, teal, coral, purple, gold, green.`,
+
+  weatherBook: `Mode: Weather & Moment Book Pick (Owlpo home card)
+
+The reader sees live weather and local time. Recommend exactly ONE real, published book that fits the atmosphere (weather, time of day, season, city if given).
+
+Rules:
+- Choose a book you are confident exists; English title preferred.
+- audiobookDuration: realistic estimate as a string like "8h 32m" or "11h 5m" (hours + minutes). If unknown, infer a typical audiobook length for that title.
+- description: 2–3 sentences, editorial, no spoilers.
+- moodLine: one evocative sentence, italic in tone, explaining why this book fits this exact moment (weather + time).
+- coverGradientFrom / coverGradientTo: two hex colors that match the book's mood (not pure white).
+
+You MUST return only the following JSON (no prose outside the JSON):
+{
+  "title": "Book title only",
+  "author": "Author full name",
+  "year": "YYYY",
+  "description": "Two or three sentences.",
+  "moodLine": "One sentence about why it fits this moment.",
+  "audiobookDuration": "8h 32m",
+  "coverGradientFrom": "#2a2a2a",
+  "coverGradientTo": "#0f0f0f"
+}`,
 };
 
 function getSupabase() {

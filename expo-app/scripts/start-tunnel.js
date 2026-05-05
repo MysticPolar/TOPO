@@ -3,7 +3,7 @@
  * 1) Cloudflare quick tunnel → HTTPS URL for Vite (:3000) → EXPO_PUBLIC_PREVIEW_URL
  * 2) Expo --tunnel for Metro (uses @expo/ngrok; phone loads bundle over the internet)
  *
- * LAN-only preview: npm run start:lan
+ * Default Expo script uses LAN (`npm run start`). Use `npm run start:tunnel` for this mode.
  *
  * Requires: Vite on :3000, cloudflared (`brew install cloudflared`), @expo/ngrok (npm dep).
  */

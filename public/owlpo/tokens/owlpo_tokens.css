@@ -1,0 +1,14 @@
+/* Owlpo design tokens */
+:root {
+  --paper: #F4EAD3;
+  --linen: #EADDC0;
+  --warm-white: #FAFAF8;
+  --ink: #1A2540;
+  --slate: #4A5876;
+  --mist: #6E89A8;
+  --lantern: #A8853F;
+  --ember: #B05A4D;
+  --shadow: #6F5F50;
+  --border-soft: rgba(111, 95, 80, 0.16);
+  --card-shadow: rgba(26, 37, 64, 0.08);
+}
