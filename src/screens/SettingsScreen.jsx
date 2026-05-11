@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { COLORS, FONTS as F, SPACE, LAYOUT } from "../styles/tokens.js";
 import { OrnateRule, SectionLabel } from "../components/Primitives.jsx";
+import InvitesPanel from "../components/InvitesPanel.jsx";
 
 function ArrowRow({ icon, label, sub }) {
   return (
@@ -76,6 +77,21 @@ export default function SettingsScreen() {
 
       <ArrowRow icon="🔒" label="Privacy" sub="Privacy & your data" />
       <ArrowRow icon="🦉" label="About The Owl" sub="About us" />
+
+      <div style={{ marginTop: SPACE[6] }}>
+        <OrnateRule symbol="— ✉ —" />
+        <SectionLabel>Invites</SectionLabel>
+        <div
+          style={{
+            border: `1px solid ${COLORS.paperAged}`,
+            background: COLORS.cardSurface,
+            padding: `${SPACE[3]}px ${SPACE[4]}px`,
+            marginTop: SPACE[2],
+          }}
+        >
+          <InvitesPanel />
+        </div>
+      </div>
     </div>
   );
 }

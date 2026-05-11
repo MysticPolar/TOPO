@@ -4,8 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { GLOBAL_CSS, FONTS as F, LAYOUT } from "./styles/tokens.js";
+import { GLOBAL_CSS } from "./styles/tokens.js";
 import { AppThemeContext } from "./context/AppThemeContext.jsx";
+import { useAuth } from "./context/AuthContext.jsx";
 import TopBar from "./components/TopBar.jsx";
 import OracleDispatch from "./components/OracleDispatch.jsx";
 import { InkToast } from "./components/Primitives.jsx";
@@ -15,6 +16,7 @@ import ProfileScreen from "./screens/ProfileScreen.jsx";
 import SettingsScreen from "./screens/SettingsScreen.jsx";
 import SplashScreen from "./screens/SplashScreen.jsx";
 import RewardsScreen from "./screens/RewardsScreen.jsx";
+import LoginScreen from "./screens/LoginScreen.jsx";
 import { READING_ARTICLES, USER_STATS } from "./data/content.js";
 import { loadLibrarySaves } from "./utils/librarySaves.js";
 import { readSoftwareCreatedAt } from "./utils/softwareCreatedAt.js";
@@ -52,103 +54,13 @@ function readSkipSplash() {
   }
 }
 
-function LoginModal({ open, onClose, onSignIn }) {
-  const [name, setName] = useState("Maya Chen");
-  const [email, setEmail] = useState("maya@example.com");
-  const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    if (!open) setPassword("");
-  }, [open]);
-
-  if (!open) return null;
-
-  return (
-    <div
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 420,
-        background: "var(--duleme-overlay)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left))",
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: "100%",
-          maxWidth: 330,
-          background: "var(--duleme-surface)",
-          border: "1.5px solid var(--duleme-rule)",
-          boxShadow: "0 12px 28px var(--duleme-shadow-modal)",
-          padding: 16,
-        }}
-      >
-        <div style={{ fontFamily: F.ui, fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--duleme-text)", marginBottom: 10 }}>
-          Login
-        </div>
-        <label style={{ display: "block", fontFamily: F.ui, fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--duleme-text-muted)", marginBottom: 4 }}>
-          Display name
-        </label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ width: "100%", boxSizing: "border-box", marginBottom: 9, border: "1px solid var(--duleme-border-medium)", minHeight: LAYOUT.minTouchTarget, padding: "8px 10px", fontFamily: F.ui, background: "var(--duleme-surface-input)", color: "var(--duleme-text)" }}
-        />
-        <label style={{ display: "block", fontFamily: F.ui, fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--duleme-text-muted)", marginBottom: 4 }}>
-          Email
-        </label>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          style={{ width: "100%", boxSizing: "border-box", marginBottom: 9, border: "1px solid var(--duleme-border-medium)", minHeight: LAYOUT.minTouchTarget, padding: "8px 10px", fontFamily: F.ui, background: "var(--duleme-surface-input)", color: "var(--duleme-text)" }}
-        />
-        <label style={{ display: "block", fontFamily: F.ui, fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--duleme-text-muted)", marginBottom: 4 }}>
-          Password
-        </label>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          style={{ width: "100%", boxSizing: "border-box", marginBottom: 12, border: "1px solid var(--duleme-border-medium)", minHeight: LAYOUT.minTouchTarget, padding: "8px 10px", fontFamily: F.ui, background: "var(--duleme-surface-input)", color: "var(--duleme-text)" }}
-        />
-        <button
-          type="button"
-          onClick={() => onSignIn({ name, email })}
-          style={{
-            width: "100%",
-            minHeight: LAYOUT.minTouchTarget,
-            border: "none",
-            background: "var(--duleme-button-fill)",
-            color: "var(--duleme-on-button)",
-            cursor: "pointer",
-            fontFamily: F.ui,
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-          }}
-        >
-          Continue
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export default function DulemeApp() {
+  const { user, profile, signOut } = useAuth();
   const [userStats, setUserStats] = useState(() => loadUserStats(STAT_DEFAULTS));
   const [page, setPage] = useState(() => (readSkipSplash() ? "home" : "splash"));
   const [dispatch, setDispatch] = useState(null);
   const [tagSeenArticles, setTagSeenArticles] = useState(() => loadTagSeenArticles());
   const [recentChats, setRecentChats] = useState([]);
-  const [authUser, setAuthUser] = useState(null);
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [theme, setTheme] = useState(() => {
     try {
       return localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light";
@@ -301,20 +213,26 @@ export default function DulemeApp() {
     return () => window.removeEventListener("duleme-library-updated", sync);
   }, []);
 
+  const isLoggedIn = !!user;
+  const userName = profile?.display_name
+    || user?.user_metadata?.display_name
+    || (user?.email ? user.email.split("@")[0] : "Reader");
+
   return (
     <AppThemeContext.Provider value={{ theme }}>
     <div className={`duleme-root ${theme === "dark" ? "duleme-theme-dark" : ""}`}>
       <TopBar
         userStats={userStats}
-        isLoggedIn={!!authUser}
-        userName={authUser?.name || "Maya Chen"}
+        isLoggedIn={isLoggedIn}
+        userName={userName}
         recentChats={recentChats}
         libraryCount={libraryCount}
         theme={theme}
         onToggleTheme={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))}
         onNavigate={handleNavigate}
         onOpenChat={handleOpenChatFromHistory}
-        onRequestLogin={() => setLoginModalOpen(true)}
+        onRequestLogin={() => setPage("auth")}
+        onSignOut={signOut}
       />
 
       <div
@@ -361,6 +279,9 @@ export default function DulemeApp() {
               onSend={handleSend}
             />
           )}
+          {page === "auth" && (
+            <LoginScreen onAuthSuccess={() => handleNavigate("home")} />
+          )}
           {page === "reading" && <ReadingScreen />}
           {page === "rewards" && <RewardsScreen userStats={userStats} />}
           {page === "profile" && (
@@ -387,18 +308,6 @@ export default function DulemeApp() {
           amount={toast?.amount || 0}
           message={toast?.message || ""}
           visible={!!toast}
-        />
-
-        <LoginModal
-          open={loginModalOpen}
-          onClose={() => setLoginModalOpen(false)}
-          onSignIn={(user) => {
-            setAuthUser({
-              name: user?.name?.trim() || "Maya Chen",
-              email: user?.email?.trim() || "maya@example.com",
-            });
-            setLoginModalOpen(false);
-          }}
         />
       </div>
 

@@ -109,6 +109,7 @@ export default function AppMenu({
   onNavigate,
   onOpenChat,
   onRequestLogin,
+  onSignOut,
   /** Merged into the menu trigger button (e.g. Owlpo top bar 40×40 circle). */
   triggerStyle = null,
 }) {
@@ -331,6 +332,17 @@ export default function AppMenu({
                 onNavigate("settings");
               }}
             />
+
+            {isLoggedIn && onSignOut ? (
+              <MenuRow
+                icon={<span aria-hidden style={{ fontSize: 12 }}>↩</span>}
+                label="Sign out"
+                onClick={() => {
+                  setOpen(false);
+                  onSignOut();
+                }}
+              />
+            ) : null}
           </div>
         </div>
       )}

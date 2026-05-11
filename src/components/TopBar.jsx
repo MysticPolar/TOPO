@@ -69,16 +69,18 @@ export default function TopBar({
   onNavigate,
   onOpenChat,
   onRequestLogin,
+  onSignOut,
 }) {
   const progress = getRankProgress(userStats?.xpCurrent ?? 0);
   const expPct = Math.max(0, Math.min(100, progress.pctToNext ?? 0));
 
   const navBtn = {
-    width: 40,
-    height: 40,
+    width: 36,
+    height: 36,
     borderRadius: "50%",
-    border: CHROME_BORDER,
-    background: "var(--duleme-chrome-bg)",
+    border: "none",
+    background: "var(--duleme-bg-elevated)",
+    boxShadow: theme === "dark" ? "inset 0 0 0 1px var(--duleme-border)" : "none",
     color: "var(--duleme-text)",
     display: "flex",
     alignItems: "center",
@@ -86,6 +88,7 @@ export default function TopBar({
     cursor: "pointer",
     flexShrink: 0,
     padding: 0,
+    transition: "transform 120ms",
   };
 
   return (
@@ -94,21 +97,20 @@ export default function TopBar({
         flexShrink: 0,
         flexGrow: 0,
         flexBasis: "auto",
-        minHeight: "calc(env(safe-area-inset-top) + 68px)",
+        minHeight: "calc(env(safe-area-inset-top) + 62px)",
         maxHeight: "none",
         boxSizing: "border-box",
-        borderBottom: "1px solid var(--duleme-border)",
+        borderBottom: "none",
         background: "var(--duleme-bg)",
         paddingLeft: 16,
         paddingRight: 16,
-        paddingBottom: 0,
+        paddingBottom: 10,
         paddingTop: "env(safe-area-inset-top)",
       }}
     >
       <div
         style={{
-          minHeight: 68,
-          height: 68,
+          minHeight: 48,
           boxSizing: "border-box",
           display: "flex",
           alignItems: "center",
@@ -116,17 +118,17 @@ export default function TopBar({
           gap: 8,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0, flex: 1 }}>
-          <OwlMark size={46} />
-          <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 5, alignSelf: "stretch", flex: 1, marginLeft: 4 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0, flex: 1 }}>
+          <OwlMark size={40} />
+          <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 7, flex: 1 }}>
             <span
               style={{
-                fontFamily: F.display,
-                fontSize: 20,
-                fontWeight: 700,
-                lineHeight: 1.2,
+                fontFamily: F.serif,
+                fontSize: 22,
+                fontWeight: 500,
+                lineHeight: 1.1,
                 color: "var(--duleme-text)",
-                letterSpacing: "-0.02em",
+                letterSpacing: "-0.01em",
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
@@ -139,7 +141,7 @@ export default function TopBar({
             <div
               aria-label="Experience progress"
               style={{
-                width: 110,
+                width: 148,
                 height: 4,
                 borderRadius: 2,
                 background: "var(--duleme-progress-track)",
@@ -169,19 +171,19 @@ export default function TopBar({
               minHeight: 36,
               display: "inline-flex",
               alignItems: "center",
-              gap: 3,
-              border: CHROME_BORDER,
-              background: "rgba(196,146,42,0.07)",
-              padding: "6px 8px",
-              borderRadius: 18,
-              color: theme === "dark" ? "var(--duleme-gold-bright)" : "var(--duleme-text)",
+              gap: 5,
+              border: "none",
+              background: "var(--duleme-bg-elevated)",
+              padding: "6px 10px",
+              borderRadius: 999,
+              color: "var(--duleme-text)",
               cursor: "pointer",
               whiteSpace: "nowrap",
-              boxShadow: "0 1px 3px rgba(26,37,64,0.04)",
+              boxShadow: theme === "dark" ? "inset 0 0 0 1px var(--duleme-border)" : "0 1px 0 rgba(26,37,64,0.04)",
             }}
           >
             <FeatherIcon theme={theme} />
-            <span style={{ fontFamily: F.ui, fontSize: 14, fontWeight: 600 }}>
+            <span style={{ fontFamily: F.ui, fontSize: 13, fontWeight: 500 }}>
               {(userStats?.inkBalance ?? 0).toLocaleString()}
             </span>
           </button>
@@ -199,6 +201,7 @@ export default function TopBar({
               onNavigate={onNavigate}
               onOpenChat={onOpenChat}
               onRequestLogin={onRequestLogin}
+              onSignOut={onSignOut}
               triggerStyle={navBtn}
             />
           </div>
