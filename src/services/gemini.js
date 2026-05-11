@@ -157,4 +157,125 @@ export async function askOwleryStream(questionText, mode = "normal", onPartial) 
   return finalResult;
 }
 
+const WEATHER_BOOK_FALLBACK = {
+  title: "How to Read a Book",
+  author: "Mortimer J. Adler",
+  year: "1940",
+  description:
+    "A patient guide to reading for understanding — layers of inspection, interpretation, and criticism — for any afternoon when the world feels noisy and you want your mind to go quiet on purpose.",
+  moodLine: "For the moment when you want one steady voice to teach you how to choose what deserves your attention next.",
+  audiobookDuration: "13h 45m",
+  coverGradientFrom: "#2a2418",
+  coverGradientTo: "#0f0c08",
+};
+
+function normalizeWeatherBook(parsed) {
+  if (!parsed || typeof parsed !== "object") return null;
+  const title = String(parsed.title || "").trim();
+  if (!title) return null;
+  return {
+    title,
+    author: String(parsed.author || "").trim() || "Unknown author",
+    year: String(parsed.year || "").trim() || "—",
+    description: String(parsed.description || parsed.en || "").trim() || WEATHER_BOOK_FALLBACK.description,
+    moodLine: String(parsed.moodLine || parsed.pullQuote || "").trim() || WEATHER_BOOK_FALLBACK.moodLine,
+    audiobookDuration: String(parsed.audiobookDuration || "8h 0m").trim(),
+    coverGradientFrom: String(parsed.coverGradientFrom || "#2a2a2a").trim(),
+    coverGradientTo: String(parsed.coverGradientTo || "#111").trim(),
+  };
+}
+
+/**
+ * Streams a single weather-aware book pick (JSON shape from `weatherBook` proxy mode).
+ */
+export async function askWeatherBookStream(contextPayload, onPartial) {
+  const question = `Reader context (JSON — use exactly this for atmosphere):\n${JSON.stringify(contextPayload, null, 2)}`;
+
+  if (USE_MOCK) {
+    return askOwleryStreamMock(question, "weatherBook", onPartial);
+  }
+
+  if (!SUPABASE_URL) {
+    console.warn("[owl] No VITE_SUPABASE_URL set, using weather book fallback");
+    onPartial(WEATHER_BOOK_FALLBACK);
+    return WEATHER_BOOK_FALLBACK;
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+  let res;
+  try {
+    res = await fetch(PROXY_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "apikey": SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ question, mode: "weatherBook" }),
+      signal: controller.signal,
+    });
+  } catch (err) {
+    clearTimeout(timeoutId);
+    if (err.name === "AbortError") {
+      throw new Error("Request timed out. Please try again.");
+    }
+    throw err;
+  }
+
+  if (!res.ok) {
+    const errBody = await res.text();
+    throw new Error(`Gemini proxy ${res.status}: ${errBody.slice(0, 200)}`);
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let accumulated = "";
+  let lastSnap = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    const chunk = decoder.decode(value, { stream: true });
+    for (const line of chunk.split("\n")) {
+      if (!line.startsWith("data: ")) continue;
+      const raw = line.slice(6).trim();
+      if (!raw || raw === "[DONE]") continue;
+      try {
+        const event = JSON.parse(raw);
+        const text = event.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) accumulated += text;
+      } catch { /* skip */ }
+    }
+
+    let partial = null;
+    try {
+      partial = normalizeWeatherBook(JSON.parse(accumulated));
+    } catch {
+      partial = normalizeWeatherBook(softParse(accumulated));
+    }
+    if (partial) {
+      const snap = JSON.stringify(partial);
+      if (snap !== lastSnap) {
+        lastSnap = snap;
+        onPartial(partial);
+      }
+    }
+  }
+
+  clearTimeout(timeoutId);
+
+  let finalResult;
+  try {
+    finalResult = normalizeWeatherBook(JSON.parse(accumulated));
+  } catch {
+    finalResult = normalizeWeatherBook(softParse(accumulated));
+  }
+  if (!finalResult) finalResult = WEATHER_BOOK_FALLBACK;
+  onPartial(finalResult);
+  return finalResult;
+}
+
 export { FALLBACK };

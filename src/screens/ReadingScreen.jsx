@@ -2,10 +2,11 @@
 // The Owl's Postoffice · Reading Screen (Library)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { READING_ARTICLES } from "../data/content.js";
 import { COLORS, FONTS as F, TEXTURES, CARD_COLORS, SPACE, LAYOUT } from "../styles/tokens.js";
 import { OrnateRule, SectionLabel } from "../components/Primitives.jsx";
+import { loadLibrarySaves } from "../utils/librarySaves.js";
 
 // ── Article Card ──────────────────────────────────────────────
 function ArticleCard({ article, index, onOpen }) {
@@ -114,14 +115,29 @@ function FilterTabs({ active, onSelect }) {
 export default function ReadingScreen() {
   const [filter, setFilter] = useState("All");
   const [openArticle, setOpenArticle] = useState(null);
+  const [shelfEpoch, setShelfEpoch] = useState(0);
 
-  const filtered = filter === "All"
-    ? READING_ARTICLES
-    : READING_ARTICLES.filter(a => a.tag === filter);
+  useEffect(() => {
+    const onUp = () => setShelfEpoch((n) => n + 1);
+    window.addEventListener("duleme-library-updated", onUp);
+    return () => window.removeEventListener("duleme-library-updated", onUp);
+  }, []);
+
+  const shelfArticles = useMemo(() => loadLibrarySaves(), [shelfEpoch]);
+
+  const filtered = useMemo(() => {
+    const base = filter === "All"
+      ? READING_ARTICLES
+      : READING_ARTICLES.filter((a) => a.tag === filter);
+    if (filter !== "All") return base;
+    const shelfIds = new Set(shelfArticles.map((a) => a.id));
+    const rest = base.filter((a) => !shelfIds.has(a.id));
+    return [...shelfArticles, ...rest];
+  }, [filter, shelfArticles]);
 
   if (openArticle) {
     return (
-      <div style={{ padding: `${SPACE[3]}px ${SPACE[4]}px ${SPACE[9]}px` }}>
+      <div style={{ padding: `${SPACE[3]}px ${SPACE[4]}px max(${SPACE[9]}px, calc(env(safe-area-inset-bottom, 0px) + ${SPACE[6]}px))` }}>
         <button
           type="button"
           onClick={() => setOpenArticle(null)}
@@ -222,7 +238,7 @@ export default function ReadingScreen() {
   }
 
   return (
-    <div style={{ padding: `${SPACE[3]}px ${SPACE[4]}px ${SPACE[4]}px` }}>
+    <div style={{ padding: `${SPACE[3]}px ${SPACE[4]}px max(${SPACE[4]}px, calc(env(safe-area-inset-bottom, 0px) + ${SPACE[3]}px))` }}>
 
       <div style={{ textAlign: "center", marginBottom: SPACE[4], animation: "duleme-fade-up 0.4s ease both" }}>
         <div style={{ fontFamily: F.chinese, fontWeight: 900, fontSize: 20, color: COLORS.ink, marginBottom: SPACE[1] }}>

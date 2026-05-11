@@ -169,23 +169,28 @@ export const CoinsDisplay = ({ amount = 420 }) => (
 // ── Ink Toast Notification ────────────────────────────────────
 export const InkToast = ({ amount, message, visible }) => (
   <div style={{
-    position: "absolute", bottom: 80, left: 16, right: 16, zIndex: 300,
+    position: "fixed",
+    left: "max(16px, env(safe-area-inset-left))",
+    right: "max(16px, env(safe-area-inset-right))",
+    bottom: "max(20px, calc(env(safe-area-inset-bottom, 0px) + 16px))",
+    zIndex: 300,
     display: "flex", alignItems: "center", gap: 12,
-    background: COLORS.ink, padding: "12px 16px",
-    borderLeft: `4px solid ${COLORS.gold}`,
-    boxShadow: `4px 6px 0 ${COLORS.rule}`,
+    background: "var(--duleme-button-fill)", padding: "12px 16px",
+    borderLeft: "4px solid var(--duleme-gold)",
+    boxShadow: "4px 6px 0 var(--duleme-rule)",
     opacity: visible ? 1 : 0,
     transform: visible ? "translateY(0)" : "translateY(24px)",
     transition: "all 0.35s cubic-bezier(.23,1,.32,1)",
     pointerEvents: visible ? "auto" : "none",
     animation: visible ? "duleme-toast-in 0.35s ease both" : "none",
+    boxSizing: "border-box",
   }}>
     <CoinIcon size={28} />
     <div>
-      <div style={{ fontFamily: F.display, fontWeight: 900, fontSize: 18, color: COLORS.gold }}>
+      <div style={{ fontFamily: F.display, fontWeight: 900, fontSize: 18, color: "var(--duleme-gold-bright)" }}>
         +{amount} ink
       </div>
-      <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 9, color: COLORS.muted }}>
+      <div style={{ fontFamily: F.body, fontStyle: "italic", fontSize: 9, color: "var(--duleme-text-muted)" }}>
         {message}
       </div>
     </div>

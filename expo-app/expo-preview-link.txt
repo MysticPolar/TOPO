@@ -1,4 +1,4 @@
 Expo Go URL (encoded in expo-go-qr.png)
-exp://y59b6yu-anonymous-8081.exp.direct
+exp://172.16.106.182:8081
 
-generated: 2026-03-27T07:26:41.131Z
+generated: 2026-04-29T06:11:48.453Z

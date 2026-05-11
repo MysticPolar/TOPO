@@ -41,11 +41,12 @@ export default function App() {
             Metro is running in tunnel mode, or the dev host could not be read. For a simple local preview:
             {'\n\n'}
             1. Stop Expo (Ctrl+C).{'\n'}
-            2. From `expo-app/`, run: `npm run start` (LAN only — no tunnel).{'\n'}
+            2. From `expo-app/`, run: `npm run start:lan` (LAN — not tunnel).{'\n'}
             3. From the repo root, run Vite: `npm run dev` (port {VITE_PORT}).{'\n'}
             4. Phone and computer must be on the same Wi‑Fi.{'\n'}
-            5. Generate the QR: `npm run qr` from `expo-app/` while Metro is running.{'\n\n'}
-            Optional: set `EXPO_PUBLIC_PREVIEW_URL` to your Vite URL if you need a static override.
+            5. Android: rebuild or reinstall the app after enabling cleartext in app.json if the WebView stays blank.{'\n'}
+            6. Optional: `EXPO_PUBLIC_PREVIEW_URL=http://YOUR_LAN_IP:{VITE_PORT}/` (run `npm run which-ip` in expo-app).{'\n\n'}
+            Tunnel mode cannot guess your Vite URL; use LAN or set the env URL explicitly.
           </Text>
         </ScrollView>
       </View>

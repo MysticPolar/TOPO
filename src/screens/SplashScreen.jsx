@@ -12,7 +12,7 @@ export default function SplashScreen({ onEnter }) {
 
   return (
     <div style={{
-      width: "100%", height: "100%",
+      width: "100%", flex: 1, minHeight: 0, height: "100%",
       display: "flex", flexDirection: "column",
       alignItems: "center", justifyContent: "center",
       background: COLORS.ink,
@@ -35,7 +35,7 @@ export default function SplashScreen({ onEnter }) {
 
       <div style={{
         fontFamily: F.blackletter,
-        fontSize: 56,
+        fontSize: "clamp(36px, 11vw, 56px)",
         color: "#f5efe0",
         letterSpacing: 1,
         lineHeight: 1,

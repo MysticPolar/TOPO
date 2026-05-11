@@ -12,6 +12,9 @@ export const QUESTIONS = [
     color: "green",
     votes: "9.4k",
     type: "Health",
+    readTime: "6 min",
+    author: "By The Owl · Editorial",
+    preview: "Most resolutions die in week three — not from lack of effort, but from a system that asks willpower to do the work an environment should be doing.",
   },
   {
     id: 2,
@@ -21,6 +24,9 @@ export const QUESTIONS = [
     color: "coral",
     votes: "15.3k",
     type: "Relationships",
+    readTime: "8 min",
+    author: "By The Owl · Editorial",
+    preview: "Something fills the air between parent and adult child. A role you've outgrown, but a script no one gave you permission to rewrite.",
   },
   {
     id: 3,
@@ -30,6 +36,9 @@ export const QUESTIONS = [
     color: "teal",
     votes: "7.8k",
     type: "Philosophy",
+    readTime: "7 min",
+    author: "By The Owl · Philosophy Desk",
+    preview: "If your next thought was already determined by physics, so was the thought you just had about free will. The rabbit hole goes deeper than it looks.",
   },
   {
     id: 4,
@@ -39,6 +48,9 @@ export const QUESTIONS = [
     color: "gold",
     votes: "12.1k",
     type: "Wealth",
+    readTime: "9 min",
+    author: "By The Owl · Finance Desk",
+    preview: "The gap between what you earn and what you keep is mostly a psychology problem. Very few people figure that out before they need to.",
   },
   {
     id: 5,
@@ -48,6 +60,9 @@ export const QUESTIONS = [
     color: "cobalt",
     votes: "11.2k",
     type: "Career",
+    readTime: "7 min",
+    author: "By The Owl · Careers Desk",
+    preview: "The manual for surviving a difficult boss has never been written — partly because the author was always afraid they'd hand it to the wrong person.",
   },
   {
     id: 6,
@@ -57,6 +72,65 @@ export const QUESTIONS = [
     color: "green",
     votes: "8.6k",
     type: "Literature",
+    readTime: "5 min",
+    author: "By The Owl · Night Owl Column",
+    preview: "Some books have been patient for a very long time, waiting for exactly the night you are having right now.",
+  },
+];
+
+/** Curated picks for the home “Vibe of the Day” card (refresh cycles this list). */
+export const VIBE_OF_THE_DAY_CARDS = [
+  {
+    id: "moveable-feast",
+    vibeLabel: "sea breeze",
+    headline: "Paris in the '20s — broke, hungry, and gloriously alive",
+    cover: { from: "#3d4a5c", to: "#1a2230", accent: "#c9a227" },
+    author: "Ernest Hemingway",
+    year: "1964",
+    bookTitle: "A Moveable Feast",
+    intro:
+      "A small memoir of hunger, cafés, and first drafts — when the city was cheap enough to be a muse and every walk home felt like a story you hadn't earned yet.",
+    whyThisBook:
+      "For days when you want atmosphere over answers: lean prose, hunger as honesty, and Paris as a character who owes you nothing.",
+  },
+  {
+    id: "gatsby",
+    vibeLabel: "Literary fiction",
+    headline: "Long Island lights — champagne, longing, and a green dock",
+    cover: { from: "#2a1f3d", to: "#0f0a18", accent: "#7fd4ce" },
+    author: "F. Scott Fitzgerald",
+    year: "1925",
+    bookTitle: "The Great Gatsby",
+    intro:
+      "The American night distilled into parties that sound like music and a narrator who learns the bill always comes due — even for dreams built on someone else's shore.",
+    whyThisBook:
+      "When your mood is restless glamour with a sting: perfect for that \"something almost happened\" feeling at the end of a long week.",
+  },
+  {
+    id: "old-man-sea",
+    vibeLabel: "salt air",
+    headline: "One chair, one fish, one stubborn horizon",
+    cover: { from: "#2a5a6e", to: "#0d2833", accent: "#e8d4b0" },
+    author: "Ernest Hemingway",
+    year: "1952",
+    bookTitle: "The Old Man and the Sea",
+    intro:
+      "A stripped-down duel between a man, a marlin, and the sea — courage measured not in speeches but in rope burns and small, repeated choices.",
+    whyThisBook:
+      "Matches a quiet, stubborn focus: when you need dignity without noise, and the world feels wide and indifferent in a good way.",
+  },
+  {
+    id: "bell-jar",
+    vibeLabel: "still water",
+    headline: "A summer in New York that turns inward",
+    cover: { from: "#4a3a52", to: "#221a28", accent: "#d4a574" },
+    author: "Sylvia Plath",
+    year: "1963",
+    bookTitle: "The Bell Jar",
+    intro:
+      "Internships, invitations, and the pressure to perform a self you haven't named yet — a sharp, funny, unsettling account of sliding under the surface of a bright life.",
+    whyThisBook:
+      "For when everything looks correct from the outside but the inner weather doesn't match; clarity without pretending it's easy.",
   },
 ];
 

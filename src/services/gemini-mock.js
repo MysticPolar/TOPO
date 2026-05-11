@@ -1,3 +1,16 @@
+const MOCK_WEATHER_BOOK = {
+  title: "The Remains of the Day",
+  author: "Kazuo Ishiguro",
+  year: "1989",
+  description:
+    "An aging English butler takes a quiet motoring trip through the countryside, and revisits a life of duty, restraint, and one love left unspoken.",
+  moodLine:
+    "For the kind of grey, drizzling afternoon that asks you to sit still and remember something.",
+  audiobookDuration: "8h 32m",
+  coverGradientFrom: "#3a3a3a",
+  coverGradientTo: "#1a1a1a",
+};
+
 const MOCK_RESPONSES = {
   normal: {
     empathyLine1: "Everyone, in some late hour,",
@@ -126,7 +139,9 @@ const MOCK_RESPONSES = {
 };
 
 export async function askOwleryStreamMock(questionText, mode = "normal", onPartial) {
-  const response = MOCK_RESPONSES[mode] || MOCK_RESPONSES.normal;
+  const response = mode === "weatherBook"
+    ? MOCK_WEATHER_BOOK
+    : (MOCK_RESPONSES[mode] || MOCK_RESPONSES.normal);
   const json = JSON.stringify(response);
   const totalChars = json.length;
   const chunkSize = Math.max(8, Math.floor(totalChars / 25));

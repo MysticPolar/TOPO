@@ -18,6 +18,11 @@ export default defineConfig({
       ignored: ["**/expo-app/**", "**/node_modules/**"],
     },
   },
+  preview: {
+    port: 3000,
+    strictPort: true,
+    host: true,
+  },
   build: {
     outDir: "dist",
     sourcemap: false,

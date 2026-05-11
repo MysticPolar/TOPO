@@ -4,17 +4,21 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { GLOBAL_CSS, COLORS, TEXTURES } from "./styles/tokens.js";
-import Masthead from "./components/Masthead.jsx";
-import NavBar from "./components/NavBar.jsx";
-import InputBar from "./components/InputBar.jsx";
+import { GLOBAL_CSS } from "./styles/tokens.js";
+import { AppThemeContext } from "./context/AppThemeContext.jsx";
+import { useAuth } from "./context/AuthContext.jsx";
+import TopBar from "./components/TopBar.jsx";
 import OracleDispatch from "./components/OracleDispatch.jsx";
 import { InkToast } from "./components/Primitives.jsx";
 import HomeScreen from "./screens/HomeScreen.jsx";
 import ReadingScreen from "./screens/ReadingScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
+import SettingsScreen from "./screens/SettingsScreen.jsx";
 import SplashScreen from "./screens/SplashScreen.jsx";
-import { USER_STATS } from "./data/content.js";
+import RewardsScreen from "./screens/RewardsScreen.jsx";
+import LoginScreen from "./screens/LoginScreen.jsx";
+import { READING_ARTICLES, USER_STATS } from "./data/content.js";
+import { loadLibrarySaves } from "./utils/librarySaves.js";
 import { readSoftwareCreatedAt } from "./utils/softwareCreatedAt.js";
 import { loadUserStats, saveUserStats } from "./utils/storage.js";
 import { askOwleryStream, FALLBACK } from "./services/gemini.js";
@@ -39,16 +43,39 @@ const STAT_DEFAULTS = {
   ),
 };
 
+const PREVIEW_ENTERED_KEY = "duleme-entered-preview";
+const THEME_KEY = "duleme-theme";
+
+function readSkipSplash() {
+  try {
+    return sessionStorage.getItem(PREVIEW_ENTERED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
 export default function DulemeApp() {
+  const { user, profile, signOut } = useAuth();
   const [userStats, setUserStats] = useState(() => loadUserStats(STAT_DEFAULTS));
-  const [page, setPage] = useState("splash");
+  const [page, setPage] = useState(() => (readSkipSplash() ? "home" : "splash"));
   const [dispatch, setDispatch] = useState(null);
   const [tagSeenArticles, setTagSeenArticles] = useState(() => loadTagSeenArticles());
+  const [recentChats, setRecentChats] = useState([]);
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light";
+    } catch {
+      return "light";
+    }
+  });
   const [toast, setToast] = useState(null);
   const scrollRef = useRef(null);
 
   useEffect(() => {
     const forceHome = () => {
+      try {
+        sessionStorage.setItem(PREVIEW_ENTERED_KEY, "1");
+      } catch { /* private mode */ }
       setPage("home");
       setDispatch(null);
       if (scrollRef.current) scrollRef.current.scrollTop = 0;
@@ -62,6 +89,16 @@ export default function DulemeApp() {
     window.addEventListener("duleme-force-home", forceHome);
     return () => window.removeEventListener("duleme-force-home", forceHome);
   }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch {
+      // private mode or unavailable storage
+    }
+    const meta = document.querySelector("meta[name=\"theme-color\"]");
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#061522" : "#F4EAD3");
+  }, [theme]);
 
   const updateStats = useCallback((updater) => {
     setUserStats((prev) => {
@@ -80,6 +117,17 @@ export default function DulemeApp() {
       const next = { ...prev, [tag]: [...list, instanceKey] };
       persistTagSeenArticles(next);
       return next;
+    });
+    setRecentChats((prev) => {
+      const title = q.en || q.zh || q.response?.summary || "Untitled chat";
+      const nextItem = {
+        ...q,
+        id: q.id || `${Date.now()}-${Math.random()}`,
+        title,
+        createdAt: new Date().toISOString(),
+      };
+      const deduped = prev.filter((item) => item.title !== nextItem.title);
+      return [nextItem, ...deduped].slice(0, 5);
     });
     setDispatch(q);
   }, []);
@@ -149,44 +197,101 @@ export default function DulemeApp() {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
   }, []);
 
+  const handleOpenChatFromHistory = useCallback((chat) => {
+    setPage("home");
+    setDispatch({ ...chat });
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, []);
+
+  const [libraryCount, setLibraryCount] = useState(
+    () => READING_ARTICLES.length + loadLibrarySaves().length,
+  );
+
+  useEffect(() => {
+    const sync = () => setLibraryCount(READING_ARTICLES.length + loadLibrarySaves().length);
+    window.addEventListener("duleme-library-updated", sync);
+    return () => window.removeEventListener("duleme-library-updated", sync);
+  }, []);
+
+  const isLoggedIn = !!user;
+  const userName = profile?.display_name
+    || user?.user_metadata?.display_name
+    || (user?.email ? user.email.split("@")[0] : "Reader");
+
   return (
-    <div className="duleme-root">
-      {page !== "splash" && !(page === "home" && dispatch) && (
-        <Masthead
-          loginDays={userStats.loginDays ?? userStats.streakDays}
-          foundingDate={userStats.softwareCreatedAt ?? userStats.accountCreatedAt}
-        />
-      )}
+    <AppThemeContext.Provider value={{ theme }}>
+    <div className={`duleme-root ${theme === "dark" ? "duleme-theme-dark" : ""}`}>
+      <TopBar
+        userStats={userStats}
+        isLoggedIn={isLoggedIn}
+        userName={userName}
+        recentChats={recentChats}
+        libraryCount={libraryCount}
+        theme={theme}
+        onToggleTheme={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))}
+        onNavigate={handleNavigate}
+        onOpenChat={handleOpenChatFromHistory}
+        onRequestLogin={() => setPage("auth")}
+        onSignOut={signOut}
+      />
 
       <div
         ref={scrollRef}
+        className={`duleme-scroll-surface ${theme === "dark" ? "duleme-scroll-dark" : "duleme-scroll-light"}`}
         style={{
           flex: 1,
+          minHeight: 0,
           overflowY: page === "home" ? "hidden" : "auto",
+          overflowX: "hidden",
           position: "relative",
-          ...TEXTURES.paper,
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          background: "radial-gradient(ellipse at center, transparent 55%, rgba(42,31,14,0.16) 100%)",
-          zIndex: 1,
-        }} />
+        {theme === "light" && page !== "home" ? <div className="duleme-airmail-accent" aria-hidden="true" /> : null}
+        {theme === "dark" ? <div className="duleme-starfield" aria-hidden="true" /> : null}
+        <div className="duleme-scroll-vignette" aria-hidden="true" />
 
-        <div style={{ position: "relative", zIndex: 2, height: page === "home" || page === "splash" ? "100%" : "auto" }}>
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            display: "flex",
+            flexDirection: "column",
+            flex: page === "home" ? "1 1 0" : "0 0 auto",
+            minHeight: page === "home" ? 0 : "100%",
+            width: "100%",
+            boxSizing: "border-box",
+          }}
+        >
           {page === "splash" && (
-            <SplashScreen onEnter={() => setPage("home")} />
+            <SplashScreen
+              onEnter={() => {
+                try {
+                  sessionStorage.setItem(PREVIEW_ENTERED_KEY, "1");
+                } catch { /* private mode */ }
+                setPage("home");
+              }}
+            />
           )}
           {page === "home" && (
             <HomeScreen
-              onOpenDispatch={handleOpenDispatch}
               onSend={handleSend}
+            />
+          )}
+          {page === "auth" && (
+            <LoginScreen onAuthSuccess={() => handleNavigate("home")} />
+          )}
+          {page === "reading" && <ReadingScreen />}
+          {page === "rewards" && <RewardsScreen userStats={userStats} />}
+          {page === "profile" && (
+            <ProfileScreen
               userStats={userStats}
+              onOpenDispatch={handleOpenDispatch}
               onApplyChallengeReward={handleApplyChallengeReward}
             />
           )}
-          {page === "reading" && <ReadingScreen />}
-          {page === "profile" && <ProfileScreen userStats={userStats} />}
+          {page === "settings" && <SettingsScreen />}
         </div>
 
         {dispatch && (
@@ -206,13 +311,7 @@ export default function DulemeApp() {
         />
       </div>
 
-      {page === "home" && !dispatch && (
-        <div style={{ flexShrink: 0, zIndex: 40 }}>
-          <InputBar onSend={handleSend} />
-        </div>
-      )}
-
-      {page !== "splash" && <NavBar activePage={page} onNavigate={handleNavigate} />}
     </div>
+    </AppThemeContext.Provider>
   );
 }
